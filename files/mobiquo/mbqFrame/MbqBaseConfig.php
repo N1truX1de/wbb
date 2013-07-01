@@ -21,10 +21,10 @@ define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data!');
 define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe!');
 define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_'.mt_rand(2000000000, 2100000000).'_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */
-require_once(MBQ_FRAME_PATH . 'MbqError.php');
-require_once(MBQ_FRAME_PATH . 'MbqBaseMain.php');
-require_once(MBQ_FRAME_PATH . 'MbqClassLink.php');
-require_once(MBQ_FRAME_PATH . 'MbqValue.php');
+require_once(MBQ_FRAME_PATH.'MbqError.php');
+require_once(MBQ_FRAME_PATH.'MbqBaseMain.php');
+require_once(MBQ_FRAME_PATH.'MbqClassLink.php');
+require_once(MBQ_FRAME_PATH.'MbqValue.php');
 define('MBQ_CLASS_PATH', MBQ_PATH.'mbqClass'.MBQ_DS);    /* class path */
 define('MBQ_ENTITY_PATH', MBQ_FRAME_PATH.'entity'.MBQ_DS);    /* entity class path */
 define('MBQ_FDT_PATH', MBQ_FRAME_PATH.'fdt'.MBQ_DS);    /* fdt class path */
