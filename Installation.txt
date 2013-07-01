@@ -1,0 +1,17 @@
+Tapatalk Plugin for WoltLab Burning Board 4.0 Installation
+
+-- Installation --
+1. Upload the 'mobiquo' folder to the root of your WoltLab Burning Board 4.0 installation. Ensure the folder can be accessed from your browser or else the mod may fail to work as designed.
+2. Regster your site in Tapatalk forum owner page:http://tapatalk.com/forum_owner.php
+
+-- Changelog --
+WoltLab Burning Board 4.0 Series Version 0.0.1 released
+1. It is a beta version plugin for WoltLab Burning Board 4.0,developed based on WoltLab Burning Board 4.0 beta 4.
+2. Only support some basic feature:read forum,list topic,read thread etc.
+
+-- Support Forum --
+If you require additional support, we have a forum setup for just that. Visit the link below:
+https://support.tapatalk.com
+https://support.tapatalk.com/threads/are-you-interested-in-new-plugin-for-woltlab-burning-board-4-0.19018/
+
+20130630
