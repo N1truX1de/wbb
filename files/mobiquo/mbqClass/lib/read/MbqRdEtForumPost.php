@@ -36,6 +36,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * $mbqOpt['case'] = 'byTopic' means get data by forum topic obj.$var is the forum topic obj.
      * $mbqOpt['case'] = 'byPostIds' means get data by post ids.$var is the ids.
      * $mbqOpt['case'] = 'byObjsViewablePost' means get data by objsViewablePost.$var is the objsViewablePost.
+     * $mbqOpt['case'] = 'byReplyUser' means get data by reply user.$var is the MbqEtUser obj.
      * $mbqOpt['notGetAttachment'] = true means do not get attachment of forum post.
      * @return  Mixed
      */
@@ -65,6 +66,20 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             $mbqOpt['case'] = 'byObjsViewablePost';
             return $this->getObjsMbqEtForumPost($oViewablePostList->getObjects(), $mbqOpt);
             /* common end */
+        } elseif ($mbqOpt['case'] == 'byReplyUser') {
+            if ($mbqOpt['oMbqDataPage']) {
+                $oMbqDataPage = $mbqOpt['oMbqDataPage'];
+                $oViewablePostList = new ViewablePostList();
+                $oViewablePostList->sqlJoins .= 'INNER JOIN wbb'.WCF_N.'_thread thread ON (post.threadID = thread.threadID AND thread.isAnnouncement = 0 AND post.postID != thread.firstPostID)'; //!!!
+                $oViewablePostList->getConditionBuilder()->add('post.userID = ?', array($var->userId->oriValue));
+        		$oViewablePostList->readObjects();
+        		$oMbqDataPage->totalNum = $oViewablePostList->countObjects();
+                /* common begin */
+                $mbqOpt['case'] = 'byObjsViewablePost';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $this->getObjsMbqEtForumPost($oViewablePostList->getObjects(), $mbqOpt);
+                /* common end */
+            }
         } elseif ($mbqOpt['case'] == 'byObjsViewablePost') {
             $objsViewablePost = $var;
             /* common begin */

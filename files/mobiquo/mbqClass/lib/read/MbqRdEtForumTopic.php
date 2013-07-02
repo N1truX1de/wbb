@@ -54,6 +54,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'byForum' means get data by forum obj.$var is the forum obj.
      * $mbqOpt['case'] = 'byObjsViewableThread' means get data by objsViewableThread.$var is the objsViewableThread.
      * $mbqOpt['case'] = 'byTopicIds' means get data by topic ids.$var is the ids.
+     * $mbqOpt['case'] = 'byAuthor' means get data by author.$var is the MbqEtUser obj.
      * $mbqOpt['top'] = true means get sticky data.
      * $mbqOpt['notIncludeTop'] = true means get not sticky data.
      * @return  Mixed
@@ -86,6 +87,22 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $mbqOpt['case'] = 'byObjsViewableThread';
                 $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
                 return $this->getObjsMbqEtForumTopic($objsViewableThread, $mbqOpt);
+                /* common end */
+            }
+        } elseif ($mbqOpt['case'] == 'byAuthor') {
+            if ($mbqOpt['oMbqDataPage']) {
+                $oMbqDataPage = $mbqOpt['oMbqDataPage'];
+                $oViewableThreadList = new ViewableThreadList();
+                $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
+                $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oViewableThreadList->getConditionBuilder()->add('thread.userID = ?', array($var->userId->oriValue));   //!!!
+                $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+                $oViewableThreadList->readObjects();
+                $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
+                /* common begin */
+                $mbqOpt['case'] = 'byObjsViewableThread';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $this->getObjsMbqEtForumTopic($oViewableThreadList->getObjects(), $mbqOpt);
                 /* common end */
             }
         } elseif ($mbqOpt['case'] == 'byTopicIds') {

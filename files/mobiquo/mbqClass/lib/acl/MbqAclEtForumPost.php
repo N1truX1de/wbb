@@ -14,6 +14,32 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
     
     public function __construct() {
     }
+    
+    /**
+     * judge can get_user_reply_post
+     *
+     * @return  Boolean
+     */
+    public function canAclGetUserReplyPost() {
+        if (MbqMain::$oMbqConfig->getCfg('user.guest_okay')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support')) {
+            return true;
+        } else {
+            return MbqMain::hasLogin();
+        }
+    }
+    
+    /**
+     * judge can search_post
+     *
+     * @return  Boolean
+     */
+    public function canAclSearchPost() {
+        if (MbqMain::$oMbqConfig->getCfg('forum.guest_search')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.support')) {
+            return true;
+        } else {
+            return MbqMain::hasLogin();
+        }
+    }
   
 }
 
