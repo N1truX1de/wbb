@@ -1,6 +1,5 @@
 <?php
 
-
 defined('MBQ_IN_IT') or exit;
 
 /**
@@ -15,6 +14,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
     public $exttForumTree;  //forum tree structure
     public $exttAllForums;  //all forums one dimensional array
     public $siteRootUrl;    //site root url,init it in MbqConfig::calCfg()
+    public $oCurrentUser;   //wcf\data\user\User
 
     public function __construct() {
         parent::__construct();

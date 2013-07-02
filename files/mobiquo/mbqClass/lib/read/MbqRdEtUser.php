@@ -1,6 +1,11 @@
 <?php
 
 use wcf\data\user\UserProfile;
+use wcf\system\user\authentication\UserAuthenticationFactory;
+use wcf\system\user\authentication\EmailUserAuthentication;
+use wcf\system\exception\UserInputException;
+use wcf\system\WCF;
+use wcf\util\HeaderUtil;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -101,7 +106,75 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      */
     public function getDisplayName($oMbqEtUser) {
         return $oMbqEtUser->loginName->oriValue;
-        //return htmlspecialchars_decode($oMbqEtUser->loginName->oriValue);
+    }
+    
+    /**
+     * login
+     *
+     * @param  String  $loginName
+     * @param  String  $password
+     * @return  Boolean  return true when login success.
+     */
+    public function login($loginName, $password) {
+        //ref wcf\acp\form\LoginForm::validateUser()
+		try {
+			$oUser = UserAuthenticationFactory::getInstance()->getUserAuthentication()->loginManually($loginName, $password);
+		}
+		catch (UserInputException $e) {
+			if ($e->getField() == 'username') {
+				try {
+					$oUser = EmailUserAuthentication::getInstance()->loginManually($loginName, $password);
+				}
+				catch (UserInputException $e2) {
+					//if ($e2->getField() == 'username') throw $e;
+					//throw $e2;
+					return false;
+				}
+			}
+			else {
+				//throw $e;
+				return false;
+			}
+		}
+		if (!$oUser || !$oUser->userID) return false;
+		//ref wcf\form\LoginForm::save()
+		// set cookies
+		UserAuthenticationFactory::getInstance()->getUserAuthentication()->storeAccessData($oUser, $loginName, $password);
+		// change user
+		WCF::getSession()->changeUser($oUser);
+		MbqMain::$oMbqAppEnv->oCurrentUser = $oUser;
+        $this->initOCurMbqEtUser();
+        return true;
+    }
+    
+    /**
+     * logout
+     *
+     * @return  Boolean  return true when logout success.
+     */
+    public function logout() {
+        //ref wcf\action\LogoutAction::execute()
+        // do logout
+		WCF::getSession()->delete();
+		
+		// remove cookies
+		if (isset($_COOKIE[COOKIE_PREFIX.'userID'])) {
+			HeaderUtil::setCookie('userID', 0);
+		}
+		if (isset($_COOKIE[COOKIE_PREFIX.'password'])) {
+			HeaderUtil::setCookie('password', '');
+		}
+        
+        return true;
+    }
+    
+    /**
+     * init current user obj if login
+     */
+    public function initOCurMbqEtUser() {
+        if (MbqMain::$oMbqAppEnv->oCurrentUser) {
+            MbqMain::$oCurMbqEtUser = $this->initOMbqEtUser(MbqMain::$oMbqAppEnv->oCurrentUser->userID, array('case' => 'byUserId'));
+        }
     }
   
 }

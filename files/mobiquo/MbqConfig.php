@@ -1,6 +1,7 @@
 <?php
 
 use wcf\system\WCF;
+use wcf\system\user\authentication\DefaultUserAuthentication;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -43,6 +44,18 @@ Class MbqConfig extends MbqBaseConfig {
     public function calCfg() {
         $url = WCF::getPath();
         MbqMain::$oMbqAppEnv->siteRootUrl = substr($url, 0, strlen($url) - 4);
+        //init user
+        $oUser = DefaultUserAuthentication::getInstance()->loginAutomatically(true);
+        if ($oUser && $oUser->userID) {
+            MbqMain::$oMbqAppEnv->oCurrentUser = $oUser;
+            $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+            $oMbqRdEtUser->initOCurMbqEtUser();
+        }
+        if (MbqMain::hasLogin()) {  //!!!
+            header('Mobiquo_is_login: true');
+        } else {
+            header('Mobiquo_is_login: false');
+        }
         parent::calCfg();
       /* calculate the final config */
         $this->cfg['base']['sys_version']->setOriValue(PACKAGE_VERSION);
