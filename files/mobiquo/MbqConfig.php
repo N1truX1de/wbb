@@ -56,9 +56,16 @@ Class MbqConfig extends MbqBaseConfig {
         } else {
             header('Mobiquo_is_login: false');
         }
+        $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
+        MbqMain::$oMbqAppEnv->exttForumTree = $oMbqRdEtForum->getForumTree();  //!!!
         parent::calCfg();
       /* calculate the final config */
         $this->cfg['base']['sys_version']->setOriValue(PACKAGE_VERSION);
+        if (OFFLINE) {
+            $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.no'));
+        } else {
+            $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.yes'));
+        }
     }
     
 }

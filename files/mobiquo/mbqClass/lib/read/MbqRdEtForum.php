@@ -138,7 +138,13 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
             } elseif ($oBoard->isBoard()) {
                 $oMbqEtForum->subOnly->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.no'));
             }
+            $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
             $oMbqEtForum->mbqBind['oDetailedBoardNode'] = $var;
+            if ($oMbqAclEtForumTopic->canAclNewTopic($oMbqEtForum)) {
+                $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.yes'));
+            } else {
+                $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.no'));
+            }
             return $oMbqEtForum;
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);

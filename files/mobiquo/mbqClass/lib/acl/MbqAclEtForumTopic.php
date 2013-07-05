@@ -107,6 +107,22 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
     public function canAclGetSubscribedTopic() {
         return MbqMain::hasLogin();
     }
+    
+    /**
+     * judge can new topic
+     *
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclNewTopic($oMbqEtForum) {
+        //ref board.tpl,wbb\form\ThreadAddForm::readParameters()
+        if (MbqMain::hasLogin() && $oMbqEtForum->mbqBind['oDetailedBoardNode'] && $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard()->canStartThread()) {
+            $oBoard = $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard();
+            if ($oBoard->isBoard() && !$oBoard->isClosed && $oBoard->getPermission('canViewBoard') && $oBoard->getPermission('canEnterBoard') && $oBoard->getPermission('canStartThread'))
+            return true;
+        }
+        return false;
+    }
   
 }
 

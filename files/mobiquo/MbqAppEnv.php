@@ -29,9 +29,6 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         require_once('./global.php');
         //wcf\system\request\RequestHandler::getInstance()->handle('wbb');
         $oRequestHandler = wcf\system\request\RequestHandler::getInstance();
-        
-        $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
-        $this->exttForumTree = $oMbqRdEtForum->getForumTree();  //!!!
     }
     
 }
