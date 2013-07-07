@@ -119,7 +119,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
         if (MbqMain::hasLogin() && $oMbqEtForum->mbqBind['oDetailedBoardNode'] && $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard()->canStartThread()) {
             $oBoard = $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard();
             if ($oBoard->isBoard() && !$oBoard->isClosed && $oBoard->getPermission('canViewBoard') && $oBoard->getPermission('canEnterBoard') && $oBoard->getPermission('canStartThread'))
-            return true;
+                return true;
         }
         return false;
     }

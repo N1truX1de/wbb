@@ -40,6 +40,25 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
             return MbqMain::hasLogin();
         }
     }
+    
+    /**
+     * judge can reply post
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclReplyPost($oMbqEtForumTopic) {
+        //ref thread.tpl,wbb\form\PostAddForm
+        if (MbqMain::hasLogin() && $oMbqEtForumTopic->mbqBind['oViewableThread'] && $oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->canReply()) {
+            $oThread = $oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();
+            if ($oMbqEtForumTopic->oMbqEtForum && $oMbqEtForumTopic->oMbqEtForum->mbqBind['oDetailedBoardNode']) {
+                $oBoard = $oMbqEtForumTopic->oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard();
+                if ($oBoard->getPermission('canViewBoard') && $oBoard->getPermission('canEnterBoard'))
+                    return true;
+            }
+        }
+        return false;
+    }
   
 }
 

@@ -149,7 +149,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             $maxTextLength = WCF::getSession()->getPermission('user.board.maxPostLength');
             $minCharLength = WBB_THREAD_MIN_CHAR_LENGTH;
             $minWordCount = WBB_THREAD_MIN_WORD_COUNT;
-            //validate
+            //begin validate
             $allowedBBCodesPermission = 'user.message.allowedBBCodes';
             //validateSubject
             if (empty($var->topicTitle->oriValue)) MbqError::alert('', "Need topic title.", '', MBQ_ERR_APP);

@@ -179,7 +179,14 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 }
             }
             /* make other properties */
-            
+            $oMbqAclEtForumPost = MbqMain::$oClk->newObj('MbqAclEtForumPost');
+            foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                if ($oMbqAclEtForumPost->canAclReplyPost($oMbqEtForumTopic)) {
+                    $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.yes'));
+                } else {
+                    $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.no'));
+                }
+            }
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
