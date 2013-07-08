@@ -59,6 +59,16 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
         }
         return false;
     }
+    
+    /**
+     * judge can get quote post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclGetQuotePost($oMbqEtForumPost) {
+        return $this->canAclReplyPost($oMbqEtForumPost->oMbqEtForumTopic);
+    }
   
 }
 

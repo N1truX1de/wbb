@@ -5,6 +5,15 @@ use wbb\data\post\ViewablePost;
 use wbb\data\post\Post;
 use wbb\data\post\ViewablePostList;
 
+use wcf\data\object\type\ObjectTypeCache;
+use wcf\data\IMessage;
+use wcf\system\application\ApplicationHandler;
+use wcf\system\exception\SystemException;
+use wcf\system\SingletonFactory;
+use wcf\system\WCF;
+use wcf\util\ArrayUtil;
+use wcf\util\StringUtil;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseRdEtForumPost');
@@ -256,6 +265,20 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         }
     	$post = trim($post);
     	return $post;
+    }
+    
+    /**
+     * return quote post content
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  String
+     */
+    public function getQuotePostContent($oMbqEtForumPost) {
+        //ref wcf\system\message\quote\MessageQuoteManager::renderQuote()
+        $oPost = $oMbqEtForumPost->mbqBind['oViewablePost']->getDecoratedObject();
+		$escapedUsername = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oPost->getUsername());
+		$escapedLink = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oPost->getLink());
+		return "[quote='".$escapedUsername."','".$escapedLink."']".$oMbqEtForumPost->postContent->oriValue."[/quote]";
     }
   
 }
