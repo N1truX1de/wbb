@@ -13,6 +13,8 @@ use wcf\system\user\collapsible\content\UserCollapsibleContentHandler;
 use wcf\system\MetaTagHandler;
 use wcf\system\WCF;
 
+use wcf\system\attachment\AttachmentHandler;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseRdEtForum');
@@ -144,6 +146,16 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
                 $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.yes'));
             } else {
                 $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.no'));
+            }
+            $attachmentObjectType = 'com.woltlab.wbb.post';
+            $attachmentObjectID = 0;
+            $tmpHash = '';
+            $attachmentParentObjectID = $oBoard->boardID;
+            $oAttachmentHandler = new AttachmentHandler($attachmentObjectType, $attachmentObjectID, $tmpHash, $attachmentParentObjectID);
+            if ($oAttachmentHandler->canUpload()) {
+                $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.yes'));
+            } else {
+                $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.no'));
             }
             return $oMbqEtForum;
         }

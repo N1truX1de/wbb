@@ -162,6 +162,14 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             /* load objsMbqEtThank property and make related properties/flags */
             //
             /* make other properties */
+            $oMbqAclEtForumPost = MbqMain::$oClk->newObj('MbqAclEtForumPost');
+            foreach ($objsMbqEtForumPost as &$oMbqEtForumPost) {
+                if ($oMbqAclEtForumPost->canAclSaveRawPost($oMbqEtForumPost)) {
+                    $oMbqEtForumPost->canEdit->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canEdit.range.yes'));
+                } else {
+                    $oMbqEtForumPost->canEdit->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canEdit.range.no'));
+                }
+            }
             /* common end */
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];

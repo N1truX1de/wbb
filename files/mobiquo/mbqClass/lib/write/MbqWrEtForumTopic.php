@@ -134,7 +134,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             $var->topicContent->setOriValue(MessageUtil::stripCrap(StringUtil::trim($var->topicContent->oriValue)));
             $attachmentObjectType = 'com.woltlab.wbb.post';
             $attachmentObjectID = 0;
-            $tmpHash = StringUtil::getRandomID();
+            $tmpHash = $var->groupId->oriValue ? $var->groupId->oriValue : StringUtil::getRandomID();
             $attachmentParentObjectID = $oBoard->boardID;
             //settings
             $preParse = $enableSmilies = $enableBBCodes = $showSignature = $subscribeThread = $enableHtml = 0;

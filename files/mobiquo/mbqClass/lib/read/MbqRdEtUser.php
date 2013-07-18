@@ -79,6 +79,9 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             } else {
                 $oMbqEtUser->isOnline->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.no'));
             }
+            $oMbqEtUser->maxAttachment->setOriValue(10);    //todo,hard code
+            $oMbqEtUser->maxPngSize->setOriValue(1024 * 1024);     //todo,hard code
+            $oMbqEtUser->maxJpgSize->setOriValue(1024 * 1024);      //todo,hard code
             $oMbqEtUser->mbqBind['oUserProfile'] = $var;
             return $oMbqEtUser;
         } elseif ($mbqOpt['case'] == 'byUserId') {

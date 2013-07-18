@@ -14,6 +14,16 @@ Class MbqAclEtAtt extends MbqBaseAclEtAtt {
     
     public function __construct() {
     }
+    
+    /**
+     * judge can upload attachment
+     *
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclUploadAttach($oMbqEtForum) {
+        return $oMbqEtForum->canUpload->oriValue;
+    }
   
 }
 

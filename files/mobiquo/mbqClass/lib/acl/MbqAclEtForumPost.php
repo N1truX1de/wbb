@@ -69,6 +69,34 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
     public function canAclGetQuotePost($oMbqEtForumPost) {
         return $this->canAclReplyPost($oMbqEtForumPost->oMbqEtForumTopic);
     }
+    
+    /**
+     * judge can get_raw_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclGetRawPost($oMbqEtForumPost) {
+        return $this->canAclSaveRawPost($oMbqEtForumPost);
+    }
+    
+    /**
+     * judge can save_raw_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclSaveRawPost($oMbqEtForumPost) {
+        //ref threadPostList.tpl,wbb\form\PostEditForm
+        if (MbqMain::hasLogin() && $oMbqEtForumPost->oMbqEtForumTopic && $oMbqEtForumPost->mbqBind['oViewablePost'] && $oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']) {
+            $oThread = $oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();
+            $oPost = $oMbqEtForumPost->mbqBind['oViewablePost']->getDecoratedObject();
+            if ($oThread->canEditPost($oPost)) {
+                return true;
+            }
+        }
+        return false;
+    }
   
 }
 
