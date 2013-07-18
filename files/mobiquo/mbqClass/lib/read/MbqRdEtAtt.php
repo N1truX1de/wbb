@@ -2,6 +2,7 @@
 
 use wcf\data\attachment\GroupedAttachmentList;
 use wbb\data\post\ViewablePostList;
+use wcf\data\attachment\Attachment;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -57,10 +58,18 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'oAttachment' means init attachment by oAttachment
+     * $mbqOpt['case'] = 'byAttId' means init attachment by attachment id
      * @return  Mixed
      */
     public function initOMbqEtAtt($var, $mbqOpt) {
-        if ($mbqOpt['case'] == 'oAttachment') {
+        if ($mbqOpt['case'] == 'byAttId') {
+            $oAttachment = new Attachment($var);
+            if ($oAttachment->attachmentID) {
+                $mbqOpt['case'] = 'oAttachment';
+                return $this->initOMbqEtAtt($oAttachment, $mbqOpt);
+            }
+            return false;
+        } elseif ($mbqOpt['case'] == 'oAttachment') {
             $oMbqEtAtt = MbqMain::$oClk->newObj('MbqEtAtt');
             $oMbqEtAtt->attId->setOriValue($var->attachmentID);
             $oMbqEtAtt->postId->setOriValue($var->objectID);

@@ -24,6 +24,20 @@ Class MbqAclEtAtt extends MbqBaseAclEtAtt {
     public function canAclUploadAttach($oMbqEtForum) {
         return $oMbqEtForum->canUpload->oriValue;
     }
+    
+    /**
+     * judge can remove attachment
+     *
+     * @param  Object  $oMbqEtAtt
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclRemoveAttachment($oMbqEtAtt, $oMbqEtForum) {
+        if ($oMbqEtAtt->mbqBind['oAttachment'] && $oMbqEtAtt->mbqBind['oAttachment']->canDelete()) {
+            return true;
+        }
+        return false;
+    }
   
 }
 

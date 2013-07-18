@@ -43,7 +43,7 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
         $oAttachmentAction->validateAction();   //todo:catch exception
         $ret = $oAttachmentAction->executeAction();     //todo:catch exception
         if ($ret['returnValues']['attachments']) {
-            $r = array_shift();
+            $r = array_shift($ret['returnValues']['attachments']);
             $oMbqEtAtt = MbqMain::$oClk->newObj('MbqEtAtt');
             $oMbqEtAtt->attId->setOriValue($r['attachmentID']);
             $oMbqEtAtt->groupId->setOriValue($parameters['tmpHash']);
@@ -53,6 +53,17 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
         } else {
             MbqError::alert('', "Upload attachment failed!", '', MBQ_ERR_APP);
         }
+    }
+    
+    /**
+     * delete attachment
+     *
+     * @param  Object  $oMbqEtAtt
+     */
+    public function deleteAttachment($oMbqEtAtt) {
+        //ref wcf\action\AJAXProxyAction::invoke(),wcf\data\attachment\AttachmentAction,wcf\data\AbstractDatabaseObjectAction
+        $oAttachmentAction = new AttachmentAction(array($oMbqEtAtt->attId->oriValue), 'delete', array());
+        $oAttachmentAction->delete();   //todo:catch exception
     }
   
 }
