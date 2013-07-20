@@ -7,6 +7,9 @@ use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
 
+use wcf\data\user\online\UsersOnlineList;
+use wcf\data\option\OptionAction;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseRdEtUser');
@@ -36,6 +39,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byUserIds' means get data by user ids.$var is the ids.
+     * @mbqOpt['case'] = 'online' means get online user.
      * @return  Array
      */
     public function getObjsMbqEtUser($var, $mbqOpt) {
@@ -46,6 +50,31 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
                 $objsMbqEtUser[] = $this->initOMbqEtUser($oUserProfile, array('case' => 'oUserProfile'));
             }
             return $objsMbqEtUser;
+        } elseif ($mbqOpt['case'] == 'online') {
+            //ref wbb\page\BoardListPage::readData(),wcf\data\user\online\UsersOnlineList,MbqRdEtSysStatistics::initOMbqEtSysStatistics()
+    		if (MODULE_USERS_ONLINE && WBB_INDEX_ENABLE_ONLINE_LIST) {
+    			$usersOnlineList = new UsersOnlineList();
+    			$usersOnlineList->readStats();
+    			$usersOnlineList->getConditionBuilder()->add('session.userID IS NOT NULL');
+    			$usersOnlineList->readObjects();
+    			// check users online record
+    			$usersOnlineTotal = (WBB_USERS_ONLINE_RECORD_NO_GUESTS ? $usersOnlineList->stats['members'] : $usersOnlineList->stats['total']);
+    			if ($usersOnlineTotal > WBB_USERS_ONLINE_RECORD) {
+    				// save new record
+    				$optionAction = new OptionAction(array(), 'import', array('data' => array(
+    					'wbb_users_online_record' => $usersOnlineTotal,
+    					'wbb_users_online_record_time' => TIME_NOW
+    				)));
+    				$optionAction->executeAction();
+    			}
+    			$ids = array();
+    			foreach ($usersOnlineList->getObjects() as $oUserOnline) {
+    			    $ids[] = $oUserOnline->getDecoratedObject()->userID;
+    			}
+    			return $this->getObjsMbqEtUser($ids, array('case' => 'byUserIds'));
+    		} else {
+                return array();
+    		}
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }

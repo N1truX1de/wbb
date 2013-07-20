@@ -1,6 +1,7 @@
 <?php
 
 use wbb\data\thread\ViewableThreadList;
+use wbb\data\post\ViewablePostList;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -30,7 +31,17 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
         if ($mbqOpt['case'] == 'getLatestTopic' || $mbqOpt['case'] == 'getUnreadTopic' || $mbqOpt['case'] == 'getParticipatedTopic') {
             $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
             if ($mbqOpt['case'] == 'getParticipatedTopic') {
-                MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+                $oViewableThreadList = new ViewableThreadList();
+                $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
+                $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+                $oViewableThreadList->getConditionBuilder()->add('thread.threadID IN (SELECT threadID from wbb'.WCF_N.'_post where userID = ?)', array(MbqMain::$oCurMbqEtUser->userId->oriValue));   //!!!
+                $oViewableThreadList->readObjects();
+                $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
+                /* common begin */
+                $mbqOpt['case'] = 'byObjsViewableThread';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oViewableThreadList->getObjects(), $mbqOpt);
             } elseif ($mbqOpt['case'] == 'getLatestTopic') {
                 $oViewableThreadList = new ViewableThreadList();
                 $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
@@ -44,12 +55,43 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
                 return $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oViewableThreadList->getObjects(), $mbqOpt);
                 /* common end */
             } elseif ($mbqOpt['case'] == 'getUnreadTopic') {
-                MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+                require_once(MBQ_APPEXTENTION_PATH.'ExttMbqBoardQuickSearchAction.php');
+                $oExttMbqBoardQuickSearchAction = new ExttMbqBoardQuickSearchAction();
+                $oExttMbqBoardQuickSearchAction->exttMbqStartNum = $oMbqDataPage->startNum;
+                $oExttMbqBoardQuickSearchAction->exttMbqNumPerPage = $oMbqDataPage->numPerPage;
+                $ret = $oExttMbqBoardQuickSearchAction->execute();
+                $oMbqDataPage->totalNum = $ret['total'];
+                $newMbqOpt['case'] = 'byTopicIds';
+                $newMbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($ret['topicIds'], $newMbqOpt);
+                return $oMbqDataPage;
             }
         } elseif ($mbqOpt['case'] == 'searchTopic') {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+            $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
+            $oViewableThreadList = new ViewableThreadList();
+            $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
+            $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+            $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+            $oViewableThreadList->getConditionBuilder()->add('thread.threadID IN (SELECT threadID from wbb'.WCF_N.'_post as mbqPost where mbqPost.subject LIKE ? OR mbqPost.message LIKE ?)', array('%'.addcslashes($filter['keywords'], '_%').'%', '%'.addcslashes($filter['keywords'], '_%').'%'));   //!!!
+            $oViewableThreadList->readObjects();
+            $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
+            /* common begin */
+            $mbqOpt['case'] = 'byObjsViewableThread';
+            $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+            return $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oViewableThreadList->getObjects(), $mbqOpt);
+            /* common end */
         } elseif ($mbqOpt['case'] == 'searchPost') {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+            $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
+            $oViewablePostList = new ViewablePostList();
+            $oViewablePostList->sqlJoins .= 'INNER JOIN wbb'.WCF_N.'_thread thread ON (post.threadID = thread.threadID AND thread.isAnnouncement = 0)'; //!!!
+            $oViewablePostList->getConditionBuilder()->add('(post.subject LIKE ? OR post.message LIKE ?)', array('%'.addcslashes($filter['keywords'], '_%').'%', '%'.addcslashes($filter['keywords'], '_%').'%'));   //!!!
+    		$oViewablePostList->readObjects();
+    		$oMbqDataPage->totalNum = $oViewablePostList->countObjects();
+            /* common begin */
+            $mbqOpt['case'] = 'byObjsViewablePost';
+            $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+            return $oMbqRdEtForumPost->getObjsMbqEtForumPost($oViewablePostList->getObjects(), $mbqOpt);
+            /* common end */
         } elseif ($mbqOpt['case'] == 'advanced') {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         }

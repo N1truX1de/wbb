@@ -36,6 +36,8 @@ use wcf\util\HeaderUtil;
 use wcf\form\MessageForm;
 use wbb\form\ThreadAddForm;
 
+use wbb\data\board\BoardAction;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseWrEtForumTopic');
@@ -78,7 +80,9 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      */
     public function markForumTopicRead(&$var = NULL, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'markAllAsRead') {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+            $oBoardAction = new BoardAction(array(), 'markAllAsRead', array());
+            $oBoardAction->validateAction();
+            $response = $oBoardAction->executeAction();
         } else {
             if (is_array($var)) {
                 MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);

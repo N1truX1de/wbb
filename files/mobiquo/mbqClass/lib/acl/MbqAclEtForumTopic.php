@@ -123,6 +123,15 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
         }
         return false;
     }
+    
+    /**
+     * judge can mark all my unread topics as read
+     *
+     * @return  Boolean
+     */
+    public function canAclMarkAllAsRead() {
+        return (MbqMain::hasLogin() && MbqMain::$oMbqConfig->getCfg('forum.mark_read')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.mark_read.range.support'));
+    }
   
 }
 
