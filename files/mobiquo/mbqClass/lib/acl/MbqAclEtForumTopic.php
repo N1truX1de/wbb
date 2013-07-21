@@ -1,5 +1,7 @@
 <?php
 
+use wcf\data\object\type\ObjectTypeCache;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseAclEtForumTopic');
@@ -131,6 +133,32 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      */
     public function canAclMarkAllAsRead() {
         return (MbqMain::hasLogin() && MbqMain::$oMbqConfig->getCfg('forum.mark_read')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.mark_read.range.support'));
+    }
+    
+    /**
+     * judge can subscribe_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclSubscribeTopic($oMbqEtForumTopic) {
+        if (MbqMain::hasLogin() && !$oMbqEtForumTopic->isSubscribed->oriValue) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can unsubscribe_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclUnsubscribeTopic($oMbqEtForumTopic) {
+        if (MbqMain::hasLogin() && $oMbqEtForumTopic->isSubscribed->oriValue) {
+            return true;
+        }
+        return false;
     }
   
 }

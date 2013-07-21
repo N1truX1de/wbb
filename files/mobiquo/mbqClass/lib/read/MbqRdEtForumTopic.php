@@ -23,6 +23,8 @@ use wcf\util\StringUtil;
 use wbb\data\thread\ViewableThreadList;
 use wbb\data\post\ThreadPostList;
 
+use wbb\data\thread\WatchedThreadList;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseRdEtForumTopic');
@@ -55,6 +57,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'byObjsViewableThread' means get data by objsViewableThread.$var is the objsViewableThread.
      * $mbqOpt['case'] = 'byTopicIds' means get data by topic ids.$var is the ids.
      * $mbqOpt['case'] = 'byAuthor' means get data by author.$var is the MbqEtUser obj.
+     * $mbqOpt['case'] = 'subscribed' means get subscribed data.$var is the user id.
      * $mbqOpt['top'] = true means get sticky data.
      * $mbqOpt['notIncludeTop'] = true means get not sticky data.
      * @return  Mixed
@@ -87,6 +90,21 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $mbqOpt['case'] = 'byObjsViewableThread';
                 $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
                 return $this->getObjsMbqEtForumTopic($objsViewableThread, $mbqOpt);
+                /* common end */
+            }
+        } elseif ($mbqOpt['case'] == 'subscribed') {
+            if ($mbqOpt['oMbqDataPage']) {
+                $oMbqDataPage = $mbqOpt['oMbqDataPage'];
+                $oWatchedThreadList = new WatchedThreadList();
+                $oWatchedThreadList->sqlOffset = $oMbqDataPage->startNum;
+                $oWatchedThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oWatchedThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+                $oWatchedThreadList->readObjectIDs();
+                $oMbqDataPage->totalNum = $oWatchedThreadList->countObjects();
+                /* common begin */
+                $mbqOpt['case'] = 'byTopicIds';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $this->getObjsMbqEtForumTopic($oWatchedThreadList->objectIDs, $mbqOpt);
                 /* common end */
             }
         } elseif ($mbqOpt['case'] == 'byAuthor') {
@@ -236,6 +254,16 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $oMbqEtForumTopic->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.state.range.postOkNeedModeration'));
             } else {
                 $oMbqEtForumTopic->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.state.range.postOk'));
+            }
+            if ($oThread->isSubscribed()) {
+                $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
+            }
+            if (MbqMain::hasLogin()) {
+                $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.yes'));
+            } else {
+                $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
             }
             $oMbqEtForumTopic->mbqBind['oViewableThread'] = $var;
             return $oMbqEtForumTopic;

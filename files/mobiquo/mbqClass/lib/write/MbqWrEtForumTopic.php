@@ -38,6 +38,10 @@ use wbb\form\ThreadAddForm;
 
 use wbb\data\board\BoardAction;
 
+use wcf\data\object\type\ObjectTypeCache;
+use wcf\data\user\object\watch\UserObjectWatch;
+use wcf\data\user\object\watch\UserObjectWatchEditor;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseWrEtForumTopic');
@@ -250,6 +254,52 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             } else {
                 MbqError::alert('', "Can not create topic.", '', MBQ_ERR_APP);
             }
+        }
+    }
+    
+    /**
+     * subscribe topic
+     *
+     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     */
+    public function subscribeTopic(&$var) {
+        if (is_array($var)) {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        } else {
+            //ref wcf\data\user\object\watch\UserObjectWatchAction::subscribe()
+    		$objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
+    		$userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
+    		if (!$userObjectWatch) {    //help confirm not subscribed
+        		UserObjectWatchEditor::create(array(
+        			'userID' => WCF::getUser()->userID,
+        			'objectID' => intval($var->topicId->oriValue),
+        			'objectTypeID' => $objectType->objectTypeID,
+        			'notification' => 0
+        		));
+        		// reset user storage
+        		$objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
+    		}
+        }
+    }
+    
+    /**
+     * unsubscribe topic
+     *
+     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     */
+    public function unsubscribeTopic(&$var) {
+        if (is_array($var)) {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        } else {
+            //ref wcf\data\user\object\watch\UserObjectWatchAction::unsubscribe()
+    		$objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
+    		$userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
+    		if ($userObjectWatch->watchID) {
+        		$editor = new UserObjectWatchEditor($userObjectWatch);
+        		$editor->delete();
+        		// reset user storage
+        		$objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
+        	}
         }
     }
   
