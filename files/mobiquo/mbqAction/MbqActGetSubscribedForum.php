@@ -20,7 +20,9 @@ Class MbqActGetSubscribedForum extends MbqBaseActGetSubscribedForum {
      * action implement
      */
     public function actionImplement() {
-        parent::actionImplement();
+        //dummy method,WBB 4 does not support subscribe forum
+        $this->data['total_forums_num'] = 0;
+        $this->data['forums'] = array();
     }
   
 }
