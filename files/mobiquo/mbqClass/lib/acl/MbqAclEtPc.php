@@ -14,6 +14,27 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
     
     public function __construct() {
     }
+    
+    /**
+     * judge can get_inbox_stat
+     *
+     * @return  Boolean
+     */
+    public function canAclGetInboxStat() {
+        return MbqMain::hasLogin();
+    }
+    
+    /**
+     * judge can get_conversations
+     *
+     * @return  Boolean
+     */
+    public function canAclGetConversations() {
+        if (MbqMain::hasLogin() && (MbqMain::$oCurMbqEtUser->canPm->oriValue == MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canPm.range.yes'))) {
+            return true;
+        }
+        return false;
+    }
   
 }
 

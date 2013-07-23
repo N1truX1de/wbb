@@ -1,5 +1,7 @@
 <?php
 
+use wcf\system\WCF;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseRdEtPc');
@@ -20,6 +22,20 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
             break;
+        }
+    }
+    
+    /**
+     * get unread private conversations number
+     *
+     * @return  Integer
+     */
+    public function getUnreadPcNum() {
+        if (MbqMain::hasLogin()) {
+            //ref __userPanelConversationDropdown.tpl,wcf\system\WCF
+            return WCF::getConversationHandler()->getUnreadConversationCount();
+        } else {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . 'Need login!');
         }
     }
   

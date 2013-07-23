@@ -108,6 +108,11 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             } else {
                 $oMbqEtUser->isOnline->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.no'));
             }
+            if (MODULE_CONVERSATION && $var->getPermission('user.conversation.canUseConversation')) {
+                $oMbqEtUser->canPm->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canPm.range.yes'));
+                $oMbqEtUser->acceptPm->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.acceptPm.range.yes'));
+                $oMbqEtUser->canSendPm->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canSendPm.range.yes'));
+            }
             $oMbqEtUser->maxAttachment->setOriValue(10);    //todo,hard code
             $oMbqEtUser->maxPngSize->setOriValue(1024 * 1024);     //todo,hard code
             $oMbqEtUser->maxJpgSize->setOriValue(1024 * 1024);      //todo,hard code
