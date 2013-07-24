@@ -61,6 +61,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
                 $oUserConversationList = new UserConversationList(WCF::getUser()->userID, '', 0);
                 $oUserConversationList->sqlOffset = $oMbqDataPage->startNum;
                 $oUserConversationList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oUserConversationList->sqlOrderBy = 'conversation.lastPostTime DESC';
                 $oUserConversationList->readObjects();
                 $oMbqDataPage->totalNum = $oUserConversationList->countObjects();
                 /* common begin */

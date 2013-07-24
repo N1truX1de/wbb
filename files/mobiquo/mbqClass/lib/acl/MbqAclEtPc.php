@@ -35,6 +35,19 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
         }
         return false;
     }
+    
+    /**
+     * judge can get_conversation
+     *
+     * @param  Object  $oMbqEtPc
+     * @return  Boolean
+     */
+    public function canAclGetConversation($oMbqEtPc) {
+        if (MbqMain::hasLogin() && $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject()->canRead()) {
+            return true;
+        }
+        return false;
+    }
   
 }
 

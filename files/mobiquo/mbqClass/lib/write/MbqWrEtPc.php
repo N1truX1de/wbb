@@ -14,6 +14,16 @@ Class MbqWrEtPc extends MbqBaseWrEtPc {
     
     public function __construct() {
     }
+    
+    /**
+     * mark private conversation read
+     *
+     * @param  Object  $oMbqEtPc
+     * @return  Mixed
+     */
+    public function markPcRead($oMbqEtPc) {
+        //this has been done in MbqRdEtPcMsg::getObjsMbqEtPcMsg() with $mbqOpt['case'] == 'byPc',so need do nothing here.
+    }
   
 }
 

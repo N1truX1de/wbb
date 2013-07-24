@@ -227,11 +227,11 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     /**
      * process content for display in mobile app
      *
-     * @params  Object  $oViewablePost
+     * @params  Object  $var $var is $oViewablePost or $oViewableConversationMessage
      * @params  Boolean  $returnHtml
      * @return  String
      */
-    public function processContentForDisplay($oViewablePost, $returnHtml) {
+    public function processContentForDisplay($var, $returnHtml) {
         /*
         support bbcode:url/img/quote
         support html:br/i/b/u/font+color(red/blue)
@@ -239,7 +239,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         attention input param:return_html
         attention output param:post_content
         */
-        $post = $oViewablePost->getDecoratedObject()->getFormattedMessage();
+        $post = $var->getDecoratedObject()->getFormattedMessage();
         if ($returnHtml) {
             //handle quote
             $post = preg_replace('/<blockquote class="container containerPadding quoteBox"[^>]*?>.*?<header>.*?<h3>.*?<a href="[^>]*?">(.*?) wrote:<\/a>.*?<\/h3>.*?<\/header>.*?(.*?)<\/blockquote>/is', '$1 wrote:[quote]$2[/quote]', $post);

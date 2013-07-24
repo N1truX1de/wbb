@@ -75,7 +75,6 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
             $oMbqEtAtt->postId->setOriValue($var->objectID);
             $oMbqEtAtt->filtersSize->setOriValue($var->filesize);
             $oMbqEtAtt->uploadFileName->setOriValue($var->filename);
-            $oMbqEtAtt->attType->setOriValue(MbqBaseFdt::getFdt('MbqFdtAtt.MbqEtAtt.attType.range.forumPostAtt'));
             $ext = strtolower(MbqMain::$oMbqCm->getFileExtension($var->filename));
             if ($ext == 'jpeg' || $ext == 'gif' || $ext == 'bmp' || $ext == 'png' || $ext == 'jpg') {
                 $contentType = MbqBaseFdt::getFdt('MbqFdtAtt.MbqEtAtt.contentType.range.image');
