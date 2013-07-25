@@ -128,7 +128,6 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
     		$oViewableThreadList = new ViewableThreadList();
     		$oViewableThreadList->setObjectIDs($var);
     		$oViewableThreadList->readObjects();
-    		$objects = $oViewableThreadList->getObjects();
             /* common begin */
             $mbqOpt['case'] = 'byObjsViewableThread';
             return $this->getObjsMbqEtForumTopic($oViewableThreadList->getObjects(), $mbqOpt);

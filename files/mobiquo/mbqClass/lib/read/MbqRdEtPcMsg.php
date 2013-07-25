@@ -2,6 +2,7 @@
 
 use wcf\data\conversation\message\ViewableConversationMessageList;
 use wcf\data\conversation\ConversationAction;
+use wcf\util\StringUtil;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -32,6 +33,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byPc' means get data by private conversation obj.$var is the private conversation obj.
+     * $mbqOpt['case'] = 'byMsgIds' means get data by conversation message ids.$var is the ids.
      * $mbqOpt['case'] = 'byObjsViewableConversationMessage' means get data by objsViewableConversationMessage.$var is the objsViewableConversationMessage.
      * @return  Mixed
      */
@@ -63,6 +65,14 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
                 return $this->getObjsMbqEtPcMsg($oViewableConversationMessageList->getObjects(), $mbqOpt);
                 /* common end */
             }
+        } elseif ($mbqOpt['case'] == 'byMsgIds') {
+            $oViewableConversationMessageList = new ViewableConversationMessageList();
+    		$oViewableConversationMessageList->setObjectIDs($var);
+    		$oViewableConversationMessageList->readObjects();
+            /* common begin */
+            $mbqOpt['case'] = 'byObjsViewableConversationMessage';
+            return $this->getObjsMbqEtPcMsg($oViewableConversationMessageList->getObjects(), $mbqOpt);
+            /* common end */
         } elseif ($mbqOpt['case'] == 'byObjsViewableConversationMessage') {
             $objsViewableConversationMessage = $var;
             /* common begin */
@@ -158,12 +168,11 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * @return  Mixed
      */
     public function getQuoteConversation($oMbqEtPcMsg) {
-        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
-        /* modified from MbqRdEtForumPost::getQuotePostContent() */
-        $content = preg_replace('/.*<a href="#tapatalkQuoteEnd"><\/a>/is', '', $oMbqEtPcMsg->msgContent->oriValue);
-        $userDisplayName = $oMbqEtPcMsg->oAuthorMbqEtUser ? $oMbqEtPcMsg->oAuthorMbqEtUser->getDisplayName() : '';
-        $ret = "[quote=\"$userDisplayName\"]".trim($content)."[/quote]\n\n";
-        return $ret;
+        //ref wcf\system\message\quote\MessageQuoteManager::renderQuote()
+        $oConversationMessage = $oMbqEtPcMsg->mbqBind['oViewableConversationMessage']->getDecoratedObject();
+		$escapedUsername = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oConversationMessage->getUsername());
+		$escapedLink = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oConversationMessage->getLink());
+		return "[quote='".$escapedUsername."','".$escapedLink."']".$oMbqEtPcMsg->msgContent->oriValue."[/quote]";
     }
   
 }

@@ -48,6 +48,26 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
         }
         return false;
     }
+    
+    /**
+     * judge can new_conversation
+     *
+     * @param  Object  $oMbqEtPc
+     * @return  Boolean
+     */
+    public function canAclNewConversation($oMbqEtPc) {
+        if (MbqMain::hasLogin() && strlen(trim($oMbqEtPc->convContent->oriValue)) > 0) {
+            $num = 0;
+            $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+            foreach ($oMbqEtPc->userNames->oriValue as $userName) {
+                if ($oMbqRdEtUser->initOMbqEtUser($userName, array('case' => 'byLoginName'))) {
+                    $num ++;
+                }
+            }
+            return $num ? true : false;
+        }
+        return false;
+    }
   
 }
 

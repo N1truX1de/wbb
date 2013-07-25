@@ -148,7 +148,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             $preParse = $enableSmilies = $enableBBCodes = $showSignature = $subscribeThread = $enableHtml = 0;
             $preParse = 1;
             if (WCF::getSession()->getPermission('user.message.canUseSmilies')) $enableSmilies = 1;
-            if (WCF::getSession()->getPermission('user.message.canUseHtml')) $enableHtml = 1;
+            //if (WCF::getSession()->getPermission('user.message.canUseHtml')) $enableHtml = 1;
             if (WCF::getSession()->getPermission('user.message.canUseBBCodes')) $enableBBCodes = 1;
             $showSignature = 1;
             $subscribeThread = 1;

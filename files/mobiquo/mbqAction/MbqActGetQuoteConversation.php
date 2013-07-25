@@ -20,7 +20,30 @@ Class MbqActGetQuoteConversation extends MbqBaseActGetQuoteConversation {
      * action implement
      */
     public function actionImplement() {
-        parent::actionImplement();
+        if (MbqMain::$oMbqConfig->moduleIsEnable('pc') && (MbqMain::$oMbqConfig->getCfg('pc.conversation')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.range.support'))) {
+        } else {
+            MbqError::alert('', "Not support module private conversation!", '', MBQ_ERR_NOT_SUPPORT);
+        }
+        $convId = MbqMain::$input[0];
+        $msgId = MbqMain::$input[1];
+        $oMbqRdEtPc = MbqMain::$oClk->newObj('MbqRdEtPc');
+        if ($objsMbqEtPc = $oMbqRdEtPc->getObjsMbqEtPc(array($convId), array('case' => 'byConvIds'))) {
+            $oMbqEtPc = array_shift($objsMbqEtPc);
+            $oMbqRdEtPcMsg = MbqMain::$oClk->newObj('MbqRdEtPcMsg');
+            if ($objsMbqEtPcMsg = $oMbqRdEtPcMsg->getObjsMbqEtPcMsg(array($msgId), array('case' => 'byMsgIds'))) {
+                $oMbqEtPcMsg = array_shift($objsMbqEtPcMsg);
+                $oMbqAclEtPcMsg = MbqMain::$oClk->newObj('MbqAclEtPcMsg');
+                if ($oMbqAclEtPcMsg->canAclGetQuoteConversation($oMbqEtPcMsg, $oMbqEtPc)) {
+                    $this->data['text_body'] = $oMbqRdEtPcMsg->getQuoteConversation($oMbqEtPcMsg);
+                } else {
+                    MbqError::alert('', '', '', MBQ_ERR_APP);
+                }
+            } else {
+                MbqError::alert('', "Need valid conversation message id!", '', MBQ_ERR_APP);
+            }
+        } else {
+            MbqError::alert('', "Need valid conversation id!", '', MBQ_ERR_APP);
+        }
     }
   
 }
