@@ -1,5 +1,7 @@
 <?php
 
+use wcf\data\conversation\Conversation;
+
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseAclEtPc');
@@ -65,6 +67,41 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
                 }
             }
             return $num ? true : false;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can invite_participant
+     *
+     * @param  Object  $oMbqEtPcInviteParticipant
+     * @return  Boolean
+     */
+    public function canAclInviteParticipant($oMbqEtPcInviteParticipant) {
+        if (MbqMain::hasLogin() && $oMbqEtPcInviteParticipant->objsMbqEtUser && $oMbqEtPcInviteParticipant->oMbqEtPc) {
+            //ref wcf\data\conversation\ConversationAction::validateGetAddParticipantsForm()
+            $oConversation = $oMbqEtPcInviteParticipant->oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject();
+    		if (Conversation::isParticipant(array($oConversation->conversationID)) && $oConversation->canAddParticipants()) {
+    			return true;
+    		}
+        }
+        return false;
+    }
+    
+    /**
+     * judge can delete_conversation
+     *
+     * @param  Object  $oMbqEtPc
+     * @param  Integer  $mode  
+     * @return  Boolean
+     */
+    public function canAclDeleteConversation($oMbqEtPc, $mode) {
+        if (MbqMain::hasLogin() && ($mode == 1 || $mode == 2)) {
+            //ref wcf\data\conversation\ConversationAction::validateHideConversation()
+            // validate participation
+            if (Conversation::isParticipant(array($oMbqEtPc->convId->oriValue))) {
+            	return true;
+            }
         }
         return false;
     }
