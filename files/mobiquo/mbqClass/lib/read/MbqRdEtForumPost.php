@@ -38,6 +38,29 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     }
     
     /**
+     * get forum post position
+     *
+     * @param  Object  $oMbqEtForumPost
+     *
+     * @return  Integer
+     */
+    public function exttGetForumPostPosition($oMbqEtForumPost) {
+        $oThreadPostList = new ThreadPostList($oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject());
+        $oThreadPostList->sqlOffset = 0;
+        $oThreadPostList->sqlLimit = 1000000;   //get all the posts to use
+        $oThreadPostList->readObjects();
+        $ret = 1;
+        foreach ($oThreadPostList->getObjects() as $oViewablePost) {
+            if ($oViewablePost->getDecoratedObject()->postID == $oMbqEtForumPost->postId->oriValue) {
+                return $ret;
+            }
+            $ret ++;
+        }
+        //not found
+        return 1;
+    }
+    
+    /**
      * get forum post objs
      *
      * @param  Mixed  $var
