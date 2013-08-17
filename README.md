@@ -16,4 +16,4 @@ Support Forum
 -------------
 If you require additional support, we have a forum setup for just that. Visit the link below:  
 https://support.tapatalk.com  
-https://support.tapatalk.com/threads/are-you-interested-in-new-plugin-for-woltlab-burning-board-4-0.19018/
+https://support.tapatalk.com/forums/woltlab-discussion.85/
