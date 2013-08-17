@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="com.tapatalk.wbb4" xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/maelstrom/package.xsd">
+	<packageinformation>
+		<packagename><![CDATA[Tapatalk]]></packagename>
+		<packagedescription><![CDATA[Tapatalk Support for WoltLab Burning Board 4.0]]></packagedescription>
+		<version>0.0.2</version>
+		<date>2013-07-29</date>
+	</packageinformation>
+
+	<authorinformation>
+		<author><![CDATA[Tapatalk Inc.]]></author>
+		<authorurl><![CDATA[http://www.tapatalk.com]]></authorurl>
+	</authorinformation>
+
+	<requiredpackages>
+		<requiredpackage minversion="4.0.0 Beta 6">com.woltlab.wbb</requiredpackage>
+	</requiredpackages>
+
+	<instructions type="install">
+		<instruction type="file" application="wbb">files.tar</instruction>
+	</instructions>
+</package>
