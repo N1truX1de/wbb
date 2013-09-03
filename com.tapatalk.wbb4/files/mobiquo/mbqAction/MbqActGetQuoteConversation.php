@@ -34,7 +34,7 @@ Class MbqActGetQuoteConversation extends MbqBaseActGetQuoteConversation {
                 $oMbqEtPcMsg = array_shift($objsMbqEtPcMsg);
                 $oMbqAclEtPcMsg = MbqMain::$oClk->newObj('MbqAclEtPcMsg');
                 if ($oMbqAclEtPcMsg->canAclGetQuoteConversation($oMbqEtPcMsg, $oMbqEtPc)) {
-                    $this->data['text_body'] = $oMbqRdEtPcMsg->getQuoteConversation($oMbqEtPcMsg);
+                    $this->data['text_body'] = (string) $oMbqRdEtPcMsg->getQuoteConversation($oMbqEtPcMsg);
                 } else {
                     MbqError::alert('', '', '', MBQ_ERR_APP);
                 }
