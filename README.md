@@ -9,8 +9,11 @@ Installation
 Changelog
 -------------
     WoltLab Burning Board 4.0 Series Tapatalk Plugin Version 0.0.2 released  
-    1. It is a beta version plugin for WoltLab Burning Board 4.0,developed based on WoltLab Burning Board 4.0 beta 4.
-    2. Support all the core features of tapatalk api:login/logout, create/modify/reply thread, attachment of post,s ubscribe topic, conversation, etc.
+    1. It is a beta version plugin for WoltLab Burning Board 4.0;
+    2. Fixed pagination issue;
+    3. Fixed bug:return wrong data type in some code that can cause some app issue;
+    4. Implemented the plugin package installer;
+    5. Some other modifications.
 
 Support Forum
 -------------
