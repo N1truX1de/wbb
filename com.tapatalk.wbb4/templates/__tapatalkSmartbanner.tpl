@@ -6,7 +6,7 @@
 	var app_android_id	= "{@WBB_TAPATALK_APP_ANDROID_ID}";
 	var app_kindle_url	= "{@WBB_TAPATALK_APP_KINDLE_URL}";
 	var app_banner_message	= "{if WBB_TAPATALK_APP_BANNER_MESSAGE}{@WBB_TAPATALK_APP_BANNER_MESSAGE}{else}{literal}Follow {your_forum_name} <br /> with {app_name} for [os_platform]{/literal}{/if}";
-	var app_forum_name	= "Burning Board";
+	var app_forum_name	= "{PAGE_TITLE|language}";
 	var app_location_url	= "tapatalk://{@'~^https?://~'|preg_replace:'':$__wcf->getPath('wbb')}?location=index";
 	var functionCallAfterWindowLoad = 0
 </script>
