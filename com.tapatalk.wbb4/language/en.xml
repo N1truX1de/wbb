@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/maelstrom/language.xsd" languagecode="en">
+	<category name="wcf.acp.option">
+		<item name="wcf.acp.option.category.board.tapatalk"><![CDATA[Tapatalk]]></item>
+		<item name="wcf.acp.option.category.board.tapatalk.app"><![CDATA[BYO App]]></item>
+		<item name="wcf.acp.option.category.board.tapatalk.general"><![CDATA[General]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_api_key"><![CDATA[API-Key]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_android_id"><![CDATA[BYO Android App-ID]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_android_id.description"><![CDATA[Enter your BYO App ID from Google Play, to be used on Android device. E.g. “com.quoord.tapatalkpro.activity”;]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_banner_message"><![CDATA[Banner Message]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_banner_message.description"><![CDATA[{literal}E.g. “Follow {your_forum_name} with {app_name} for [os_platform]”. Do not change the [os_platform] tag as it is displayed dynamically based on user’s device platform.{/literal}]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_ios_id"><![CDATA[BYO iOS App-ID]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_ios_id.description"><![CDATA[Enter your BYO product ID in Apple App Store, to be used on iOS device.]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_kindle_url"><![CDATA[BYO Kindle App-URL]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_kindle_url.description"><![CDATA[Enter your BYO App URL from Amazon App Store, to be used on Kindle Fire device. E.g. “http://www.amazon.com/gp/mas/dl/android?p=com.quoord.tapatalkpro.activity”.]]></item>
+	</category>
+</language>

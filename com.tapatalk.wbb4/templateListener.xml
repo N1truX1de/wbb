@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/templatelistener.xsd">
+	<import>
+		<!-- user -->
+		<templatelistener name="tapatalkTwitterAppCard">
+			<environment>user</environment>
+			<templatename>headInclude</templatename>
+			<eventname>metaTags</eventname>
+			<templatecode><![CDATA[{include file='__tapatalkTwitterAppCard' application='wbb'}]]></templatecode>
+		</templatelistener>
+		
+		<templatelistener name="tapatalkSmartbanner">
+			<environment>user</environment>
+			<templatename>headInclude</templatename>
+			<eventname>javascriptInclude</eventname>
+			<templatecode><![CDATA[{include file='__tapatalkSmartbanner' application='wbb'}]]></templatecode>
+		</templatelistener>
+		
+		<templatelistener name="tapatalkDetect">
+			<environment>user</environment>
+			<templatename>headInclude</templatename>
+			<eventname>javascriptInit</eventname>
+			<templatecode><![CDATA[tapatalkDetect();]]></templatecode>
+		</templatelistener>
+		<!-- /user -->
+	</import>
+</data>
