@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/maelstrom/option.xsd">
+	<import>
+		<categories>
+			<category name="board.tapatalk">
+				<parent>board</parent>
+			</category>
+			
+			<category name="board.tapatalk.general">
+				<parent>board.tapatalk</parent>
+			</category>
+			<category name="board.tapatalk.app">
+				<parent>board.tapatalk</parent>
+			</category>
+		</categories>
+		
+		<options>
+			<!-- board.tapatalk.general -->
+			<option name="wbb_tapatalk_dir">
+				<categoryname>board.tapatalk.general</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue>mobiquo</defaultvalue>
+				<hidden>1</hidden>
+			</option>
+			<option name="wbb_tapatalk_api_key">
+				<categoryname>board.tapatalk.general</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue></defaultvalue>
+			</option>
+			<!-- /board.tapatalk.general -->
+			
+			<!-- board.tapatalk.app -->
+			<option name="wbb_tapatalk_app_banner_message">
+				<categoryname>board.tapatalk.app</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue></defaultvalue>
+			</option>
+			<option name="wbb_tapatalk_app_ios_id">
+				<categoryname>board.tapatalk.app</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue></defaultvalue>
+			</option>
+			<option name="wbb_tapatalk_app_android_id">
+				<categoryname>board.tapatalk.app</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue></defaultvalue>
+			</option>
+			<option name="wbb_tapatalk_app_kindle_url">
+				<categoryname>board.tapatalk.app</categoryname>
+				<optiontype>text</optiontype>
+				<defaultvalue></defaultvalue>
+			</option>
+			<!-- /board.tapatalk.app -->
+		</options>
+	</import>
+</data>
