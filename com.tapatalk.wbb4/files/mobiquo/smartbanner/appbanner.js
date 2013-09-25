@@ -280,10 +280,7 @@ function empty(a){
 
 function addtrack()
 {
-   var img = document.createElement('img');
-   document.body.appendChild(img);
-   img.setAttribute('src','https://activate.tapatalk.com/i.gif?host='+window.location.host);
-   img.setAttribute('style','border:0;display:none');
+    document.write('<img src="https://activate.tapatalk.com/i.gif?host='+window.location.host+'" style="display:none;" border="0" >');
 }
 
 /* to get element outer height */

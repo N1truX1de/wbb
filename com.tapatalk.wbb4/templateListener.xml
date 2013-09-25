@@ -18,9 +18,9 @@
 		
 		<templatelistener name="tapatalkDetect">
 			<environment>user</environment>
-			<templatename>headInclude</templatename>
-			<eventname>javascriptInit</eventname>
-			<templatecode><![CDATA[tapatalkDetect();]]></templatecode>
+			<templatename>footer</templatename>
+			<eventname>footer</eventname>
+			<templatecode><![CDATA[<script>tapatalkDetect();</script>]]></templatecode>
 		</templatelistener>
 		<!-- /user -->
 	</import>
