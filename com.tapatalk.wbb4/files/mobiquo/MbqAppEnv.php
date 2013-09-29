@@ -19,6 +19,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
     public function __construct() {
         parent::__construct();
         $this->exttForumTree = array();
+        $this->exttAllForums = array();
     }
     
     /**

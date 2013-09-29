@@ -65,7 +65,6 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
      * recursive init objsSubMbqEtForum
      *
      * @param  Object  $oMbqEtForum  the object need init objsSubMbqEtForum
-     * @param  Array 
      */
     private function exttRecurInitObjsSubMbqEtForum(&$oMbqEtForum) {
         $oDetailedBoardNode = $oMbqEtForum->mbqBind['oDetailedBoardNode'];
