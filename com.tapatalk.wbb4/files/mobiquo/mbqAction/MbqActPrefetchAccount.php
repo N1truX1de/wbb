@@ -20,7 +20,6 @@ Class MbqActPrefetchAccount extends MbqBaseActPrefetchAccount {
      * action implement
      */
     public function actionImplement() {
-        error_log('MbqActPrefetchAccount');
         parent::actionImplement();
     }
   
