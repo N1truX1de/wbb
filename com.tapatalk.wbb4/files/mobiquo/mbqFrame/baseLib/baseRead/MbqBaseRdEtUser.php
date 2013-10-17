@@ -235,6 +235,15 @@ Abstract Class MbqBaseRdEtUser extends MbqBaseRd {
     public function getDisplayName() {
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
+    
+    /**
+     * sign in
+     *
+     * @return  Array
+     */
+    public function signIn() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
   
 }
 

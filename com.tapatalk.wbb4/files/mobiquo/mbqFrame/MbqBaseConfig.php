@@ -14,11 +14,12 @@ define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be d
 define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_TOP_NOIO', 11);  /* the worst error that must stop the program immediately and then the MbqIo is not valid,will output error info and stop the program immediately. */
 define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
-define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value!');
-define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name');
-define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved!');
-define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data!');
-define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe!');
+define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value.');
+define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name.');
+define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved.');
+define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data.');
+define('MBQ_ERR_INFO_DB_FAIL', 'Db error.');
+define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe.');
 define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_'.mt_rand(2000000000, 2100000000).'_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */
 require_once(MBQ_FRAME_PATH.'MbqError.php');

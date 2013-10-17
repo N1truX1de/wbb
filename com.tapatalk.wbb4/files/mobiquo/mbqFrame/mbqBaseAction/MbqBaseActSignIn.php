@@ -21,7 +21,8 @@ Abstract Class MbqBaseActSignIn extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
             MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+        $this->data = $oMbqRdEtUser->signIn();
     }
   
 }

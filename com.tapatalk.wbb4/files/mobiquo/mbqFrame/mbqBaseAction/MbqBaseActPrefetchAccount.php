@@ -21,7 +21,26 @@ Abstract Class MbqBaseActPrefetchAccount extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
             MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+        $result = $oMbqRdEtUser->initOMbqEtUser(MbqMain::$input[0], array('case' => 'byEmail'));
+        if ($result) {
+            $oMbqEtUser = $result;
+            $this->data['result'] = true;
+            if ($oMbqEtUser->userId->hasSetOriValue()) {
+                $this->data['user_id'] = (string) $oMbqEtUser->userId->oriValue;
+            }
+            if ($oMbqEtUser->loginName->hasSetOriValue()) {
+                $this->data['login_name'] = (string) $oMbqEtUser->loginName->oriValue;
+            }
+            $this->data['display_name'] = (string) $oMbqEtUser->getDisplayName();
+            if ($oMbqEtUser->iconUrl->hasSetOriValue()) {
+                $this->data['avatar'] = (string) $oMbqEtUser->iconUrl->oriValue;
+            } else {
+                $this->data['avatar'] = '';
+            }
+        } else {
+            $this->data['result'] = false;
+        }
     }
   
 }

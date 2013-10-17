@@ -15,6 +15,7 @@ Class MbqEtUser extends MbqBaseEntity {
     public $password;
     public $userName;   /* for display */
     public $userGroupIds;   /* usergroup ids that this user belongs to. */
+    public $userEmail;
     public $iconUrl;
     public $postCount;  /* Return total number of post of this user */
     public $canPm;
@@ -56,6 +57,7 @@ Class MbqEtUser extends MbqBaseEntity {
         $this->password = clone MbqMain::$simpleV;
         $this->userName = clone MbqMain::$simpleV;
         $this->userGroupIds = clone MbqMain::$simpleV;
+        $this->userEmail = clone MbqMain::$simpleV;
         $this->iconUrl = clone MbqMain::$simpleV;
         $this->postCount = clone MbqMain::$simpleV;
         $this->canPm = clone MbqMain::$simpleV;
