@@ -12,7 +12,7 @@ if (MBQ_DEBUG) {
 } else {    // Turn off all error reporting
     error_reporting(0);
 }
-set_time_limit(60);
+set_time_limit(120);
 
 require_once('MbqConfig.php');
 

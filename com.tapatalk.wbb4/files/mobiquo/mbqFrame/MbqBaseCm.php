@@ -701,7 +701,7 @@ Abstract Class MbqBaseCm {
     public function auRegVerify($token, $code, $key, $forumUrl) {   //ref vb3x function_push.php->getEmailFromScription()
         $forumUrl = $this->removeSlashForUrl($forumUrl);
         $auUrl = 'http://directory.tapatalk.com/au_reg_verify.php';
-        $verification_url = $auUrl.'?token='.$token.'&'.'code='.$code.'&key='.$key.'&url='.$forumUrl;
+        $verification_url = $auUrl.'?token='.$token.'&'.'code='.$code.'&key='.$key.'&url='.urlencode($forumUrl);
         $response = $this->getContentFromRemoteServer($verification_url, 10, $error);
         if($response)
             $result = json_decode($response, true);
@@ -710,10 +710,10 @@ Abstract Class MbqBaseCm {
         else
         {
             $data = array(
-                'token' => $token,
-                'code'  => $code,
-                'key'   => $key,
-                'url'   => $forumUrl,
+                'token' => urlencode($token),
+                'code'  => urlencode($code),
+                'key'   => urlencode($key),
+                'url'   => urlencode($forumUrl)
             );
             $response = $this->getContentFromRemoteServer($auUrl, 10, $error, 'POST', $data);
             if($response)

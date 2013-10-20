@@ -16,9 +16,13 @@ define('MBQ_ERR_TOP_NOIO', 11);  /* the worst error that must stop the program i
 define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
 define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value.');
 define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name.');
+define('MBQ_ERR_INFO_UNKNOWN_ERROR', 'Unknown error.');
 define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved.');
 define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data.');
 define('MBQ_ERR_INFO_DB_FAIL', 'Db error.');
+define('MBQ_ERR_INFO_NOT_SUPPORT', 'Your system or plugin looks do not support this feature.');
+define('MBQ_ERR_INFO_NEED_PARAMS_FOR_REGISTRATION', 'Need valid info for registration.');
+define('MBQ_ERR_INFO_REGISTRATION_FAIL', 'Registration failed.');
 define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe.');
 define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_'.mt_rand(2000000000, 2100000000).'_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */

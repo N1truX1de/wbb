@@ -244,6 +244,16 @@ Abstract Class MbqBaseRdEtUser extends MbqBaseRd {
     public function signIn() {
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
+    
+    /**
+     * login directly without password
+     * only used for sign_in method
+     *
+     * @return  Boolean
+     */
+    protected function loginDirectly() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
   
 }
 

@@ -19,6 +19,13 @@ Abstract Class MbqBaseWrEtUser extends MbqBaseWr {
     public function mBanUser() {
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
+    
+    /**
+     * register user
+     */
+    public function registerUser() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
   
 }
 
