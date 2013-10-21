@@ -16,6 +16,10 @@ Class MbqSmartbanner {
     public static $APP_FORUM_NAME = '';  //required
     public static $APP_LOCATION_URL = '';  //optional,page location url with tapatalk scheme rules
     public static $BOARD_URL = '';  //forum url to root
+    public static $API_KEY = '';     //tapatalk api key
+    public static $CURRENT_URL = '';    //current url,used for $app_ads_referer
+    public static $APP_ADS_ENABLE = true;
+    public static $APP_ADS_URL = '';
     
     public static $TAPATALKDIR = 'mobiquo'; //default as 'mobiquo'
     public static $TAPATALKDIR_URL = ''; //$board_url.'/'.$tapatalk_dir
