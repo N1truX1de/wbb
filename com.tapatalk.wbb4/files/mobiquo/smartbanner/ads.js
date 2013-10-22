@@ -16,6 +16,6 @@ if (navigator.userAgent.match(/iPhone|iPod|iPad|Silk|Android|IEMobile|Windows Ph
         localStorage.hide_until = current_timestamp+(86400*30);
         
         // redirect to ads page with referer
-        window.location.href=app_ads_url+'?referer='+app_ads_referer+'&code='+app_forum_code+'&board_url='+app_board_url;
+        window.location.href=app_ads_url+'?referer='+app_ads_referer+'&code='+app_forum_code+'&board_url='+app_board_url+'&lang='+navigator.language;
     }
 }
