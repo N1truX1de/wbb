@@ -254,6 +254,23 @@ Abstract Class MbqBaseRdEtUser extends MbqBaseRd {
     protected function loginDirectly() {
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
+    
+    /**
+     * forget_password
+     *
+     * @return  Array
+     */
+    public function forgetPassword() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
+    
+    /**
+     * judge is admin role
+     *
+     * @return  Boolean
+     */
+    public function isAdminRole() {
+    }
   
 }
 

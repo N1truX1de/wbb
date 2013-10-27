@@ -20,9 +20,12 @@ define('MBQ_ERR_INFO_UNKNOWN_ERROR', 'Unknown error.');
 define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved.');
 define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data.');
 define('MBQ_ERR_INFO_DB_FAIL', 'Db error.');
+define('MBQ_ERR_INFO_PARAMS_ERROR', 'Please input valid values.');
 define('MBQ_ERR_INFO_NOT_SUPPORT', 'Your system or plugin looks do not support this feature.');
 define('MBQ_ERR_INFO_NEED_PARAMS_FOR_REGISTRATION', 'Need valid info for registration.');
 define('MBQ_ERR_INFO_REGISTRATION_FAIL', 'Registration failed.');
+define('MBQ_ERR_INFO_REGISTRATION_SUCCESS', 'Registration success.');
+define('MBQ_ERR_INFO_NOT_PERMIT_FOR_ADMIN', 'Can not do this action for administrator.');
 define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe.');
 define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_'.mt_rand(2000000000, 2100000000).'_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */

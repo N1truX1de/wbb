@@ -23,7 +23,7 @@ Abstract Class MbqBaseMain {
     /* please always use isJsonProtocol() or isXmlRpcProtocol() in your code,instead of directly access this property */
     public static $protocol;    /* xmlrpc/json */
     public static $module;  /* module name */
-    public static $cmd;   /* action command name,must unique in all action. */
+    public static $cmd;   /* action command name,must unique in all actions. */
     public static $input;   /* input params array */
     
     public static $data;   /* data need return */

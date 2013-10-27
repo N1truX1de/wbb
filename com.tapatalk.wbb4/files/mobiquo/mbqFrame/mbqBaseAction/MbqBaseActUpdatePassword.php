@@ -21,7 +21,16 @@ Abstract Class MbqBaseActUpdatePassword extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
             MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        if (MbqMain::$oMbqConfig->getCfg('user.inappreg')->oriValue != MbqBaseFdt::getFdt('MbqFdtConfig.user.inappreg.range.support')) {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_SUPPORT);
+        }
+        $oMbqAclEtUser = MbqMain::$oClk->newObj('MbqAclEtUser');
+        if ($oMbqAclEtUser->canAclUpdatePassword()) {
+            $oMbqWrEtUser = MbqMain::$oClk->newObj('MbqWrEtUser');
+            $this->data = $oMbqWrEtUser->updatePassword();
+        } else {
+            MbqError::alert('', '', '', MBQ_ERR_APP);
+        }
     }
   
 }
