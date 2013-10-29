@@ -22,3 +22,7 @@ Support Forum
 -------------
     If you require additional support, we have a forum setup for just that. Visit the link below:
     https://support.tapatalk.com/forums/woltlab-discussion.85/
+    
+Github Url
+-------------
+https://github.com/tapatalk/wbb
