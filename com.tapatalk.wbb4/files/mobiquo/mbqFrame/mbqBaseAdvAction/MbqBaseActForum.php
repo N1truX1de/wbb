@@ -32,40 +32,51 @@ Abstract Class MbqBaseActForum extends MbqBaseAct {
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($forumId), array('case' => 'byForumIds'));
         if ($objsMbqEtForum && ($oMbqEtForum = $objsMbqEtForum[0])) {
-            if ($content == 'sub' || $content == 'both') {
-                MbqError::alert('', "Not support content type $content!", '', MBQ_ERR_APP);
-            } elseif ($content == 'topic') {
-                $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
-                if ($oMbqAclEtForumTopic->canAclGetTopic($oMbqEtForum)) {    //acl judge
-                    switch ($type) {
-                        case 'sticky':     /* returns sticky topics. */
-                        $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
-                        $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage, 'top' => true));
-                        $this->data['total'] = (int) $oMbqDataPage->totalNum;   //!!! must
-                        $this->data['forum'] = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
-                        $this->data['forums'] = array();
-                        $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
-                        break;
-                        case 'normal':        /* returns standard topics */
-                        $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
-                        $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage, 'notIncludeTop' => true));
-                        $this->data['total'] = (int) $oMbqDataPage->totalNum;   //!!! must
-                        $this->data['forum'] = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
-                        $this->data['forums'] = array();
-                        $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
-                        break;
-                        case 'all':
-                        MbqError::alert('', "Not supported topic type filter:$type.", '', MBQ_ERR_APP);
-                        break;
-                        default:
-                        MbqError::alert('', "Unknown topic type filter:$type.", '', MBQ_ERR_APP);
-                        break;
-                    }
+            $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
+            if ($oMbqAclEtForumTopic->canAclGetTopic($oMbqEtForum)) {    //acl judge
+                if ($content == 'sub' || $content == 'both') {
+                    $objsSubMbqEtForum = $oMbqRdEtForum->getObjsSubMbqEtForum($oMbqEtForum->forumId->oriValue);
                 } else {
-                    MbqError::alert('', '', '', MBQ_ERR_APP);
+                    $objsSubMbqEtForum = array();
                 }
+                $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
+                switch ($type) {
+                    case 'sticky':     /* returns sticky topics. */
+                    $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage, 'top' => true));
+                    $totalNum = $oMbqDataPage->totalNum;
+                    break;
+                    case 'normal':        /* returns standard topics */
+                    $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage, 'notIncludeTop' => true));
+                    $totalNum = $oMbqDataPage->totalNum;
+                    break;
+                    case 'all': /* returns all topics */
+                    $oMbqDataPageSticky = MbqMain::$oClk->newObj('MbqDataPage');
+                    $oMbqDataPageSticky->initByPageAndPerPage(1, 1000);
+                    $oMbqDataPageSticky = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPageSticky, 'top' => true));
+                    $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage, 'notIncludeTop' => true));
+                    $totalNum = $oMbqDataPageSticky->totalNum + $oMbqDataPage->totalNum;
+                    /* merge data */
+                    $topics = array();
+                    foreach ($oMbqDataPageSticky->datas as $v) {
+                        $topics[] = $v;
+                    }
+                    foreach ($oMbqDataPage->datas as $v) {
+                        $topics[] = $v;
+                    }
+                    $oMbqDataPage->datas = $topics;
+                    break;
+                    default:
+                    if ($content != 'sub') {
+                        MbqError::alert('', "Unknown topic type filter:$type.", '', MBQ_ERR_APP);
+                    }
+                    break;
+                }
+                $this->data['total'] = (int) $totalNum;   //!!! must
+                $this->data['forum'] = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
+                $this->data['forums'] = $oMbqRdEtForum->returnApiTreeDataForum($objsSubMbqEtForum);
+                $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
             } else {
-                MbqError::alert('', "Need valid content type!", '', MBQ_ERR_APP);
+                MbqError::alert('', '', '', MBQ_ERR_APP);
             }
         } else {
             MbqError::alert('', "Need valid forum id!", '', MBQ_ERR_APP);

@@ -221,6 +221,15 @@ Abstract Class MbqBaseRdEtForum extends MbqBaseRd {
     public function getObjsBreadcrumbMbqEtForum() {
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
+    
+    /**
+     * get sub forums in a special forum
+     *
+     * @return Array
+     */
+    public function getObjsSubMbqEtForum() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
   
 }
 

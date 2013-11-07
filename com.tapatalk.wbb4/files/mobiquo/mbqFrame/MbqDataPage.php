@@ -22,6 +22,8 @@ Class MbqDataPage {
     
     public function __construct() {
         $this->datas = array();
+        $this->totalNum = 0;
+        $this->totalUnreadNum = 0;
     }
     
     /**
