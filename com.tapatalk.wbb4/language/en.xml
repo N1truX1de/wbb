@@ -9,6 +9,8 @@
 		<item name="wcf.acp.option.wbb_tapatalk_app_android_id.description"><![CDATA[Enter your BYO App ID from Google Play, to be used on Android device. E.g. “com.quoord.tapatalkpro.activity”;]]></item>
 		<item name="wcf.acp.option.wbb_tapatalk_app_banner_message"><![CDATA[Banner Message]]></item>
 		<item name="wcf.acp.option.wbb_tapatalk_app_banner_message.description"><![CDATA[{literal}E.g. “Follow {your_forum_name} with {app_name} for [os_platform]”. Do not change the [os_platform] tag as it is displayed dynamically based on user’s device platform.{/literal}]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_full_banner"><![CDATA[Mobile Welcome Screen]]></item>
+		<item name="wcf.acp.option.wbb_tapatalk_app_full_banner.description"><![CDATA[Tapatalk will show a one time welcoming screen to mobile users to download the free app, the screen will contain your forum logo and branding only, with a button to get the free app.]]></item>
 		<item name="wcf.acp.option.wbb_tapatalk_app_ios_id"><![CDATA[BYO iOS App-ID]]></item>
 		<item name="wcf.acp.option.wbb_tapatalk_app_ios_id.description"><![CDATA[Enter your BYO product ID in Apple App Store, to be used on iOS device.]]></item>
 		<item name="wcf.acp.option.wbb_tapatalk_app_kindle_url"><![CDATA[BYO Kindle App-URL]]></item>

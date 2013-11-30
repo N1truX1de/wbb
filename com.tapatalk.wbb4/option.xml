@@ -32,8 +32,13 @@
 			<!-- board.tapatalk.app -->
 			<option name="wbb_tapatalk_app_banner_message">
 				<categoryname>board.tapatalk.app</categoryname>
-				<optiontype>text</optiontype>
+				<optiontype>textarea</optiontype>
 				<defaultvalue></defaultvalue>
+			</option>
+			<option name="wbb_tapatalk_app_full_banner">
+				<categoryname>board.tapatalk.app</categoryname>
+				<optiontype>boolean</optiontype>
+				<defaultvalue>1</defaultvalue>
 			</option>
 			<option name="wbb_tapatalk_app_ios_id">
 				<categoryname>board.tapatalk.app</categoryname>
