@@ -42,7 +42,7 @@ class AbstractPageTapatalkListener implements IEventListener {
 		if (isset($app_head_include)) {
 			// rebuild the output HTML since we must place the meta tags for Twitter somewhere else
 			WCF::getTPL()->assign(array(
-				'tapatalkSmartbanner' => $app_banner_head . $full_view_ads,
+				'tapatalkSmartbanner' => $app_banner_head . $app_indexing,
 				'tapatalkTwitterAppCard' => $twitter_card_head
 			));
 		}
