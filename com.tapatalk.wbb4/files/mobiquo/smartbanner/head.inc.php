@@ -82,7 +82,7 @@ if (file_exists($tapatalk_dir . '/smartbanner/welcome.php') && file_exists($tapa
             var app_forum_code = "'.(trim($api_key) ? md5(trim($api_key)) : '').'";
             var app_referer = "'.addslashes(urlencode($app_referer)).'";
             var app_welcome_url = "'.addslashes($tapatalk_dir_url.'/smartbanner/welcome.php').'";
-            var app_welcome_enable = "'.($app_ads_enable ? 1 : 0).'";
+            var app_welcome_enable = '.($app_ads_enable ? 1 : 0).';
         </script>
         <script src="'.$tapatalk_dir_url.'/smartbanner/appbanner.js" type="text/javascript"></script>
         <!-- Tapatalk Banner head end-->
