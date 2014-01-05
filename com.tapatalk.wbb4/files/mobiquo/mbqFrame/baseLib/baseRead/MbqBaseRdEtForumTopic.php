@@ -54,6 +54,9 @@ Abstract Class MbqBaseRdEtForumTopic extends MbqBaseRd {
         if ($oMbqEtForumTopic->oLastReplyMbqEtUser) {
             $data['last_reply_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
             $data['last_reply_author_id'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->userId->oriValue;
+            //display the last reply user name for app when list topics
+            $data['topic_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
+            $data['post_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
         }
         if ($oMbqEtForumTopic->attachmentIdArray->hasSetOriValue()) {
             $data['attachment_id_array'] = (array) $oMbqEtForumTopic->attachmentIdArray->oriValue;
