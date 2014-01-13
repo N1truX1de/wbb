@@ -6,9 +6,9 @@ use wcf\system\user\authentication\DefaultUserAuthentication;
 defined('MBQ_IN_IT') or exit;
 
 define('MBQ_DS', DIRECTORY_SEPARATOR);
-define('MBQ_PATH', dirname(__FILE__).MBQ_DS);    /* mobiquo path */
+define('MBQ_PATH', dirname($_SERVER['SCRIPT_FILENAME']).MBQ_DS);    /* mobiquo path */
 define('MBQ_DIRNAME', basename(MBQ_PATH));    /* mobiquo dir name */
-define('MBQ_PARENT_PATH', realpath(dirname(__FILE__).MBQ_DS.'..').MBQ_DS);    /* mobiquo parent dir path */
+define('MBQ_PARENT_PATH', substr(MBQ_PATH, 0, strrpos(MBQ_PATH, MBQ_DIRNAME.MBQ_DS)));    /* mobiquo parent dir path */
 define('MBQ_FRAME_PATH', MBQ_PATH.'mbqFrame'.MBQ_DS);    /* frame path */
 require_once(MBQ_FRAME_PATH.'MbqBaseConfig.php');
 
