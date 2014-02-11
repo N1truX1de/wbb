@@ -2,6 +2,7 @@
 
 use wcf\system\WCF;
 use wcf\system\user\authentication\DefaultUserAuthentication;
+use wbb\data\board\Board;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -58,6 +59,7 @@ Class MbqConfig extends MbqBaseConfig {
         }
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         MbqMain::$oMbqAppEnv->exttForumTree = $oMbqRdEtForum->getForumTree();  //!!!
+        MbqMain::$oMbqAppEnv->accessibleBoardIds = Board::getAccessibleBoardIDs(array('canViewBoard', 'canEnterBoard', 'canReadThread'));
         parent::calCfg();
       /* calculate the final config */
         $this->cfg['base']['sys_version']->setOriValue(PACKAGE_VERSION);
@@ -69,6 +71,10 @@ Class MbqConfig extends MbqBaseConfig {
         if (!MODULE_CONVERSATION || !WCF::getSession()->getPermission('user.conversation.canUseConversation')) {
             $this->cfg['pc']['module_enable']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_enable.range.disable'));
             $this->cfg['pc']['conversation']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.range.notSupport'));
+        }
+        if (!MbqMain::$oMbqAppEnv->accessibleBoardIds) {
+            $this->cfg['user']['guest_okay']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.notSupport'));
+            $this->cfg['forum']['guest_search']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.notSupport'));
         }
     }
     

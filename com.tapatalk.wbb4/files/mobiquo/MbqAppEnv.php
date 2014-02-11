@@ -15,11 +15,13 @@ Class MbqAppEnv extends MbqBaseAppEnv {
     public $exttAllForums;  //all forums one dimensional array
     public $siteRootUrl;    //site root url,init it in MbqConfig::calCfg()
     public $oCurrentUser;   //wcf\data\user\User
+    public $accessibleBoardIds;
 
     public function __construct() {
         parent::__construct();
         $this->exttForumTree = array();
         $this->exttAllForums = array();
+        $this->accessibleBoardIds = array();
     }
     
     /**

@@ -47,6 +47,7 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
                 $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
                 $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
                 $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+				$oViewableThreadList->getConditionBuilder()->add('thread.boardID IN (?)', MbqMain::$oMbqAppEnv->accessibleBoardIds);
                 $oViewableThreadList->readObjects();
                 $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
                 /* common begin */
