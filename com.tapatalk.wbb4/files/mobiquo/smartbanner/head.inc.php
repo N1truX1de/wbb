@@ -1,5 +1,17 @@
 <?php
 
+// don't include it when the request was not from mobile device
+$useragent = tt_getenv('HTTP_USER_AGENT');
+if (!preg_match('/iPhone|iPod|iPad|Silk|Android|IEMobile|Windows Phone/i', $useragent))
+    return;
+
+// don't include it when the request was from inside app
+$in_app = tt_getenv('HTTP_IN_APP');
+$referer = tt_getenv('HTTP_REFERER');
+if ($in_app || preg_match('#^https?://link.tapatalk.com#i', $referer))
+    return;
+
+
 if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
 {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
@@ -65,6 +77,8 @@ if ($app_ios_id != -1 || $app_android_id != -1)
 $app_banner_head = '';
 if (file_exists($tapatalk_dir . '/smartbanner/welcome.php') && file_exists($tapatalk_dir . '/smartbanner/appbanner.js'))
 {
+    $GLOBALS['app_head_included'] = true;
+    
     $app_banner_head = '
         <!-- Tapatalk Banner&Welcome head start -->
         <link href="'.$tapatalk_dir_url.'/smartbanner/appbanner.css" rel="stylesheet" type="text/css" media="screen" />
@@ -82,7 +96,7 @@ if (file_exists($tapatalk_dir . '/smartbanner/welcome.php') && file_exists($tapa
             var app_forum_code = "'.(trim($api_key) ? md5(trim($api_key)) : '').'";
             var app_referer = "'.addslashes(urlencode($app_referer)).'";
             var app_welcome_url = "'.addslashes($tapatalk_dir_url.'/smartbanner/welcome.php').'";
-            var app_welcome_enable = '.($app_ads_enable ? 1 : 0).';
+            var app_welcome_enable = '.(!isset($app_ads_enable) || $app_ads_enable ? 1 : 0).';
         </script>
         <script src="'.$tapatalk_dir_url.'/smartbanner/appbanner.js" type="text/javascript"></script>
         <!-- Tapatalk Banner head end-->
@@ -113,3 +127,19 @@ if ($host_path)
 }
 
 $app_head_include = $twitter_card_head.$app_banner_head.$app_indexing;
+
+function tt_getenv($key)
+{
+    $return = '';
+
+    if ( is_array( $_SERVER ) && isset( $_SERVER[$key] ) && $_SERVER[$key])
+    {
+        $return = $_SERVER[$key];
+    }
+    else
+    {
+        $return = getenv($key);
+    }
+
+    return $return;
+}

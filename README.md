@@ -3,7 +3,8 @@ Tapatalk Plugin for WoltLab Burning Board 4.0
 
 Installation
 -------------
-    1. Unpack the plugin package and install the package com.tapatalk.wbb4.tar.gz through the admin control panel of WoltLab Burning Board 4;
+    1.Uninstall the old plugin before install the new plugin;
+    2.Unpack the plugin package and install the package com.tapatalk.wbb4.tar.gz through the admin control panel of WoltLab Burning Board 4;
     2. If it is the first time you install our plugin for your site,please register your site in tapatalk forum owner area:http://tapatalk.com/forum_owner.php.
 
 Changelog
