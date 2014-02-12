@@ -20,7 +20,7 @@
 			<environment>user</environment>
 			<templatename>footer</templatename>
 			<eventname>footer</eventname>
-			<templatecode><![CDATA[<script>if (typeof("tapatalkDetect") == "function") tapatalkDetect();</script>]]></templatecode>
+			<templatecode><![CDATA[<script>if (typeof(tapatalkDetect) == "function") tapatalkDetect();</script>]]></templatecode>
 		</templatelistener>
 		<!-- /user -->
 	</import>
