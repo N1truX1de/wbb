@@ -3,8 +3,8 @@
 	<packageinformation>
 		<packagename><![CDATA[Tapatalk]]></packagename>
 		<packagedescription><![CDATA[Tapatalk Support for WoltLab Burning Board 4.0]]></packagedescription>
-		<version>1.0.0</version>
-		<date>2013-12-16</date>
+		<version>0.2.0</version>
+		<date>2014-02-12</date>
 	</packageinformation>
 	
 	<authorinformation>
@@ -26,7 +26,7 @@
 		<instruction type="templateListener">templateListener.xml</instruction>
 	</instructions>
 	
-	<instruction type="update" fromversion="0.0.2">
+	<instruction type="update" fromversion="0.0.*">
 		<instruction type="file" application="wbb">files.tar</instruction>
 		<instruction type="template" application="wbb">templates.tar</instruction>
 		<instruction type="language">language/*.xml</instruction>
