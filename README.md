@@ -10,10 +10,12 @@ Installation
 Changelog
 -------------
     WoltLab Burning Board 4.0 Series Tapatalk Plugin Version 1.0.0 released  
-    1. Support for WoltLab Burning Board 4.0;
-    2. Code optimization;
-    3. Some modifications on framework level;
-    4. Improved Smartbanner feature;
+    1. support for WoltLab Burning Board 4.0;
+    2. removed old detect js code;
+    3. updated smartbanner feature; 
+    4. fixed bug for member only forum;
+    5. fixed bug:list private topics as guest when call get_latest_topic method;
+    6. some other modifications.
     
 Support Forum
 -------------
@@ -24,4 +26,4 @@ Github Url
 -------------
 https://github.com/tapatalk/wbb
 
-20131216
+20140216

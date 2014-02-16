@@ -26,7 +26,8 @@ class AbstractPageTapatalkListener implements IEventListener {
 		$is_mobile_skin = 0;
 		$app_location_url = 'tapatalk://' . preg_replace('~^https?://~', '', $board_url) . '?location=index';
 		
-		$app_banner_message = (WBB_TAPATALK_APP_BANNER_MESSAGE ?: WCF::getLanguage()->get('wcf.user.3rdparty.tapatalk.app_banner_message'));
+		$app_banner_message = (WBB_TAPATALK_APP_BANNER_MESSAGE ?: 'Follow {your_forum_name} <br /> with {app_name} for [os_platform]');
+		//$app_banner_message = (WBB_TAPATALK_APP_BANNER_MESSAGE ?: WCF::getLanguage()->get('wcf.user.3rdparty.tapatalk.app_banner_message'));   //this code can not work on my wbb4.0.2pl1 version test site.
 		$app_ios_id = WBB_TAPATALK_APP_IOS_ID;
 		$app_android_id = WBB_TAPATALK_APP_ANDROID_ID;
 		$app_kindle_url = WBB_TAPATALK_APP_KINDLE_URL;
