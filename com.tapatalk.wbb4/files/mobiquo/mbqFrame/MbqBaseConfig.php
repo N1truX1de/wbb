@@ -404,7 +404,11 @@ Abstract Class MbqBaseConfig {
         $this->cfg['user']['user_id'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.user_id.default')));    /* Indicate the function get_participated_topic / get_user_info / get_user_topic / get_user_reply_post support request with user id. */
         $this->cfg['user']['upload_avatar'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.upload_avatar.default')));    /* can upload avatar flag. */
         $this->cfg['user']['sign_in'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.sign_in.default')));
-        $this->cfg['user']['inappreg'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.upload_avatar.default')));
+        $this->cfg['user']['inappreg'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.inappreg.default')));
+        $this->cfg['user']['sso_login'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.sso_login.default')));
+        $this->cfg['user']['sso_signin'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.sso_signin.default')));
+        $this->cfg['user']['sso_register'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.sso_register.default')));
+        $this->cfg['user']['native_register'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.native_register.default')));
       /* forum */
         $this->cfg['forum']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_enable.default')));
         $this->cfg['forum']['report_post'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.report_post.default')));    /* return 1 to indicate the plugin support report_post function. */

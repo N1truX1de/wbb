@@ -158,6 +158,34 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                     'support' => 1,
                     'notSupport' => 0
                 )
+            ),
+            'sso_login' => array(
+                'default' => 0,
+                'range' => array (
+                    'support' => 1,
+                    'notSupport' => 0
+                )
+            ),
+            'sso_signin' => array(
+                'default' => 0,
+                'range' => array (
+                    'support' => 1,
+                    'notSupport' => 0
+                )
+            ),
+            'sso_register' => array(
+                'default' => 0,
+                'range' => array (
+                    'support' => 1,
+                    'notSupport' => 0
+                )
+            ),
+            'native_register' => array(
+                'default' => 0,
+                'range' => array (
+                    'support' => 1,
+                    'notSupport' => 0
+                )
             )
         ),
         'forum' => array(
