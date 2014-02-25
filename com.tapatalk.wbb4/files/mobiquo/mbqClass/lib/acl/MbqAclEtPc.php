@@ -1,5 +1,6 @@
 <?php
 
+use wcf\system\WCF;
 use wcf\data\conversation\Conversation;
 
 defined('MBQ_IN_IT') or exit;
