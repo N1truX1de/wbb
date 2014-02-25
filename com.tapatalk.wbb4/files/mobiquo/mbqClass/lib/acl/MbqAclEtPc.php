@@ -23,6 +23,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclGetInboxStat() {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         return MbqMain::hasLogin();
     }
     
@@ -32,6 +33,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclGetConversations() {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && (MbqMain::$oCurMbqEtUser->canPm->oriValue == MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canPm.range.yes'))) {
             return true;
         }
@@ -45,6 +47,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclGetConversation($oMbqEtPc) {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject()->canRead()) {
             return true;
         }
@@ -58,6 +61,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclNewConversation($oMbqEtPc) {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && strlen(trim($oMbqEtPc->convContent->oriValue)) > 0) {
             $num = 0;
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
@@ -78,6 +82,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclInviteParticipant($oMbqEtPcInviteParticipant) {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && $oMbqEtPcInviteParticipant->objsMbqEtUser && $oMbqEtPcInviteParticipant->oMbqEtPc) {
             //ref wcf\data\conversation\ConversationAction::validateGetAddParticipantsForm()
             $oConversation = $oMbqEtPcInviteParticipant->oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject();
@@ -96,6 +101,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @return  Boolean
      */
     public function canAclDeleteConversation($oMbqEtPc, $mode) {
+        if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && ($mode == 1 || $mode == 2)) {
             //ref wcf\data\conversation\ConversationAction::validateHideConversation()
             // validate participation

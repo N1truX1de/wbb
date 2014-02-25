@@ -68,7 +68,8 @@ Class MbqConfig extends MbqBaseConfig {
         } else {
             $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.yes'));
         }
-        if (!MODULE_CONVERSATION || !WCF::getSession()->getPermission('user.conversation.canUseConversation')) {
+        //if (!MODULE_CONVERSATION || !WCF::getSession()->getPermission('user.conversation.canUseConversation')) {
+        if (!MODULE_CONVERSATION) {
             $this->cfg['pc']['module_enable']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_enable.range.disable'));
             $this->cfg['pc']['conversation']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.range.notSupport'));
         }
