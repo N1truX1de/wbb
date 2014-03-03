@@ -33,6 +33,9 @@ Abstract Class MbqBaseRdEtUser extends MbqBaseRd {
         if ($oMbqEtUser->iconUrl->hasSetOriValue()) {
             $data['icon_url'] = (string) $oMbqEtUser->iconUrl->oriValue;
         }
+        if ($oMbqEtUser->userEmail->hasSetOriValue()) {
+            $data['email'] = (string) $oMbqEtUser->userEmail->oriValue;
+        }
         if ($oMbqEtUser->postCount->hasSetOriValue()) {
             $data['post_count'] = (int) $oMbqEtUser->postCount->oriValue;
         }
