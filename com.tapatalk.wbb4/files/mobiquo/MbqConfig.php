@@ -3,6 +3,9 @@
 use wcf\system\WCF;
 use wcf\system\user\authentication\DefaultUserAuthentication;
 use wbb\data\board\Board;
+use wcf\data\user\User;
+use wcf\util\HeaderUtil;
+use wcf\system\session\SessionHandler;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -45,8 +48,9 @@ Class MbqConfig extends MbqBaseConfig {
     public function calCfg() {
         $url = WCF::getPath();
         MbqMain::$oMbqAppEnv->siteRootUrl = substr($url, 0, strlen($url) - 4);
-        //init user
-        $oUser = DefaultUserAuthentication::getInstance()->loginAutomatically(true);
+        //init current user
+        //$oUser = DefaultUserAuthentication::getInstance()->loginAutomatically(true);
+        $oUser =  WCF::getSession()->getUser();
         if ($oUser && $oUser->userID) {
             MbqMain::$oMbqAppEnv->oCurrentUser = $oUser;
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');

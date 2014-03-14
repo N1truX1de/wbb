@@ -6,6 +6,8 @@ use wcf\system\user\authentication\EmailUserAuthentication;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
 use wcf\util\HeaderUtil;
+use wcf\system\session\SessionHandler;
+use wcf\data\user\User;
 
 use wcf\data\user\online\UsersOnlineList;
 use wcf\data\option\OptionAction;
@@ -153,7 +155,22 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @return  Boolean  return true when login success.
      */
     public function login($loginName, $password) {
-        //ref wcf\acp\form\LoginForm::validateUser()
+        /* test bypass for SSO begin */
+        /*
+		$user = User::getUserByUsername('testuser');
+		$userSession = (get_class($user) == 'wcf\data\user\User' ? $user : new wcf\data\user\User(null, null, $user));
+		if ($userSession && $userSession->userID) {
+		    WCF::getSession()->changeUser($userSession);
+		    HeaderUtil::setCookie('cookieHash', SessionHandler::getInstance()->sessionID);
+    		MbqMain::$oMbqAppEnv->oCurrentUser = $userSession;
+            $this->initOCurMbqEtUser();
+		    return true;
+		} else {
+		    return false;
+		}
+		*/
+        /* test bypass for SSO end */
+        //refer wcf\acp\form\LoginForm::validateUser()
 		try {
 			$oUser = UserAuthenticationFactory::getInstance()->getUserAuthentication()->loginManually($loginName, $password);
 		}
@@ -176,9 +193,10 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
 		if (!$oUser || !$oUser->userID) return false;
 		//ref wcf\form\LoginForm::save()
 		// set cookies
-		UserAuthenticationFactory::getInstance()->getUserAuthentication()->storeAccessData($oUser, $loginName, $password);
+		//UserAuthenticationFactory::getInstance()->getUserAuthentication()->storeAccessData($oUser, $loginName, $password);
 		// change user
 		WCF::getSession()->changeUser($oUser);
+		HeaderUtil::setCookie('cookieHash', SessionHandler::getInstance()->sessionID);
 		MbqMain::$oMbqAppEnv->oCurrentUser = $oUser;
         $this->initOCurMbqEtUser();
         return true;
