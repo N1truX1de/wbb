@@ -50,7 +50,8 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oMbqAppEnv->siteRootUrl = substr($url, 0, strlen($url) - 4);
         //init current user
         //$oUser = DefaultUserAuthentication::getInstance()->loginAutomatically(true);
-        $oUser =  WCF::getSession()->getUser();
+        //$oUser =  WCF::getSession()->getUser();
+        $oUser = WCF::getUser();
         if ($oUser && $oUser->userID) {
             MbqMain::$oMbqAppEnv->oCurrentUser = $oUser;
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
