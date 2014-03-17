@@ -10,7 +10,7 @@ defined('MBQ_IN_IT') or exit;
  * @author Wu ZeTao <578014287@qq.com>
  */
 MbqMain::$customConfig['base']['is_open'] = MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.yes');
-MbqMain::$customConfig['base']['version'] = 'wb40_1.0.0';
+MbqMain::$customConfig['base']['version'] = 'wb40_1.1.0';
 MbqMain::$customConfig['base']['api_level'] = 3;
 
 MbqMain::$customConfig['subscribe']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.module_enable.range.enable')));
