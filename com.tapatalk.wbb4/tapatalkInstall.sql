@@ -1,12 +1,13 @@
 CREATE TABLE wbb1_tapatalk_push_user (
-  user_id INT(11) NOT NULL DEFAULT '0',
-  create_time INT(11) NOT NULL DEFAULT '0',
-  update_time INT(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (user_id)
+	user_id INT(11) NOT NULL PRIMARY KEY,
+	create_time INT(11) NOT NULL DEFAULT '0',
+	update_time INT(11) NOT NULL DEFAULT '0',
 );
 
 CREATE TABLE wbb1_tapatalk_status (
-  status_info TEXT NOT NULL,
-  create_time INT(11) NOT NULL DEFAULT '0',
-  update_time INT(11) NOT NULL DEFAULT '0'
+	status_info TEXT NOT NULL,
+	create_time INT(11) NOT NULL DEFAULT '0',
+	update_time INT(11) NOT NULL DEFAULT '0'
 );
+
+ALTER TABLE wbb1_tapatalk_push_user ADD FOREIGN KEY (userID) REFERENCES wcf1_user (userID) ON DELETE CASCADE;
