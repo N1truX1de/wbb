@@ -10,4 +10,4 @@ CREATE TABLE wbb1_tapatalk_status (
 	update_time INT(10) NOT NULL DEFAULT '0'
 );
 
-ALTER TABLE wbb1_tapatalk_push_user ADD FOREIGN KEY (userID) REFERENCES wcf1_user (userID) ON DELETE CASCADE;
+ALTER TABLE wbb1_tapatalk_push_user ADD FOREIGN KEY (user_id) REFERENCES wcf1_user (userID) ON DELETE CASCADE;
