@@ -8,5 +8,10 @@
 			<inherit>1</inherit>
 			<listenerclassname><![CDATA[wbb\system\event\listener\AbstractPageTapatalkListener]]></listenerclassname>
 		</eventlistener>
+		<eventlistener>
+			<eventclassname><![CDATA[wbb\data\post\PostAction]]></eventclassname>
+			<eventname>quickReply</eventname>
+			<listenerclassname><![CDATA[wbb\system\event\listener\TapatalkForPostQuickReplyListener]]></listenerclassname>
+		</eventlistener>
 	</import>
 </data>

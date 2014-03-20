@@ -31,4 +31,9 @@ MbqMain::$customConfig['forum']['goto_unread'] = MbqBaseFdt::getFdt('MbqFdtConfi
 MbqMain::$customConfig['pc']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_enable.range.enable')));
 MbqMain::$customConfig['pc']['conversation'] = MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.range.support');
 
+if (MbqCommonConfig::$cfg['push'])
+MbqMain::$customConfig['base']['push'] = MbqCommonConfig::$cfg['push'];
+if (MbqCommonConfig::$cfg['push_type'])
+MbqMain::$customConfig['base']['push_type'] = MbqCommonConfig::$cfg['push_type'];
+
 ?>

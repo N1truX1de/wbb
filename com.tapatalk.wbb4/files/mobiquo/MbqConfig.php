@@ -82,6 +82,11 @@ Class MbqConfig extends MbqBaseConfig {
             $this->cfg['user']['guest_okay']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.notSupport'));
             $this->cfg['forum']['guest_search']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.notSupport'));
         }
+        if ($this->getCfg('base.push')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.base.push.range.support') && !OFFLINE && (@ini_get('allow_url_fopen') || function_exists('curl_init'))) {
+            $this->cfg['base']['push']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.push.range.support'));
+        } else {
+            $this->cfg['base']['push']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.push.range.notSupport'));
+        }
     }
     
 }
