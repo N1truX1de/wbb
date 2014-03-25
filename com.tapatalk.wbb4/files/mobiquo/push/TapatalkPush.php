@@ -451,8 +451,15 @@ Class TapatalkPush extends TapatalkBasePush {
             $topicId = $p['oMbqEtForumPost']->topicId->oriValue;
             $postId = $p['oMbqEtForumPost']->postId->oriValue;
         } else {    //native plugin
-            $topicId = $p['oPost']->threadID;
-            $postId = $p['oPost']->postID;
+            if (isset($p['oThread'])) { //more options reply
+                $topicId = $p['oThread']->threadID;
+                $postId = $p['oThread']->lastPostID;
+            } elseif (isset($p['oPost'])) { //quick reply
+                $topicId = $p['oPost']->threadID;
+                $postId = $p['oPost']->postID;
+            } else {
+                return false;
+            }
         }
         $query ="SELECT userID FROM wcf".WCF_N."_user_object_watch WHERE objectTypeID = 109 and objectID = ?";
 		$statement = $this->oDb->prepareStatement($query);
