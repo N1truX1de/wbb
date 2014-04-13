@@ -50,7 +50,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
      *
      * $mbqOpt['case'] = 'all' means get my all data.
      * $mbqOpt['case'] = 'byConvIds' means get data by conversation ids.$var is the ids.
-     * $mbqOpt['case'] = 'byObjsStdPc' means get data by objsStdPc.$var is the objsStdPc.
+     * $mbqOpt['case'] = 'byObjsViewableConversation' means get data by objsViewableConversation.$var is the objsViewableConversation.
      * @return  Mixed
      */
     public function getObjsMbqEtPc($var, $mbqOpt) {

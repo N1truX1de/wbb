@@ -6,6 +6,8 @@ use wcf\data\user\UserProfile;
 use wbb\data\thread\ViewableThreadList;
 use wbb\data\post\ViewablePostList;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
+use wcf\data\conversation\UserConversationList;
+use wcf\data\conversation\message\ViewableConversationMessageList;
 
 define('MBQ_PUSH_BLOCK_TIME', 60);    /* push block time(minutes) */
 
@@ -494,6 +496,86 @@ Class TapatalkPush extends TapatalkBasePush {
     }
     
     /**
+     * new conversation push
+     *
+     * @param  Array  $p
+     * @return Boolean
+     */
+    public function doPushNewConversation($p) {
+        $push_data = array();
+        if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
+            $convId = $p['oMbqEtPc']->convId->oriValue;
+            $position = 1;
+            $title = $p['oMbqEtPc']->convTitle->oriValue;
+        } else {    //native plugin
+            $convId = $p['convId'];
+            $position = 1;
+            $title = $p['title'];
+        }
+        if ($oConversation = $this->getConversationByConvId($convId)) {
+            $userIdsParticipant = $oConversation->getParticipantIDs();
+            $objsUser = $this->getUsersByUserIdsExceptMe($userIdsParticipant);
+            if ($objsUser) {
+        		//send conv push
+		        foreach ($objsUser as $oUser) {
+                    $pushPack = array(
+                        'userid'    => $oUser->userID,
+                        'type'      => 'conv',
+                        'id'        => $convId,
+                        'subid'     => $position,
+                        'title'     => $title,
+                        'author'    => $this->oUser->username,
+                        'dateline'  => time()
+                    );
+                    $push_data[] = $pushPack;
+		        }
+                $this->push($push_data);
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * reply conversation push
+     *
+     * @param  Array  $p
+     * @return Boolean
+     */
+    public function doPushReplyConversation($p) {
+        $push_data = array();
+        if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
+            $convId = $p['oMbqEtPc']->convId->oriValue;
+            $msgId = $p['oMbqEtPcMsg']->msgId->oriValue;
+        } else {    //native plugin
+            $convId = $p['convId'];
+            $msgId = $p['msgId'];
+        }
+        if (($oConversation = $this->getConversationByConvId($convId)) && ($oConversationMessage = $this->getConversationMessageByMsgId($msgId))) {
+            $title = $oConversation->subject;
+            $position = $this->getPcMsgPosition($oConversationMessage);
+            $userIdsParticipant = $oConversation->getParticipantIDs();
+            $objsUser = $this->getUsersByUserIdsExceptMe($userIdsParticipant);
+            if ($objsUser) {
+        		//send conv push
+		        foreach ($objsUser as $oUser) {
+                    $pushPack = array(
+                        'userid'    => $oUser->userID,
+                        'type'      => 'conv',
+                        'id'        => $convId,
+                        'subid'     => $position,
+                        'title'     => $title,
+                        'author'    => $this->oUser->username,
+                        'dateline'  => time()
+                    );
+                    $push_data[] = $pushPack;
+		        }
+                $this->push($push_data);
+            }
+        }
+        return false;
+    }
+    
+    /**
      * get users by user ids except me
      *
      * @param  Array  $userIds
@@ -505,6 +587,24 @@ Class TapatalkPush extends TapatalkBasePush {
         foreach ($objsUserProfile as $oUserProfile) {
             $oUser = $oUserProfile->getDecoratedObject();
             if ($oUser->userID && $oUser->userID != $this->oUser->userID) {
+                $objsUser[] = $oUser;
+            }
+        }
+        return $objsUser;
+    }
+    
+    /**
+     * get users by user ids
+     *
+     * @param  Array  $userIds
+     * @return  Array
+     */
+    protected function getUsersByUserIds($userIds) {
+        $objsUserProfile = UserProfile::getUserProfiles($userIds);
+        $objsUser = array();
+        foreach ($objsUserProfile as $oUserProfile) {
+            $oUser = $oUserProfile->getDecoratedObject();
+            if ($oUser->userID) {
                 $objsUser[] = $oUser;
             }
         }
@@ -545,6 +645,68 @@ Class TapatalkPush extends TapatalkBasePush {
 		} else {
 		    return false;
 		}
+    }
+    
+    /**
+     * get conversation by conv id
+     *
+     * @param  Integer  $convId
+     * @return Mixed
+     */
+    protected function getConversationByConvId($convId) {
+        $oUserConversationList = new UserConversationList(WCF::getUser()->userID, '', 0);
+		$oUserConversationList->setObjectIDs(array($convId));
+		$oUserConversationList->readObjects();
+		$objsViewableConversation = $oUserConversationList->getObjects();
+		if ($objsViewableConversation && ($oViewableConversation = array_shift($objsViewableConversation)) && ($oConversation = $oViewableConversation->getDecoratedObject()) && $oConversation->conversationID) {
+		    return $oConversation;
+		} else {
+		    return false;
+		}
+    }
+    
+    /**
+     * get conversation message by msg id
+     *
+     * @param  Integer  $msgId
+     * @return Mixed
+     */
+    protected function getConversationMessageByMsgId($msgId) {
+        $oViewableConversationMessageList = new ViewableConversationMessageList();
+		$oViewableConversationMessageList->setObjectIDs(array($msgId));
+		$oViewableConversationMessageList->readObjects();
+		$objsViewableConversationMessage = $oViewableConversationMessageList->getObjects();
+		if ($objsViewableConversationMessage && ($oViewableConversationMessage = array_shift($objsViewableConversationMessage)) && ($oConversationMessage = $oViewableConversationMessage->getDecoratedObject()) && $oConversationMessage->messageID) {
+		    return $oConversationMessage;
+		} else {
+		    return false;
+		}
+    }
+    
+    /**
+     * get conversation message position
+     *
+     * @param  Object  $oConversationMessage
+     *
+     * @return  Integer
+     */
+    protected function getPcMsgPosition($oConversationMessage) {
+        //refer MbqRdEtPcMsg::getObjsMbqEtPcMsg, $mbqOpt['case'] == 'byPc'
+        $oViewableConversationMessageList = new ViewableConversationMessageList();
+        $oViewableConversationMessageList->sqlOffset = 0;
+        $oViewableConversationMessageList->sqlLimit = 1000000;  //get all the conversation message to use
+        $oViewableConversationMessageList->getConditionBuilder()->add('conversation_message.conversationID = ?', array($oConversationMessage->conversationID));
+        $oViewableConversationMessageList->readObjects();
+        $objsViewableConversationMessage = $oViewableConversationMessageList->getObjects();
+        $ret = 1;
+        foreach ($objsViewableConversationMessage as $oViewableConversationMessage) {
+            if ($oViewableConversationMessage->getDecoratedObject()->messageID == $oConversationMessage->messageID) {
+                return $ret;
+            }
+            $ret ++;
+        }
+        //not found
+        return 1;
     }
     
 }

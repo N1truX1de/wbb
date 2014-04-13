@@ -78,9 +78,24 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
             /* common begin */
             $objsMbqEtPcMsg = array();
             $authorUserIds = array();
+            $convIds = array();
             foreach ($objsViewableConversationMessage as $oViewableConversationMessage) {
                 $authorUserIds[] = $oViewableConversationMessage->getDecoratedObject()->userID;
                 $objsMbqEtPcMsg[] = $this->initOMbqEtPcMsg($oViewableConversationMessage, array('case' => 'oViewableConversationMessage'));
+            }
+            foreach ($objsMbqEtPcMsg as $oMbqEtPcMsg) {
+                $convIds[] = $oMbqEtPcMsg->convId->oriValue;
+            }
+            /* load oMbqEtPc property */
+            $oMbqRdEtPc = MbqMain::$oClk->newObj('MbqRdEtPc');
+            $objsMbqEtPc = $oMbqRdEtPc->getObjsMbqEtPc($convIds, array('case' => 'byConvIds'));
+            foreach ($objsMbqEtPcMsg as &$oMbqEtPcMsg) {
+                foreach ($objsMbqEtPc as $oMbqEtPc) {
+                    if ($oMbqEtPcMsg->convId->oriValue == $oMbqEtPc->convId->oriValue) {
+                        $oMbqEtPcMsg->oMbqEtPc = $oMbqEtPc;
+                        break;
+                    }
+                }
             }
             /* load oAuthorMbqEtUser property */
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');

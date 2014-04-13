@@ -32,6 +32,10 @@ Abstract Class MbqBaseActNewConversation extends MbqBaseAct {
             $oMbqWrEtPc->addMbqEtPc($oMbqEtPc);
             $this->data['result'] = true;
             $this->data['conv_id'] = (string) $oMbqEtPc->convId->oriValue;
+            $oTapatalkPush = new TapatalkPush();
+            $oTapatalkPush->callMethod('doPushNewConversation', array(
+                'oMbqEtPc' => $oMbqEtPc
+            ));
         } else {
             MbqError::alert('', '', '', MBQ_ERR_APP);
         }
