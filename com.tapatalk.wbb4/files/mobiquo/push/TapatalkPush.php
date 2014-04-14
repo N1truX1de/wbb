@@ -442,7 +442,51 @@ Class TapatalkPush extends TapatalkBasePush {
     }
     
     /**
-     * reply push(include some types push)
+     * new topic push
+     *
+     * @param  Array  $p
+     * @return Boolean
+     */
+    protected function doPushNewTopic($p) {
+        $push_data = array();
+        $objsUser = array();
+        if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
+            $objsUser = $this->getUsersByTag($p['oMbqEtForumTopic']->topicContent->oriValue);
+            $topicId = $p['oMbqEtForumTopic']->topicId->oriValue;
+            $postId = $oThread->firstPostID;
+        } else {    //native plugin
+            $postId = $p['postId'];
+            $oPost = $this->getPostByPostId($postId);
+            if ($oPost) {
+                $objsUser = $this->getUsersByTag($oPost->message);
+                $topicId = $oPost->threadID;
+            } else {
+                return false;
+            }
+        }
+        $oThread = $this->getTopicByTopicId($topicId);
+		//send tag push
+		if ($objsUser && $oThread) {
+	        //can send push
+	        foreach ($objsUser as $oUser) {
+                $pushPack = array(
+                    'userid'    => $oUser->userID,
+                    'type'      => 'tag',
+                    'id'        => $topicId,
+                    'subid'     => $postId,
+                    'title'     => $oThread->getTitle(),
+                    'author'    => $this->oUser->username,
+                    'dateline'  => time()
+                );
+                $push_data[] = $pushPack;
+	        }
+            $this->push($push_data);
+		}
+        return false;
+    }
+    
+    /**
+     * reply push
      *
      * @param  Array  $p
      * @return Boolean
@@ -472,15 +516,32 @@ Class TapatalkPush extends TapatalkBasePush {
 		}
 		$objsUser = $this->getUsersByUserIdsExceptMe($userIds);
 		$oThread = $this->getTopicByTopicId($topicId);
+		$oPost = $this->getPostByPostId($postId);
 		//send sub push
-		if ($objsUser && $oThread) {
-		    $oPost = $this->getPostByPostId($postId);
-		    if ($oPost) {
+		if ($objsUser && $oThread && $oPost) {
+	        //can send push
+	        foreach ($objsUser as $oUser) {
+                $pushPack = array(
+                    'userid'    => $oUser->userID,
+                    'type'      => 'sub',
+                    'id'        => $topicId,
+                    'subid'     => $postId,
+                    'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
+                    'author'    => $this->oUser->username,
+                    'dateline'  => time()
+                );
+                $push_data[] = $pushPack;
+	        }
+            $this->push($push_data);
+		}
+		if ($oThread && $oPost) {
+		    $objsUser = $this->getUsersByTag($oPost->message);
+		    if ($objsUser) {    //send tag push
 		        //can send push
-		        foreach ($objsUser as $oUser) {
+    	        foreach ($objsUser as $oUser) {
                     $pushPack = array(
                         'userid'    => $oUser->userID,
-                        'type'      => 'sub',
+                        'type'      => 'tag',
                         'id'        => $topicId,
                         'subid'     => $postId,
                         'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
@@ -488,7 +549,24 @@ Class TapatalkPush extends TapatalkBasePush {
                         'dateline'  => time()
                     );
                     $push_data[] = $pushPack;
-		        }
+    	        }
+                $this->push($push_data);
+		    }
+		    $objsUser = $this->getUsersByQuote($oPost->message);
+		    if ($objsUser) {    //send quote push
+		        //can send push
+    	        foreach ($objsUser as $oUser) {
+                    $pushPack = array(
+                        'userid'    => $oUser->userID,
+                        'type'      => 'quote',
+                        'id'        => $topicId,
+                        'subid'     => $postId,
+                        'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
+                        'author'    => $this->oUser->username,
+                        'dateline'  => time()
+                    );
+                    $push_data[] = $pushPack;
+    	        }
                 $this->push($push_data);
 		    }
 		}
@@ -501,7 +579,7 @@ Class TapatalkPush extends TapatalkBasePush {
      * @param  Array  $p
      * @return Boolean
      */
-    public function doPushNewConversation($p) {
+    protected function doPushNewConversation($p) {
         $push_data = array();
         if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
             $convId = $p['oMbqEtPc']->convId->oriValue;
@@ -541,7 +619,7 @@ Class TapatalkPush extends TapatalkBasePush {
      * @param  Array  $p
      * @return Boolean
      */
-    public function doPushReplyConversation($p) {
+    protected function doPushReplyConversation($p) {
         $push_data = array();
         if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
             $convId = $p['oMbqEtPc']->convId->oriValue;
@@ -576,6 +654,36 @@ Class TapatalkPush extends TapatalkBasePush {
     }
     
     /**
+     * get users by tag
+     *
+     * @param  String  $content
+     * @return  Array
+     */
+    protected function getUsersByTag($content) {
+        $objsUser = array();
+        $str =  preg_match_all('/\[url=[^\]]*?\]@([^\[]*?)\[\/url\]/i', $content, $matches);
+        if ($matches && isset($matches[1]) && $matches[1]) {
+            $objsUser = $this->getUsersByUserLoginNamesExceptMe($matches[1]);
+        }
+        return $objsUser;
+    }
+    
+    /**
+     * get users by quote
+     *
+     * @param  String  $content
+     * @return  Array
+     */
+    protected function getUsersByQuote($content) {
+        $objsUser = array();
+        $str =  preg_match_all('/\[quote=\'([^\]]*?)\'[^\]]*?\]/i', $content, $matches);
+        if ($matches && isset($matches[1]) && $matches[1]) {
+            $objsUser = $this->getUsersByUserLoginNamesExceptMe($matches[1]);
+        }
+        return $objsUser;
+    }
+    
+    /**
      * get users by user ids except me
      *
      * @param  Array  $userIds
@@ -605,6 +713,24 @@ Class TapatalkPush extends TapatalkBasePush {
         foreach ($objsUserProfile as $oUserProfile) {
             $oUser = $oUserProfile->getDecoratedObject();
             if ($oUser->userID) {
+                $objsUser[] = $oUser;
+            }
+        }
+        return $objsUser;
+    }
+    
+    /**
+     * get users by user login names except me
+     *
+     * @param  Array  $loginNames
+     * @return  Array
+     */
+    protected function getUsersByUserLoginNamesExceptMe($loginNames) {
+        $objsUserProfile = UserProfile::getUserProfilesByUsername($loginNames);
+        $objsUser = array();
+        foreach ($objsUserProfile as $oUserProfile) {
+            $oUser = $oUserProfile->getDecoratedObject();
+            if ($oUser->userID && $oUser->userID != $this->oUser->userID) {
                 $objsUser[] = $oUser;
             }
         }

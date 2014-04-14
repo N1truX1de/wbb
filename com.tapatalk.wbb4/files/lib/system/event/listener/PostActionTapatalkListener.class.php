@@ -22,6 +22,7 @@ class PostActionTapatalkListener implements IEventListener {
         //error_log(print_r($eventObj->getReturnValues(), true));
         
         if ($_GET['controller'] == 'AJAXProxy' && $_POST['actionName'] == 'quickReply' && $className == 'wbb\data\post\PostAction' && $eventName == 'finalizeAction') {
+            //quick reply post
             $ret = $eventObj->getReturnValues();
             if ($ret['actionName'] == 'triggerPublication' && $ret['objectIDs'] && ($postId = array_shift($ret['objectIDs']))) {
                 $oViewablePostList = new ViewablePostList();
@@ -38,6 +39,19 @@ class PostActionTapatalkListener implements IEventListener {
                         'oPost' => $oPost
                     ));
                 }
+            }
+        } elseif (isset($_GET['controller']) && $_GET['controller'] == 'ThreadAdd' && $className == 'wbb\data\post\PostAction' && $eventName == 'finalizeAction' && $eventObj->getActionName() == 'triggerPublication' && isset($_GET['id']) && $_GET['id'] && isset($_POST['type']) && ($_POST['type'] == 0 || $_POST['type'] == 1)) {
+            //new topic
+            $p = $eventObj->getParameters();
+            $ret = $eventObj->getReturnValues();
+            if (isset($ret['objectIDs']) && $ret['objectIDs'] && $ret['objectIDs'][0]) {
+                $postId = $ret['objectIDs'][0];
+                $pushPath = 'mobiquo/push/TapatalkPush.php';
+                require_once($pushPath);
+                $oTapatalkPush = new \TapatalkPush();   //!!!
+                $oTapatalkPush->callMethod('doPushNewTopic', array(
+                    'postId' => $postId
+                ));
             }
         }
     }

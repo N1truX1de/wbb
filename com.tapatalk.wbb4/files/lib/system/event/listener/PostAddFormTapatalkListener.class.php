@@ -21,6 +21,7 @@ class PostAddFormTapatalkListener implements IEventListener {
         //error_log(print_r($eventObj->getParameters(), true));
         //error_log(print_r($eventObj->getReturnValues(), true));
         if ($_GET['controller'] == 'PostAdd' && $className == 'wbb\form\PostAddForm' && $eventName == 'saved') {
+            //reply post in more options mode
             if ($eventObj->threadID) {
                 $oViewableThreadList = new ViewableThreadList();
         		$oViewableThreadList->setObjectIDs(array($eventObj->threadID));

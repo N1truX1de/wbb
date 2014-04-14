@@ -3,7 +3,7 @@
 	<packageinformation>
 		<packagename><![CDATA[Tapatalk]]></packagename>
 		<packagedescription><![CDATA[Tapatalk Support for WoltLab Burning Board 4.0]]></packagedescription>
-		<version>1.1.0</version>
+		<version>1.0.0</version>
 		<date>2014-04-16</date>
 	</packageinformation>
 	
