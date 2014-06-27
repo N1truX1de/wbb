@@ -47,7 +47,7 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
                 $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
                 $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
                 $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
-				$oViewableThreadList->getConditionBuilder()->add('thread.boardID IN (?)', array(MbqMain::$oMbqAppEnv->accessibleBoardIds));
+                $oViewableThreadList->getConditionBuilder()->add('thread.boardID IN (?)', array(MbqMain::$oMbqAppEnv->accessibleBoardIds));
                 $oViewableThreadList->readObjects();
                 $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
                 /* common begin */
@@ -73,6 +73,7 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
             $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
             $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
             $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+            $oViewableThreadList->getConditionBuilder()->add('thread.boardID IN (?)', array(MbqMain::$oMbqAppEnv->accessibleBoardIds));
             $oViewableThreadList->getConditionBuilder()->add('thread.threadID IN (SELECT threadID from wbb'.WCF_N.'_post as mbqPost where mbqPost.subject LIKE ? OR mbqPost.message LIKE ?)', array('%'.addcslashes($filter['keywords'], '_%').'%', '%'.addcslashes($filter['keywords'], '_%').'%'));   //!!!
             $oViewableThreadList->readObjects();
             $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
@@ -84,10 +85,11 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
         } elseif ($mbqOpt['case'] == 'searchPost') {
             $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
             $oViewablePostList = new ViewablePostList();
-            $oViewablePostList->sqlJoins .= 'INNER JOIN wbb'.WCF_N.'_thread thread ON (post.threadID = thread.threadID AND thread.isAnnouncement = 0)'; //!!!
+            $oViewablePostList->sqlConditionJoins .= 'INNER JOIN wbb'.WCF_N.'_thread thread ON (post.threadID = thread.threadID AND thread.isAnnouncement = 0)'; //!!!
+            $oViewablePostList->getConditionBuilder()->add('thread.boardID IN (?)', array(MbqMain::$oMbqAppEnv->accessibleBoardIds));
             $oViewablePostList->getConditionBuilder()->add('(post.subject LIKE ? OR post.message LIKE ?)', array('%'.addcslashes($filter['keywords'], '_%').'%', '%'.addcslashes($filter['keywords'], '_%').'%'));   //!!!
-    		$oViewablePostList->readObjects();
-    		$oMbqDataPage->totalNum = $oViewablePostList->countObjects();
+            $oViewablePostList->readObjects();
+            $oMbqDataPage->totalNum = $oViewablePostList->countObjects();
             /* common begin */
             $mbqOpt['case'] = 'byObjsViewablePost';
             $mbqOpt['oMbqDataPage'] = $oMbqDataPage;

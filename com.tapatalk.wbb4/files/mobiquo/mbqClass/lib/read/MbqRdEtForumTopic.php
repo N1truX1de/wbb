@@ -113,6 +113,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $oViewableThreadList = new ViewableThreadList();
                 $oViewableThreadList->sqlOffset = $oMbqDataPage->startNum;
                 $oViewableThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oViewableThreadList->getConditionBuilder()->add('thread.boardID IN (?)', array(MbqMain::$oMbqAppEnv->accessibleBoardIds));
                 $oViewableThreadList->getConditionBuilder()->add('thread.userID = ?', array($var->userId->oriValue));   //!!!
                 $oViewableThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
                 $oViewableThreadList->readObjects();
