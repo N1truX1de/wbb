@@ -287,7 +287,15 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         	$post = str_ireplace('<strong>', '<b>', $post);
         	$post = str_ireplace('</strong>', '</b>', $post);
             $post = str_ireplace('<hr />', '<br />____________________________________<br />', $post);
-    	    $post = preg_replace('/<object .*?>.*?<embed src="(.*?)".*?><\/embed><\/object>/is', '[url=$1]$1[/url]', $post); /* for youtube content etc. */
+
+	    /* embedded media */
+    	    $post = preg_replace('/<object .*?>.*?<embed src="(.*?)".*?><\/embed><\/object>/is', '[url=$1]$1[/url]', $post);
+	    $post = preg_replace('~<iframe.*src="(.*[^"])".*</iframe>~is', '[url=$1]$1[/url]', $post); // iframes
+	    $post = preg_replace('~<object.*permalinkId=(v\d+[a-zA-Z0-9]+[^&])&.*</object>~is', '[url=http://www.veoh.com/watch/$1]http://www.veoh.com/watch/$1[/url]', $post); // veoh
+	    $post = preg_replace('~<script src="(https://gist\.github\.com/[^/]+/[0-9a-zA-Z]+)\.js"> </script>~is', '[url=$1]$1[/url]', $post); // github gist
+	    $post = str_ireplace('-nocookie.com/embed/', '.com/watch?v=', $post); // youtube fix
+	    /* --- */
+
 	        $post = str_ireplace('</div>', '</div><br />', $post);
 	        $post = str_ireplace('&nbsp;', ' ', $post);
     	    $post = strip_tags($post, '<br><i><b><u><font>');
