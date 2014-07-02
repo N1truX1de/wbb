@@ -294,6 +294,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
 	    $post = preg_replace('~<object.*permalinkId=(v\d+[a-zA-Z0-9]+[^&])&.*</object>~is', '[url=http://www.veoh.com/watch/$1]http://www.veoh.com/watch/$1[/url]', $post); // veoh
 	    $post = preg_replace('~<script src="(https://gist\.github\.com/[^/]+/[0-9a-zA-Z]+)\.js"> </script>~is', '[url=$1]$1[/url]', $post); // github gist
 	    $post = str_ireplace('-nocookie.com/embed/', '.com/watch?v=', $post); // youtube fix
+	    $post = str_ireplace('player.vimeo.com/video', 'vimeo.com', $post); // vimeo fix
 	    /* --- */
 
 	        $post = str_ireplace('</div>', '</div><br />', $post);
