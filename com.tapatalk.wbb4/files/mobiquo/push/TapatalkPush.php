@@ -511,7 +511,7 @@ Class TapatalkPush extends TapatalkBasePush {
         $query ="SELECT userID FROM wcf".WCF_N."_user_object_watch WHERE objectTypeID = ? and objectID = ?";
 		$statement = $this->oDb->prepareStatement($query);
 	    $statement->execute(array(
-		ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread'),
+		ObjectTypeCache::getInstance()->getObjectTypeIDByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread'),
 		$topicId
 	    ));
 	    $userIds = array();
