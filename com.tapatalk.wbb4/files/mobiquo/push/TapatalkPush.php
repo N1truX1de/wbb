@@ -1,13 +1,14 @@
 <?php
 
-use wcf\system\WCF;
+use wcf\data\conversation\message\ViewableConversationMessageList;
+use wcf\data\conversation\UserConversationList;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\User;
 use wcf\data\user\UserProfile;
-use wbb\data\thread\ViewableThreadList;
 use wbb\data\post\ViewablePostList;
+use wbb\data\thread\ViewableThreadList;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
-use wcf\data\conversation\UserConversationList;
-use wcf\data\conversation\message\ViewableConversationMessageList;
+use wcf\system\WCF;
 
 define('MBQ_PUSH_BLOCK_TIME', 60);    /* push block time(minutes) */
 
@@ -507,9 +508,12 @@ Class TapatalkPush extends TapatalkBasePush {
                 return false;
             }
         }
-        $query ="SELECT userID FROM wcf".WCF_N."_user_object_watch WHERE objectTypeID = (SELECT objectTypeID FROM wcf".WCF_N."_object_type WHERE className = 'wbb\\system\\user\\object\\watch\\ThreadUserObjectWatch') and objectID = ?";
+        $query ="SELECT userID FROM wcf".WCF_N."_user_object_watch WHERE objectTypeID = ? and objectID = ?";
 		$statement = $this->oDb->prepareStatement($query);
-	    $statement->execute(array($topicId));
+	    $statement->execute(array(
+		ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread'),
+		$topicId
+	    ));
 	    $userIds = array();
 		while ($r = $statement->fetchArray()) {
 		    $userIds[] = $r['userID'];
