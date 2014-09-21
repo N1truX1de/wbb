@@ -20,7 +20,7 @@ Class MbqCm extends MbqBaseCm {
      * @param  Integer  $timeStamp
      * TODO:need to be made more general.
      */
-    public function datetimeIso8601Encode($timeStamp) {
+    public function datetimeIso8601Encode($timeStamp = null) {
         //return date("c", $timeStamp);
         return date('Ymd\TH:i:s', $timeStamp).'+00:00';
     }
@@ -31,7 +31,7 @@ Class MbqCm extends MbqBaseCm {
      * @params  String  $content
      * @return  Array
      */
-    public function getAttIdsFromContent($content) {
+    public function getAttIdsFromContent($content = null) {
         preg_match_all('/\[attach=(.*?)\]\[\/attach\]/i', $content, $mat);
         if ($mat[1]) {
             return $mat[1];
