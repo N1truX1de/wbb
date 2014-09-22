@@ -142,7 +142,6 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @return  Boolean
      */
     public function canAclSubscribeTopic($oMbqEtForumTopic = null) {
-        error_log('isSubscribed:'.$oMbqEtForumTopic->isSubscribed->oriValue);
         if (MbqMain::hasLogin() && !$oMbqEtForumTopic->isSubscribed->oriValue) {
             return true;
         }
