@@ -6,23 +6,45 @@ MbqMain::$oClk->includeClass('MbqBaseActSubscribeTopic');
 
 /**
  * subscribe_topic action
- * 
+ *
  * @since  2012-9-15
  * @author Wu ZeTao <578014287@qq.com>
  */
 Class MbqActSubscribeTopic extends MbqBaseActSubscribeTopic {
-    
+
     public function __construct() {
         parent::__construct();
     }
-    
+
     /**
      * action implement
      */
     public function actionImplement() {
-        parent::actionImplement();
+        if (!MbqMain::$oMbqConfig->moduleIsEnable('subscribe')) {
+            MbqError::alert('', "Not support module subscribe!", '', MBQ_ERR_NOT_SUPPORT);
+        }
+        if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
+            MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
+        }
+        $topicId = MbqMain::$input[0];
+        $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
+        if ($oMbqEtForumTopic = $oMbqRdEtForumTopic->initOMbqEtForumTopic($topicId, array('case' => 'byTopicId'))) {
+            $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
+            if ($oMbqEtForumTopic->isSubscribed->oriValue){
+                MbqError::alert('', 'This topic has been subscribed.', '', MBQ_ERR_APP);
+            }
+            if ($oMbqAclEtForumTopic->canAclSubscribeTopic($oMbqEtForumTopic)) {    //acl judge
+                $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
+                $oMbqWrEtForumTopic->subscribeTopic($oMbqEtForumTopic);
+                $this->data['result'] = true;
+            } else {
+                MbqError::alert('', '', '', MBQ_ERR_APP);
+            }
+        } else {
+            MbqError::alert('', "Need valid topic id!", '', MBQ_ERR_APP);
+        }
     }
-  
+
 }
 
 ?>
