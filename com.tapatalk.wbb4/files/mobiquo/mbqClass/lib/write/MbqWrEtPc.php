@@ -46,7 +46,7 @@ Class MbqWrEtPc extends MbqBaseWrEtPc {
      * @param  Object  $oMbqEtPc
      * @return  Mixed
      */
-    public function markPcRead($oMbqEtPc) {
+    public function markPcRead($oMbqEtPc = null) {
         //this has been done in MbqRdEtPcMsg::getObjsMbqEtPcMsg() with $mbqOpt['case'] == 'byPc',so need do nothing here.
     }
     
@@ -55,7 +55,7 @@ Class MbqWrEtPc extends MbqBaseWrEtPc {
      *
      * @param  Object  $oMbqEtPc
      */
-    public function addMbqEtPc(&$oMbqEtPc) {
+    public function addMbqEtPc(&$oMbqEtPc = null) {
         //ref wcf\form\MessageForm,wcf\form\ConversationAddForm
         $oMbqEtPc->convTitle->setOriValue(StringUtil::trim($oMbqEtPc->convTitle->oriValue));
         $oMbqEtPc->convContent->setOriValue(MessageUtil::stripCrap(StringUtil::trim($oMbqEtPc->convContent->oriValue)));
@@ -181,7 +181,7 @@ Class MbqWrEtPc extends MbqBaseWrEtPc {
      *
      * @param  Object  $oMbqEtPcInviteParticipant
      */
-    public function inviteParticipant($oMbqEtPcInviteParticipant) {
+    public function inviteParticipant($oMbqEtPcInviteParticipant = null) {
         $oConversation = $oMbqEtPcInviteParticipant->oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject();
         $conversationEditor = new ConversationEditor($oConversation);
         //ref wcf\data\conversation\ConversationAction::addParticipants()
@@ -232,7 +232,7 @@ Class MbqWrEtPc extends MbqBaseWrEtPc {
      * @param  Object  $oMbqEtPc
      * @param  Integer  $mode
      */
-    public function deleteConversation($oMbqEtPc, $mode) {
+    public function deleteConversation($oMbqEtPc = null, $mode = null) {
         $oConversation = $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject();
         $conversationEditor = new ConversationEditor($oConversation);
         if ($mode == 1) {

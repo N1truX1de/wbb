@@ -27,7 +27,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtUser, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtUser = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -44,7 +44,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @mbqOpt['case'] = 'online' means get online user.
      * @return  Array
      */
-    public function getObjsMbqEtUser($var, $mbqOpt) {
+    public function getObjsMbqEtUser($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byUserIds') {
             $objsUserProfile = UserProfile::getUserProfiles($var);
             $objsMbqEtUser = array();
@@ -60,8 +60,8 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
     			$usersOnlineList->getConditionBuilder()->add('session.userID IS NOT NULL');
     			$usersOnlineList->readObjects();
     			// check users online record
-    			$usersOnlineTotal = (WBB_USERS_ONLINE_RECORD_NO_GUESTS ? $usersOnlineList->stats['members'] : $usersOnlineList->stats['total']);
-    			if ($usersOnlineTotal > WBB_USERS_ONLINE_RECORD) {
+    			$usersOnlineTotal = (defined('WBB_USERS_ONLINE_RECORD_NO_GUESTS') ? $usersOnlineList->stats['members'] : $usersOnlineList->stats['total']);
+    			if (!defined('WBB_USERS_ONLINE_RECORD') || $usersOnlineTotal > WBB_USERS_ONLINE_RECORD) {
     				// save new record
     				$optionAction = new OptionAction(array(), 'import', array('data' => array(
     					'wbb_users_online_record' => $usersOnlineTotal,
@@ -91,7 +91,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * $mbqOpt['case'] = 'byLoginName' means init user by login name.$var is login name.
      * @return  Mixed
      */
-    public function initOMbqEtUser($var, $mbqOpt) {
+    public function initOMbqEtUser($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'oUserProfile') {
             $oMbqEtUser = MbqMain::$oClk->newObj('MbqEtUser');
             $oUser = $var->getDecoratedObject();
@@ -143,7 +143,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @param  Object  $oMbqEtUser
      * @return  String
      */
-    public function getDisplayName($oMbqEtUser) {
+    public function getDisplayName($oMbqEtUser = null) {
         return $oMbqEtUser->loginName->oriValue;
     }
     
@@ -154,7 +154,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @param  String  $password
      * @return  Boolean  return true when login success.
      */
-    public function login($loginName, $password) {
+    public function login($loginName = '', $password = '') {
         /* test bypass for SSO begin */
         /*
 		$user = User::getUserByUsername('testuser');

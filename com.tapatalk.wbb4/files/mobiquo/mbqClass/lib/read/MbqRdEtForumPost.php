@@ -29,7 +29,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtForumPost, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForumPost = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -44,7 +44,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      *
      * @return  Integer
      */
-    public function exttGetForumPostPosition($oMbqEtForumPost) {
+    public function exttGetForumPostPosition($oMbqEtForumPost = null) {
         $oThreadPostList = new ThreadPostList($oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject());
         $oThreadPostList->sqlOffset = 0;
         $oThreadPostList->sqlLimit = 1000000;   //get all the posts to use
@@ -72,7 +72,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * $mbqOpt['notGetAttachment'] = true means do not get attachment of forum post.
      * @return  Mixed
      */
-    public function getObjsMbqEtForumPost($var, $mbqOpt) {
+    public function getObjsMbqEtForumPost($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byTopic') {
             $oMbqEtForumTopic = $var;
             if ($mbqOpt['oMbqDataPage']) {
@@ -161,7 +161,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             }
             /* load attachment */
             $oMbqRdEtAtt =  MbqMain::$oClk->newObj('MbqRdEtAtt');
-            if (!$mbqOpt['notGetAttachment']) {
+            if (!isset($mbqOpt['notGetAttachment'])) {
                 $objsMbqEtAtt = $oMbqRdEtAtt->getObjsMbqEtAtt($postIds, array('case' => 'byForumPostIds'));
                 foreach ($objsMbqEtAtt as $oMbqEtAtt) {
                     foreach ($objsMbqEtForumPost as &$oMbqEtForumPost) {
@@ -172,7 +172,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
                 }
             }
             /* load objsNotInContentMbqEtAtt */
-            if (!$mbqOpt['notGetAttachment']) {
+            if (!isset($mbqOpt['notGetAttachment'])) {
                 foreach ($objsMbqEtForumPost as &$oMbqEtForumPost) {
                     $filedataids = MbqMain::$oMbqCm->getAttIdsFromContent($oMbqEtForumPost->postContent->oriValue);
                     foreach ($oMbqEtForumPost->objsMbqEtAtt as $oMbqEtAtt) {
@@ -194,7 +194,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
                 }
             }
             /* common end */
-            if ($mbqOpt['oMbqDataPage']) {
+            if (isset($mbqOpt['oMbqDataPage']) && $mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtForumPost;
                 return $oMbqDataPage;
@@ -214,7 +214,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * $mbqOpt['case'] = 'byPostId' means init forum post by post id
      * @return  Mixed
      */
-    public function initOMbqEtForumPost($var, $mbqOpt) {
+    public function initOMbqEtForumPost($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'oViewablePost') {
             $oPost = $var->getDecoratedObject();
             $oMbqEtForumPost = MbqMain::$oClk->newObj('MbqEtForumPost');
@@ -254,7 +254,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * @params  Boolean  $returnHtml
      * @return  String
      */
-    public function processContentForDisplay($var, $returnHtml) {
+    public function processContentForDisplay($var = null, $returnHtml = false) {
         /*
         support bbcode:url/img/quote
         support html:br/i/b/u/font+color(red/blue)
@@ -313,7 +313,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * @param  Object  $oMbqEtForumPost
      * @return  String
      */
-    public function getQuotePostContent($oMbqEtForumPost) {
+    public function getQuotePostContent($oMbqEtForumPost = null) {
         //ref wcf\system\message\quote\MessageQuoteManager::renderQuote()
         $oPost = $oMbqEtForumPost->mbqBind['oViewablePost']->getDecoratedObject();
 		$escapedUsername = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oPost->getUsername());

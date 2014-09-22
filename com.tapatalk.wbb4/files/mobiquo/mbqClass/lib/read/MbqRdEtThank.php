@@ -15,7 +15,7 @@ Class MbqRdEtThank extends MbqBaseRdEtThank {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtThank, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtThank = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');

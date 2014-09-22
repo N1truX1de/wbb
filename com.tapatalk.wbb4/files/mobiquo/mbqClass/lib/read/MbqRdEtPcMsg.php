@@ -19,7 +19,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtPcMsg, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtPcMsg = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -37,7 +37,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * $mbqOpt['case'] = 'byObjsViewableConversationMessage' means get data by objsViewableConversationMessage.$var is the objsViewableConversationMessage.
      * @return  Mixed
      */
-    public function getObjsMbqEtPcMsg($var, $mbqOpt) {
+    public function getObjsMbqEtPcMsg($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byPc') {
             $oMbqEtPc = $var;
             if ($mbqOpt['oMbqDataPage']) {
@@ -127,7 +127,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
                 }
             }
             /* common end */
-            if ($mbqOpt['oMbqDataPage']) {
+            if (isset($mbqOpt['oMbqDataPage'])) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtPcMsg;
                 return $oMbqDataPage;
@@ -146,7 +146,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * $mbqOpt['case'] = 'oViewableConversationMessage' means init private conversation message by oViewableConversationMessage
      * @return  Mixed
      */
-    public function initOMbqEtPcMsg($var, $mbqOpt) {
+    public function initOMbqEtPcMsg($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'oViewableConversationMessage') {
             $oConversationMessage = $var->getDecoratedObject();
             $oMbqEtPcMsg = MbqMain::$oClk->newObj('MbqEtPcMsg');
@@ -171,7 +171,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * @params  Boolean  $returnHtml
      * @return  String
      */
-    public function processPcMsgContentForDisplay($var, $returnHtml) {
+    public function processPcMsgContentForDisplay($var = null, $returnHtml = false) {
         $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
         return $oMbqRdEtForumPost->processContentForDisplay($var, $returnHtml);
     }
@@ -182,7 +182,7 @@ Class MbqRdEtPcMsg extends MbqBaseRdEtPcMsg {
      * @param  Object  $oMbqEtPcMsg
      * @return  Mixed
      */
-    public function getQuoteConversation($oMbqEtPcMsg) {
+    public function getQuoteConversation($oMbqEtPcMsg = null) {
         //ref wcf\system\message\quote\MessageQuoteManager::renderQuote()
         $oConversationMessage = $oMbqEtPcMsg->mbqBind['oViewableConversationMessage']->getDecoratedObject();
 		$escapedUsername = StringUtil::replace(array("\\", "'"), array("\\\\", "\'"), $oConversationMessage->getUsername());

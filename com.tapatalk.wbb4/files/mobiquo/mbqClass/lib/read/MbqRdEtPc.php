@@ -23,7 +23,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtPc, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtPc = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -53,7 +53,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
      * $mbqOpt['case'] = 'byObjsViewableConversation' means get data by objsViewableConversation.$var is the objsViewableConversation.
      * @return  Mixed
      */
-    public function getObjsMbqEtPc($var, $mbqOpt) {
+    public function getObjsMbqEtPc($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'all') {
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
@@ -94,7 +94,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
                 $oMbqEtPc->objsRecipientMbqEtUser = $objsRecipientMbqEtUser;
                 //$oMbqEtPc->participantCount->setOriValue(count($oMbqEtPc->objsRecipientMbqEtUser));
             }
-            if ($mbqOpt['oMbqDataPage']) {
+            if (isset($mbqOpt['oMbqDataPage']) && $mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtPc;
                 return $oMbqDataPage;
@@ -114,7 +114,7 @@ Class MbqRdEtPc extends MbqBaseRdEtPc {
      * $mbqOpt['case'] = 'oViewableConversation' means init private conversation by oViewableConversation
      * @return  Mixed
      */
-    public function initOMbqEtPc($var, $mbqOpt) {
+    public function initOMbqEtPc($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'oViewableConversation') {
             $oConversation = $var->getDecoratedObject();
             $oMbqEtPc = MbqMain::$oClk->newObj('MbqEtPc');

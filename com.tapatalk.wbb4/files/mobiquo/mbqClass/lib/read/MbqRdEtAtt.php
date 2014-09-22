@@ -19,7 +19,7 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtAtt, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtAtt = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -35,7 +35,7 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * $mbqOpt['case'] = 'byForumPostIds' means get data by forum post ids.$var is the ids.
      * @return  Mixed
      */
-    public function getObjsMbqEtAtt($var, $mbqOpt) {
+    public function getObjsMbqEtAtt($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byForumPostIds') {
             $objsMbqEtAtt = array();
             //ref wbb\page\ThreadPage::readData(),wbb\data\post\ViewablePostList::readObjects(),wcf\data\attachment\GroupedAttachmentList::setPermissions()
@@ -61,7 +61,7 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * $mbqOpt['case'] = 'byAttId' means init attachment by attachment id
      * @return  Mixed
      */
-    public function initOMbqEtAtt($var, $mbqOpt) {
+    public function initOMbqEtAtt($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byAttId') {
             $oAttachment = new Attachment($var);
             if ($oAttachment->attachmentID) {

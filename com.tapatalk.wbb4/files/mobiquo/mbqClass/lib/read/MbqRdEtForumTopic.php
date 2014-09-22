@@ -40,7 +40,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtForumTopic, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForumTopic = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -62,7 +62,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['notIncludeTop'] = true means get not sticky data.
      * @return  Mixed
      */
-    public function getObjsMbqEtForumTopic($var, $mbqOpt) {
+    public function getObjsMbqEtForumTopic($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byForum') {
             $oMbqEtForum = $var;
             if ($mbqOpt['oMbqDataPage']) {
@@ -205,7 +205,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                     $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.no'));
                 }
             }
-            if ($mbqOpt['oMbqDataPage']) {
+            if (isset($mbqOpt['oMbqDataPage'])) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
                 return $oMbqDataPage;
@@ -226,7 +226,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'byTopicId' means init forum topic by topic id
      * @return  Mixed
      */
-    public function initOMbqEtForumTopic($var, $mbqOpt) {
+    public function initOMbqEtForumTopic($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'oViewableThread') {
             $oThread = $var->getDecoratedObject();
             $oMbqEtForumTopic = MbqMain::$oClk->newObj('MbqEtForumTopic');

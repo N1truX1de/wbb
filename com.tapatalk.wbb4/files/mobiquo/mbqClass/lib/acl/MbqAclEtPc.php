@@ -47,7 +47,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @param  Object  $oMbqEtPc
      * @return  Boolean
      */
-    public function canAclGetConversation($oMbqEtPc) {
+    public function canAclGetConversation($oMbqEtPc = null) {
         if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject()->canRead()) {
             return true;
@@ -61,7 +61,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @param  Object  $oMbqEtPc
      * @return  Boolean
      */
-    public function canAclNewConversation($oMbqEtPc) {
+    public function canAclNewConversation($oMbqEtPc = null) {
         if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && strlen(trim($oMbqEtPc->convContent->oriValue)) > 0) {
             $num = 0;
@@ -82,7 +82,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @param  Object  $oMbqEtPcInviteParticipant
      * @return  Boolean
      */
-    public function canAclInviteParticipant($oMbqEtPcInviteParticipant) {
+    public function canAclInviteParticipant($oMbqEtPcInviteParticipant = null) {
         if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && $oMbqEtPcInviteParticipant->objsMbqEtUser && $oMbqEtPcInviteParticipant->oMbqEtPc) {
             //ref wcf\data\conversation\ConversationAction::validateGetAddParticipantsForm()
@@ -101,7 +101,7 @@ Class MbqAclEtPc extends MbqBaseAclEtPc {
      * @param  Integer  $mode  
      * @return  Boolean
      */
-    public function canAclDeleteConversation($oMbqEtPc, $mode) {
+    public function canAclDeleteConversation($oMbqEtPc = null, $mode = null) {
         if (!WCF::getSession()->getPermission('user.conversation.canUseConversation')) return false;
         if (MbqMain::hasLogin() && ($mode == 1 || $mode == 2)) {
             //ref wcf\data\conversation\ConversationAction::validateHideConversation()

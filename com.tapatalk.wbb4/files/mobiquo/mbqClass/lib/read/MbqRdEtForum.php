@@ -30,7 +30,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtForum, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForum = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -89,7 +89,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
      * $mbqOpt['case'] = 'byForumIds' means get data by forum ids.$var is the ids.
      * @return  Array
      */
-    public function getObjsMbqEtForum($var, $mbqOpt) {
+    public function getObjsMbqEtForum($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byForumIds') {
             $objsMbqEtForum = array();
             $i = 0;
@@ -113,9 +113,9 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
      * $mbqOpt['case'] = 'oDetailedBoardNode' means init forum by oDetailedBoardNode
      * @return  Mixed
      */
-    public function initOMbqEtForum($var, $mbqOpt) {
+    public function initOMbqEtForum($var = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'byForumId') {
-            if (MbqMain::$oMbqAppEnv->exttAllForums[$var]) {
+            if (isset(MbqMain::$oMbqAppEnv->exttAllForums[$var])) {
                 return MbqMain::$oMbqAppEnv->exttAllForums[$var];
             }
             return false;

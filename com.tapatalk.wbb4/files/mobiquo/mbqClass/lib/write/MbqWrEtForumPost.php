@@ -59,7 +59,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
      *
      * @param  Mixed  $var($oMbqEtForumPost or $objsMbqEtForumPost)
      */
-    public function addMbqEtForumPost(&$var) {
+    public function addMbqEtForumPost(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -178,7 +178,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
      *
      * @param  Mixed  $var($oMbqEtForumPost or $objsMbqEtForumPost)
      */
-    public function mdfMbqEtForumPost(&$var) {
+    public function mdfMbqEtForumPost(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -299,7 +299,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
     		));
     		$oPostAction->executeAction();
     		$threadData = array();
-    		if ($isFirstPost) {
+    		if (isset($isFirstPost) && $isFirstPost) {
     			// update title
     			if ($var->postTitle->oriValue != $var->oMbqEtForumTopic->topicTitle->oriValue) {
     				$threadData['topic'] = $var->postTitle->oriValue;
@@ -322,7 +322,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
     				break;
     			}
     		}
-    		if ($isFirstPost || !empty($threadData)) {
+    		if (isset($isFirstPost) && $isFirstPost || !empty($threadData)) {
     			$threadData = array('data' => $threadData);
     			if ($isFirstPost) $threadData['announcementBoardIDs'] = array();  //!!!
     			$threadAction = new ThreadAction(array($oThread), 'update', $threadData);

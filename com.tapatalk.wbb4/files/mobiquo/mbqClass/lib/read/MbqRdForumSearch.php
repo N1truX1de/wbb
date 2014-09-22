@@ -27,7 +27,7 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
      * $mbqOpt['case'] = 'advanced' means advanced search
      * @return  Object  $oMbqDataPage
      */
-    public function forumAdvancedSearch($filter, $oMbqDataPage, $mbqOpt) {
+    public function forumAdvancedSearch($filter = array(), $oMbqDataPage = null, $mbqOpt = array()) {
         if ($mbqOpt['case'] == 'getLatestTopic' || $mbqOpt['case'] == 'getUnreadTopic' || $mbqOpt['case'] == 'getParticipatedTopic') {
             $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
             if ($mbqOpt['case'] == 'getParticipatedTopic') {

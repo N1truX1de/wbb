@@ -22,7 +22,7 @@ Class MbqAclEtPcMsg extends MbqBaseAclEtPcMsg {
      * @param  Obejct  $oMbqEtPc
      * @return  Boolean
      */
-    public function canAclReplyConversation($oMbqEtPcMsg, $oMbqEtPc) {
+    public function canAclReplyConversation($oMbqEtPcMsg = null, $oMbqEtPc = null) {
         if (MbqMain::hasLogin() && (strlen(trim($oMbqEtPcMsg->msgContent->oriValue)) > 0) && ($oMbqEtPcMsg->convId->oriValue == $oMbqEtPc->convId->oriValue) && !$oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject()->isClosed && $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject()->canRead()) {
             return true;
         }
@@ -36,7 +36,7 @@ Class MbqAclEtPcMsg extends MbqBaseAclEtPcMsg {
      * @param  Obejct  $oMbqEtPc
      * @return  Boolean
      */
-    public function canAclGetQuoteConversation($oMbqEtPcMsg, $oMbqEtPc) {
+    public function canAclGetQuoteConversation($oMbqEtPcMsg = null, $oMbqEtPc = null) {
         return $this->canAclReplyConversation($oMbqEtPcMsg, $oMbqEtPc);
     }
   

@@ -62,7 +62,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
      */
-    public function addForumTopicViewNum(&$var) {
+    public function addForumTopicViewNum(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -82,8 +82,8 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'markAllAsRead' means mark all my unread topics as read
      */
-    public function markForumTopicRead(&$var = NULL, $mbqOpt = array()) {
-        if ($mbqOpt['case'] == 'markAllAsRead') {
+    public function markForumTopicRead(&$var = null, $mbqOpt = array()) {
+        if (isset($mbqOpt['case']) && $mbqOpt['case'] == 'markAllAsRead') {
             $oBoardAction = new BoardAction(array(), 'markAllAsRead', array());
             $oBoardAction->validateAction();
             $response = $oBoardAction->executeAction();
@@ -113,7 +113,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
      */
-    public function resetForumTopicSubscription(&$var) {
+    public function resetForumTopicSubscription(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -126,7 +126,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
      */
-    public function addMbqEtForumTopic(&$var) {
+    public function addMbqEtForumTopic(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -262,7 +262,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
      */
-    public function subscribeTopic(&$var) {
+    public function subscribeTopic(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -287,7 +287,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
      */
-    public function unsubscribeTopic(&$var) {
+    public function unsubscribeTopic(&$var = null) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {

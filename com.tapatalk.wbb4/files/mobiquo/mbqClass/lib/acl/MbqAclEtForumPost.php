@@ -47,7 +47,7 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
      * @param  Object  $oMbqEtForumTopic
      * @return  Boolean
      */
-    public function canAclReplyPost($oMbqEtForumTopic) {
+    public function canAclReplyPost($oMbqEtForumTopic = null) {
         //ref thread.tpl,wbb\form\PostAddForm
         if (MbqMain::hasLogin() && $oMbqEtForumTopic->mbqBind['oViewableThread'] && $oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->canReply()) {
             $oThread = $oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();
@@ -66,7 +66,7 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
      * @param  Object  $oMbqEtForumPost
      * @return  Boolean
      */
-    public function canAclGetQuotePost($oMbqEtForumPost) {
+    public function canAclGetQuotePost($oMbqEtForumPost = null) {
         return $this->canAclReplyPost($oMbqEtForumPost->oMbqEtForumTopic);
     }
     
@@ -76,7 +76,7 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
      * @param  Object  $oMbqEtForumPost
      * @return  Boolean
      */
-    public function canAclGetRawPost($oMbqEtForumPost) {
+    public function canAclGetRawPost($oMbqEtForumPost = null) {
         return $this->canAclSaveRawPost($oMbqEtForumPost);
     }
     
@@ -86,7 +86,7 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
      * @param  Object  $oMbqEtForumPost
      * @return  Boolean
      */
-    public function canAclSaveRawPost($oMbqEtForumPost) {
+    public function canAclSaveRawPost($oMbqEtForumPost = null) {
         //ref threadPostList.tpl,wbb\form\PostEditForm
         if (MbqMain::hasLogin() && $oMbqEtForumPost->oMbqEtForumTopic && $oMbqEtForumPost->mbqBind['oViewablePost'] && $oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']) {
             $oThread = $oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();

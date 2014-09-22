@@ -21,7 +21,7 @@ Class MbqAclEtAtt extends MbqBaseAclEtAtt {
      * @param  Object  $oMbqEtForum
      * @return  Boolean
      */
-    public function canAclUploadAttach($oMbqEtForum) {
+    public function canAclUploadAttach($oMbqEtForum = null) {
         return $oMbqEtForum->canUpload->oriValue;
     }
     
@@ -32,7 +32,7 @@ Class MbqAclEtAtt extends MbqBaseAclEtAtt {
      * @param  Object  $oMbqEtForum
      * @return  Boolean
      */
-    public function canAclRemoveAttachment($oMbqEtAtt, $oMbqEtForum) {
+    public function canAclRemoveAttachment($oMbqEtAtt = null, $oMbqEtForum = null) {
         if ($oMbqEtAtt->mbqBind['oAttachment'] && $oMbqEtAtt->mbqBind['oAttachment']->canDelete()) {
             return true;
         }

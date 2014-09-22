@@ -23,7 +23,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @param  Object  $oMbqEtForum
      * @return  Boolean
      */
-    public function canAclGetTopic($oMbqEtForum) {
+    public function canAclGetTopic($oMbqEtForum = null) {
         if ($oMbqEtForum->mbqBind['oDetailedBoardNode'] && $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard()->canEnter()) {
             return true;
         }
@@ -36,7 +36,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @param  Object  $oMbqEtForumTopic
      * @return  Boolean
      */
-    public function canAclGetThread($oMbqEtForumTopic) {
+    public function canAclGetThread($oMbqEtForumTopic = null) {
         //ref wbb\page\ThreadPage::readParameters()
         if ($oMbqEtForumTopic->mbqBind['oViewableThread'] && !$oMbqEtForumTopic->mbqBind['oViewableThread']->movedThreadID && $oMbqEtForumTopic->mbqBind['oViewableThread']->canRead()) {
             return true;
@@ -116,7 +116,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @param  Object  $oMbqEtForum
      * @return  Boolean
      */
-    public function canAclNewTopic($oMbqEtForum) {
+    public function canAclNewTopic($oMbqEtForum = null) {
         //ref board.tpl,wbb\form\ThreadAddForm::readParameters()
         if (MbqMain::hasLogin() && $oMbqEtForum->mbqBind['oDetailedBoardNode'] && $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard()->canStartThread()) {
             $oBoard = $oMbqEtForum->mbqBind['oDetailedBoardNode']->getBoard();
@@ -141,7 +141,8 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @param  Object  $oMbqEtForumTopic
      * @return  Boolean
      */
-    public function canAclSubscribeTopic($oMbqEtForumTopic) {
+    public function canAclSubscribeTopic($oMbqEtForumTopic = null) {
+        error_log('isSubscribed:'.$oMbqEtForumTopic->isSubscribed->oriValue);
         if (MbqMain::hasLogin() && !$oMbqEtForumTopic->isSubscribed->oriValue) {
             return true;
         }
@@ -154,7 +155,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @param  Object  $oMbqEtForumTopic
      * @return  Boolean
      */
-    public function canAclUnsubscribeTopic($oMbqEtForumTopic) {
+    public function canAclUnsubscribeTopic($oMbqEtForumTopic = null) {
         if (MbqMain::hasLogin() && $oMbqEtForumTopic->isSubscribed->oriValue) {
             return true;
         }

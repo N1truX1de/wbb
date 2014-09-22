@@ -26,7 +26,7 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
      * @param  String  $groupId
      * @return  Object  $oMbqEtAtt
      */
-    public function uploadAttachment($forumId, $groupId) {
+    public function uploadAttachment($forumId = null, $groupId = null) {
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($forumId), array('case' => 'byForumIds'));
         if ($objsMbqEtForum && ($oMbqEtForum = $objsMbqEtForum[0])) {
@@ -60,7 +60,7 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
      *
      * @param  Object  $oMbqEtAtt
      */
-    public function deleteAttachment($oMbqEtAtt) {
+    public function deleteAttachment($oMbqEtAtt = null) {
         //ref wcf\action\AJAXProxyAction::invoke(),wcf\data\attachment\AttachmentAction,wcf\data\AbstractDatabaseObjectAction
         $oAttachmentAction = new AttachmentAction(array($oMbqEtAtt->attId->oriValue), 'delete', array());
         $oAttachmentAction->delete();   //todo:catch exception

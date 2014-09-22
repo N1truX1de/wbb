@@ -41,7 +41,7 @@ Class MbqWrEtPcMsg extends MbqBaseWrEtPcMsg {
      * @param  Object  $oMbqEtPcMsg
      * @param  Object  $oMbqEtPc
      */
-    public function addMbqEtPcMsg(&$oMbqEtPcMsg, $oMbqEtPc) {
+    public function addMbqEtPcMsg(&$oMbqEtPcMsg = null, $oMbqEtPc = null) {
         $oConversation = $oMbqEtPc->mbqBind['oViewableConversation']->getDecoratedObject();
         //ref wcf\form\MessageForm,wcf\form\ConversationMessageAddForm
         $oMbqEtPcMsg->msgContent->setOriValue(MessageUtil::stripCrap(StringUtil::trim($oMbqEtPcMsg->msgContent->oriValue)));
