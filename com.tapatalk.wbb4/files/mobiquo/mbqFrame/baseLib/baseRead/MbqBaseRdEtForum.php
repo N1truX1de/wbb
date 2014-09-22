@@ -164,8 +164,8 @@ Abstract Class MbqBaseRdEtForum extends MbqBaseRd {
      */
     protected function recurMakeApiTreeDataForum(&$dataChild, $objsSubMbqEtForum) {
         $j = 0;
-        foreach ($objsSubMbqEtForum as $$oMbqEtForum) {
-            $dataChild[$j] = $this->returnApiDataForum($$oMbqEtForum);
+        foreach ($objsSubMbqEtForum as $oMbqEtForum) {
+            $dataChild[$j] = $this->returnApiDataForum($oMbqEtForum);
             $j ++;
         }
     }

@@ -162,7 +162,7 @@ Class MbqIoHandleXmlrpc {
             $this->base64Keys[] = 'delete_reason';
     }
     
-    private function resetGlobals() {
+    private static function resetGlobals() {
         if (!isset($GLOBALS['xmlrpcI4'])) {
             $GLOBALS['xmlrpcI4']='i4';
             $GLOBALS['xmlrpcInt']='int';

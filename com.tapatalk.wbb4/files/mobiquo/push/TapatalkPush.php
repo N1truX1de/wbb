@@ -454,6 +454,7 @@ Class TapatalkPush extends TapatalkBasePush {
         if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
             $objsUser = $this->getUsersByTag($p['oMbqEtForumTopic']->topicContent->oriValue);
             $topicId = $p['oMbqEtForumTopic']->topicId->oriValue;
+            $oThread = $this->getTopicByTopicId($topicId);
             $postId = $oThread->firstPostID;
         } else {    //native plugin
             $postId = $p['postId'];

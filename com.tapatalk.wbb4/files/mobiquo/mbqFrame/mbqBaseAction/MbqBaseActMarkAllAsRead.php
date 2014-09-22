@@ -24,7 +24,7 @@ Abstract Class MbqBaseActMarkAllAsRead extends MbqBaseAct {
         $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
         if ($oMbqAclEtForumTopic->canAclMarkAllAsRead()) {    //acl judge
             $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
-            $oMbqWrEtForumTopic->markForumTopicRead($dummy = NULL, array('case' => 'markAllAsRead'));
+            $oMbqWrEtForumTopic->markForumTopicRead($dummy, array('case' => 'markAllAsRead'));
             $this->data['result'] = true;
         } else {
             MbqError::alert('', '', '', MBQ_ERR_APP);
