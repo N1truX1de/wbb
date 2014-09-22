@@ -25,7 +25,7 @@ Abstract Class MbqBaseActInviteParticipant extends MbqBaseAct {
         $oMbqEtPcInviteParticipant = MbqMain::$oClk->newObj('MbqEtPcInviteParticipant');
         $oMbqEtPcInviteParticipant->userNames->setOriValue(MbqMain::$input[0]);
         $oMbqEtPcInviteParticipant->convId->setOriValue(MbqMain::$input[1]);
-        $oMbqEtPcInviteParticipant->inviteReasonText->setOriValue(MbqMain::$input[2]);
+        $oMbqEtPcInviteParticipant->inviteReasonText->setOriValue(isset(MbqMain::$input[2]) ? MbqMain::$input[2] : "");
         $oMbqRdEtPc = MbqMain::$oClk->newObj('MbqRdEtPc');
         if ($objsMbqEtPc = $oMbqRdEtPc->getObjsMbqEtPc(array($oMbqEtPcInviteParticipant->convId->oriValue), array('case' => 'byConvIds'))) {
             $oMbqEtPcInviteParticipant->oMbqEtPc = $objsMbqEtPc[0];

@@ -18,7 +18,7 @@ Class MbqRdEtSysStatistics extends MbqBaseRdEtSysStatistics {
     public function __construct() {
     }
     
-    public function makeProperty(&$oMbqEtSysStatistics, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtSysStatistics = null, $pName = null, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -40,8 +40,8 @@ Class MbqRdEtSysStatistics extends MbqBaseRdEtSysStatistics {
 			$usersOnlineList->getConditionBuilder()->add('session.userID IS NOT NULL');
 			$usersOnlineList->readObjects();
 			// check users online record
-			$usersOnlineTotal = (WBB_USERS_ONLINE_RECORD_NO_GUESTS ? $usersOnlineList->stats['members'] : $usersOnlineList->stats['total']);
-			if ($usersOnlineTotal > WBB_USERS_ONLINE_RECORD) {
+			$usersOnlineTotal = (defined('WBB_USERS_ONLINE_RECORD_NO_GUESTS') ? $usersOnlineList->stats['members'] : $usersOnlineList->stats['total']);
+			if (!defined('WBB_USERS_ONLINE_RECORD') || $usersOnlineTotal > WBB_USERS_ONLINE_RECORD) {
 				// save new record
 				$optionAction = new OptionAction(array(), 'import', array('data' => array(
 					'wbb_users_online_record' => $usersOnlineTotal,

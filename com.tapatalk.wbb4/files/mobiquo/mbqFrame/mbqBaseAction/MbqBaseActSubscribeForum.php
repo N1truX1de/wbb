@@ -25,7 +25,7 @@ Abstract Class MbqBaseActSubscribeForum extends MbqBaseAct {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
         $forumId = MbqMain::$input[0];
-        $subscribeMode = MbqMain::$input[1];
+        $subscribeMode = isset(MbqMain::$input[1]) ? MbqMain::$input[1] : 0;
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($forumId), array('case' => 'byForumIds'));
         if ($objsMbqEtForum && ($oMbqEtForum = $objsMbqEtForum[0])) {

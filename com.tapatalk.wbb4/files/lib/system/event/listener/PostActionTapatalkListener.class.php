@@ -21,7 +21,7 @@ class PostActionTapatalkListener implements IEventListener {
         //error_log(print_r($eventObj->getParameters(), true));
         //error_log(print_r($eventObj->getReturnValues(), true));
         
-        if ($_GET['controller'] == 'AJAXProxy' && $_POST['actionName'] == 'quickReply' && $className == 'wbb\data\post\PostAction' && $eventName == 'finalizeAction') {
+        if (isset($_GET['controller']) && $_GET['controller'] == 'AJAXProxy' && $_POST['actionName'] == 'quickReply' && $className == 'wbb\data\post\PostAction' && $eventName == 'finalizeAction') {
             //quick reply post
             $ret = $eventObj->getReturnValues();
             if ($ret['actionName'] == 'triggerPublication' && $ret['objectIDs'] && ($postId = array_shift($ret['objectIDs']))) {

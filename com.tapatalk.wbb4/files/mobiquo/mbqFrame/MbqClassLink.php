@@ -23,7 +23,7 @@ Class MbqClassLink {
      * @return  Boolean
      */
     public function hasReg($name) {
-        return $this->classes[$name] ? true : false;
+        return isset($this->classes[$name]) ? true : false;
     }
     
     /**

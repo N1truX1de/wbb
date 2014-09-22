@@ -30,7 +30,7 @@ Class MbqActReplyPost extends MbqBaseActReplyPost {
         $oMbqEtForumPost->postContent->setOriValue(MbqMain::$input[3]);
         if (isset(MbqMain::$input[4])) $oMbqEtForumPost->attachmentIdArray->setOriValue((array) MbqMain::$input[4]);
         if (isset(MbqMain::$input[5])) $oMbqEtForumPost->groupId->setOriValue(MbqMain::$input[5]);
-        $returnHtml = (boolean) MbqMain::$input[6];
+        $returnHtml = (boolean) (isset(MbqMain::$input[6]) ? MbqMain::$input[6] : false);
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($oMbqEtForumPost->forumId->oriValue), array('case' => 'byForumIds'));
         if ($objsMbqEtForum && ($oMbqEtForum = $objsMbqEtForum[0])) {
