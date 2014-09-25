@@ -154,13 +154,20 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
             foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
                 $oThreadPostList = new ThreadPostList($oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject());
-        		$oThreadPostList->setObjectIDs(array($oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->firstPostID));
-        		$oThreadPostList->readObjects();
-        		foreach ($oThreadPostList->getObjects() as $oViewablePost) {
+                $oThreadPostList->setObjectIDs(array($oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->firstPostID));
+                $oThreadPostList->readObjects();
+                foreach ($oThreadPostList->getObjects() as $oViewablePost) {
                     $oMbqEtForumTopic->topicContent->setOriValue($oViewablePost->getDecoratedObject()->getMessage());
+                    $oMbqEtForumTopic->oFirstMbqEtForumPost = $oViewablePost;
+                    break;  //only get the first post
+                }
+                $oThreadPostList->setObjectIDs(array($oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->lastPostID));
+                $oThreadPostList->readObjects();
+                foreach ($oThreadPostList->getObjects() as $oViewablePost) {
+                    $oMbqEtForumTopic->oLastMbqEtForumPost = $oViewablePost;
                     $oMbqEtForumTopic->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($oMbqRdEtForumPost->processContentForDisplay($oViewablePost, true)));  //!!!
-        		    break;  //only get the first post
-            	}
+                    break;  //only get the lase post
+                }
             }
             /* load oMbqEtForum property */
             $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
