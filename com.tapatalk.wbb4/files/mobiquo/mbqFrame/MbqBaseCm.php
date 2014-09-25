@@ -57,7 +57,7 @@ Abstract Class MbqBaseCm {
         $str = preg_replace('/\[confidential[^\]]*?\].*?\[\/confidential\]/is', '[hide]', $str);
         $str = preg_replace('/\[ebay[^\]]*?\].*?\[\/ebay\]/is', '[ebay]', $str);
         $str = preg_replace('/\[map[^\]]*?\].*?\[\/map\]/is', '[map]', $str);
-        $str = preg_replace('/[\n|\r|\t]/', '', $str);
+        $str = preg_replace('/[\n|\r|\t]/', ' ', $str);
         //remove useless bbcode begin
         $str = preg_replace_callback('/\[([^\/]*?)\]/i', create_function('$matches','
         $v = strtolower($matches[1]);
