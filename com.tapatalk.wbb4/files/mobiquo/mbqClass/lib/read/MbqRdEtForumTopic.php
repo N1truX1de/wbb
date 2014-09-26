@@ -278,6 +278,21 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             } else {
                 $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
             }
+            if ($oThread->isSticky) {
+                $oMbqEtForumTopic->isSticky->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSticky.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isSticky->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSticky.range.no'));
+            }
+            if ($oThread->isClosed) {
+                $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.no'));
+            }
+            if ($oThread->isDisabled) {
+                $oMbqEtForumTopic->isApproved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isApproved.range.no'));
+            } else {
+                $oMbqEtForumTopic->isApproved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isApproved.range.yes'));
+            }
             $oMbqEtForumTopic->mbqBind['oViewableThread'] = $var;
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {
