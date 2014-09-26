@@ -160,19 +160,18 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 foreach ($oThreadPostList->getObjects() as $oViewablePost) {
                     $oMbqEtForumTopic->topicContent->setOriValue($oViewablePost->getDecoratedObject()->getMessage());
                     $oMbqEtForumTopic->oFirstMbqEtForumPost = $oViewablePost;
-                    if (isset($mbqOpt['originCase']) && $mbqOpt['originCase'] == "byForum"){
-                        $oMbqEtForumTopic->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($oMbqRdEtForumPost->processContentForDisplay($oViewablePost, true)));
-                    }
+                    $shortContent=MbqMain::$oMbqCm->getShortContent($oMbqRdEtForumPost->processContentForDisplay($oViewablePost, true));
                     break;  //only get the first post
                 }
                 $oThreadPostList->setObjectIDs(array($oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject()->lastPostID));
                 $oThreadPostList->readObjects();
                 foreach ($oThreadPostList->getObjects() as $oViewablePost) {
                     $oMbqEtForumTopic->oLastMbqEtForumPost = $oViewablePost;
-                    if (isset($mbqOpt['originCase']) && $mbqOpt['originCase'] != "byForum"){
-                        $oMbqEtForumTopic->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($oMbqRdEtForumPost->processContentForDisplay($oViewablePost, true)));
-                    }
+                    $oMbqEtForumTopic->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($oMbqRdEtForumPost->processContentForDisplay($oViewablePost, true)));
                     break;  //only get the lase post
+                }
+                if (isset($mbqOpt['originCase']) && $mbqOpt['originCase'] == "byForum" && isset($shortContent)){
+                    $oMbqEtForumTopic->shortContent->setOriValue($shortContent);
                 }
             }
             /* load oMbqEtForum property */
