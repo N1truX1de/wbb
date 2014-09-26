@@ -160,6 +160,9 @@ Abstract Class MbqBaseRdEtForumTopic extends MbqBaseRd {
         } else {
             $data['can_move'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canMove.default');
         }
+        if ($oMbqEtForumTopic->isMoved->hasSetOriValue()) {
+            $data['is_moved'] = (boolean) $oMbqEtForumTopic->isMoved->oriValue;
+        }
         if ($oMbqEtForumTopic->modByUserId->hasSetOriValue()) {
             $data['moderated_by_id'] = (string) $oMbqEtForumTopic->modByUserId->oriValue;
         }

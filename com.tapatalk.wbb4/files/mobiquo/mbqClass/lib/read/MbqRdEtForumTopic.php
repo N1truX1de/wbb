@@ -292,6 +292,11 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             } else {
                 $oMbqEtForumTopic->isApproved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isApproved.range.yes'));
             }
+            if ($oThread->movedThreadID) {
+                $oMbqEtForumTopic->isMoved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isMoved.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isMoved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isMoved.range.no'));
+            }
             $oMbqEtForumTopic->mbqBind['oViewableThread'] = $var;
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {

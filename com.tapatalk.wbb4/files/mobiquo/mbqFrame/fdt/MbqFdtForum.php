@@ -184,6 +184,12 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                     'no' => false
                 )
             ),
+            'isMoved' => array(
+                'range' => array(
+                    'yes' => true,
+                    'no' => false
+                )
+            ),
             'canReply' => array(
                 'default' => false,
                 'range' => array(

@@ -48,6 +48,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $canClose;   /* return true if the user has authority to close this topic. */
     public $canRename;  /* return true if the user has authority to rename this topic. */
     public $canMove;    /* return true if the user has authority to move this topic to somewhere else. */
+    public $isMoved;
     public $modByUserId;    /* If this topic has already been moderated, return the user id of the person who moderated this topic */
     public $deleteByUserId; /* return the user id of the person who has previously soft-deleted this topic */
     public $deleteReason;   /* return reason of deletion, if any. */
@@ -107,6 +108,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->canClose = clone MbqMain::$simpleV;
         $this->canRename = clone MbqMain::$simpleV;
         $this->canMove = clone MbqMain::$simpleV;
+        $this->isMoved = clone MbqMain::$simpleV;
         $this->modByUserId = clone MbqMain::$simpleV;
         $this->deleteByUserId = clone MbqMain::$simpleV;
         $this->deleteReason = clone MbqMain::$simpleV;
