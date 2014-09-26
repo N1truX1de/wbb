@@ -2,6 +2,8 @@
 
 use wbb\data\thread\ViewableThreadList;
 use wbb\data\post\ViewablePostList;
+use wcf\system\visitTracker\VisitTracker;
+use wcf\system\WCF;
 
 defined('MBQ_IN_IT') or exit;
 
@@ -38,6 +40,20 @@ Class MbqRdForumSearch extends MbqBaseRdForumSearch {
                 $oViewableThreadList->getConditionBuilder()->add('thread.threadID IN (SELECT threadID from wbb'.WCF_N.'_post where userID = ?)', array(MbqMain::$oCurMbqEtUser->userId->oriValue));   //!!!
                 $oViewableThreadList->readObjects();
                 $oMbqDataPage->totalNum = $oViewableThreadList->countObjects();
+                $oUnreadThreadList = new ViewableThreadList();                
+                $oUnreadThreadList->sqlConditionJoins = "    LEFT JOIN   wcf".WCF_N."_tracked_visit tracked_thread_visit
+                            ON      (tracked_thread_visit.objectTypeID = ".VisitTracker::getInstance()->getObjectTypeID('com.woltlab.wbb.thread')." AND tracked_thread_visit.objectID = thread.threadID AND tracked_thread_visit.userID = ".WCF::getUser()->userID.")
+                            LEFT JOIN   wcf".WCF_N."_tracked_visit tracked_board_visit
+                            ON      (tracked_board_visit.objectTypeID = ".VisitTracker::getInstance()->getObjectTypeID('com.woltlab.wbb.board')." AND tracked_board_visit.objectID = thread.boardID AND tracked_board_visit.userID = ".WCF::getUser()->userID.")";
+                $oUnreadThreadList->sqlOffset = $oMbqDataPage->startNum;
+                $oUnreadThreadList->sqlLimit = $oMbqDataPage->numPerPage;
+                $oUnreadThreadList->getConditionBuilder()->add('thread.isAnnouncement = 0');   //!!!
+                $oUnreadThreadList->getConditionBuilder()->add('thread.threadID IN (SELECT threadID from wbb'.WCF_N.'_post where userID = ?)', array(MbqMain::$oCurMbqEtUser->userId->oriValue));   //!!!
+                $oUnreadThreadList->getConditionBuilder()->add('thread.lastPostTime > ?', array(VisitTracker::getInstance()->getVisitTime('com.woltlab.wbb.thread')));
+                $oUnreadThreadList->getConditionBuilder()->add("(thread.lastPostTime > tracked_thread_visit.visitTime OR tracked_thread_visit.visitTime IS NULL)");
+                $oUnreadThreadList->getConditionBuilder()->add("(thread.lastPostTime > tracked_board_visit.visitTime OR tracked_board_visit.visitTime IS NULL)");
+                $oUnreadThreadList ->readObjects();
+                $oMbqDataPage->totalUnreadNum = $oUnreadThreadList->countObjects();
                 /* common begin */
                 $mbqOpt['case'] = 'byObjsViewableThread';
                 $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
