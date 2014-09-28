@@ -57,6 +57,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $authorIconUrl;  /* author icon url */
     public $isHot;          /* Topic is hot or not */
     public $isDigest;       /* Topic is digest or not */
+    public $realTopicId;
     
     public $oMbqEtForum;
     public $oFirstMbqEtForumPost;
@@ -117,6 +118,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->authorIconUrl = clone MbqMain::$simpleV;
         $this->isHot = clone MbqMain::$simpleV;
         $this->isDigest = clone MbqMain::$simpleV;
+        $this->realTopicId = clone MbqMain::$simpleV;
         
         $this->oMbqEtForum = NULL;
         $this->oFirstMbqEtForumPost = NULL;

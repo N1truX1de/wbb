@@ -294,6 +294,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             }
             if ($oThread->movedThreadID) {
                 $oMbqEtForumTopic->isMoved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isMoved.range.yes'));
+                $oMbqEtForumTopic->realTopicId->setOriValue($oThread->movedThreadID);
             } else {
                 $oMbqEtForumTopic->isMoved->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isMoved.range.no'));
             }

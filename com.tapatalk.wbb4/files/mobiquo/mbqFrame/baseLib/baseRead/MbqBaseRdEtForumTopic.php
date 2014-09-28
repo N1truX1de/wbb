@@ -165,6 +165,9 @@ Abstract Class MbqBaseRdEtForumTopic extends MbqBaseRd {
         if ($oMbqEtForumTopic->isMoved->hasSetOriValue()) {
             $data['is_moved'] = (boolean) $oMbqEtForumTopic->isMoved->oriValue;
         }
+        if ($oMbqEtForumTopic->realTopicId->hasSetOriValue()) {
+            $data['real_topic_id'] = (boolean) $oMbqEtForumTopic->realTopicId->oriValue;
+        }
         if ($oMbqEtForumTopic->modByUserId->hasSetOriValue()) {
             $data['moderated_by_id'] = (string) $oMbqEtForumTopic->modByUserId->oriValue;
         }
