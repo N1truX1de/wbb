@@ -44,18 +44,17 @@ Abstract Class MbqBaseRdEtForumTopic extends MbqBaseRd {
         if ($oMbqEtForumTopic->prefixName->hasSetOriValue()) {
             $data['prefix'] = (string) $oMbqEtForumTopic->prefixName->oriValue;
         }
-        if ($oMbqEtForumTopic->topicAuthorId->hasSetOriValue()) {
-            $data['topic_author_id'] = (string) $oMbqEtForumTopic->topicAuthorId->oriValue;
-        }
-        if ($oMbqEtForumTopic->oAuthorMbqEtUser) {
-            $data['topic_author_name'] = (string) $oMbqEtForumTopic->oAuthorMbqEtUser->getDisplayName();
-            $data['post_author_name'] = (string) $oMbqEtForumTopic->oAuthorMbqEtUser->getDisplayName();
+        if (MbqMain::$cmd == 'get_topic' || MbqMain::$cmd == 'get_user_topic') {
+            if ($oMbqEtForumTopic->topicAuthorId->hasSetOriValue()) {
+                $data['topic_author_id'] = (string) $oMbqEtForumTopic->topicAuthorId->oriValue;
+            }
+            if ($oMbqEtForumTopic->oAuthorMbqEtUser) {
+                $data['topic_author_name'] = (string) $oMbqEtForumTopic->oAuthorMbqEtUser->getDisplayName();
+            }
         }
         if ($oMbqEtForumTopic->oLastReplyMbqEtUser) {
             $data['last_reply_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
             $data['last_reply_author_id'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->userId->oriValue;
-            $data['post_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
-            $data['post_author_id'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->userId->oriValue;
         }
         if ($oMbqEtForumTopic->attachmentIdArray->hasSetOriValue()) {
             $data['attachment_id_array'] = (array) $oMbqEtForumTopic->attachmentIdArray->oriValue;
@@ -83,10 +82,14 @@ Abstract Class MbqBaseRdEtForumTopic extends MbqBaseRd {
         if (MbqMain::$cmd == 'get_topic' || MbqMain::$cmd == 'get_user_topic') {
             if ($oMbqEtForumTopic->authorIconUrl->hasSetOriValue()) {
                 $data['icon_url'] = (string) $oMbqEtForumTopic->authorIconUrl->oriValue;
+                $data['post_author_name'] = (string) $oMbqEtForumTopic->oAuthorMbqEtUser->getDisplayName();
+                $data['post_author_id'] = (string) $oMbqEtForumTopic->oAuthorMbqEtUser->userId->oriValue;
             }
         } else {
             if ($oMbqEtForumTopic->oLastReplyMbqEtUser && $oMbqEtForumTopic->oLastReplyMbqEtUser->iconUrl->hasSetOriValue()) {
                 $data['icon_url'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->iconUrl->oriValue;
+                $data['post_author_name'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->getDisplayName();
+                $data['post_author_id'] = (string) $oMbqEtForumTopic->oLastReplyMbqEtUser->userId->oriValue;
             }
         }
         if ($oMbqEtForumTopic->lastReplyTime->hasSetOriValue()) {
