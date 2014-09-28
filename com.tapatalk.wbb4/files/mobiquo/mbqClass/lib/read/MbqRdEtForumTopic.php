@@ -143,6 +143,9 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             $forumIds = array();
             $topicIds = array();
             foreach ($objsViewableThread as $oViewableThread) {
+                if($oViewableThread->getDecoratedObject()->isDisabled && (!WCF::getSession()->getPermission('mod.board.isSuperMod') || !WCF::getSession()->getPermission('mod.board.canEnableThread'))){
+                    continue;
+                }
                 $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oViewableThread, array('case' => 'oViewableThread'));
             }
             foreach ($objsMbqEtForumTopic as $oMbqEtForumTopic) {
