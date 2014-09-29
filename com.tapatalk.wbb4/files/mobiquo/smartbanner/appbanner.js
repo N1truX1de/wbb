@@ -98,6 +98,7 @@ function tapatalkDetect()
     
     bannerLoaded = true
     
+    app_banner_message = app_banner_message.replace(/\{\/?literal\}/gi, '');
     app_banner_message = app_banner_message.replace(/\{your_forum_name\}/gi, app_forum_name);
     app_banner_message = app_banner_message.replace(/\{app_name\}/gi, "Tapatalk");
     
