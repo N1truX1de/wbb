@@ -1,80 +1,90 @@
 <?php
 namespace wbb\system\event\listener;
+use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\event\IEventListener;
 use wcf\system\WCF;
-use wcf\system\database\util\PreparedStatementConditionBuilder;
 
 /**
-* listen ConversationMessageAction finalizeAction event
-*/
+ * Listen ConversationMessageAction finalizeAction event
+ * 
+ * @author	Sascha Greuel, Tom Wu
+ * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @package	com.tapatalk.wbb4
+ * @subpackage	system.event.listener
+ */
 class ConversationMessageActionTapatalkListener implements IEventListener {
-    /**
-    * @see \wcf\system\event\IEventListener::execute()
-    */
-    public function execute($eventObj, $className, $eventName) {
-        //error_log(print_r($_GET, true));
-        //error_log(print_r($_POST, true));
-        //error_log("$className, $eventName");
-        //error_log(print_r($eventObj, true));
-        //error_log(print_r($eventObj->getActionName(), true));
-        //error_log(print_r($eventObj->getParameters(), true));
-        //error_log(print_r($eventObj->getReturnValues(), true));
-        
-        if (isset($_GET['controller']) && $_GET['controller'] == 'ConversationAdd' && $className == 'wcf\data\conversation\message\ConversationMessageAction' && $eventName == 'finalizeAction' && $eventObj->getActionName() == 'create') {
-            //new conversation
-            $p = $eventObj->getParameters();
-            $ret = $eventObj->getReturnValues();
-            if (isset($p['conversation']) && $p['conversation']->conversationID) {
-                $title = $p['conversation']->subject;
-                $pushPath = 'mobiquo/push/TapatalkPush.php';
-                require_once($pushPath);
-                $oTapatalkPush = new \TapatalkPush();   //!!!
-                $oTapatalkPush->callMethod('doPushNewConversation', array(
-                    'convId' => $p['conversation']->conversationID,
-                    'title' => $title
-                ));
-                
-            }
-        } elseif (isset($_GET['controller']) && $_GET['controller'] == 'AJAXProxy' && $className == 'wcf\data\conversation\message\ConversationMessageAction' && $eventName == 'finalizeAction' && $eventObj->getActionName() == 'quickReply') {
-            //quick reply conversation
-            $p = $eventObj->getParameters();
-            $ret = $eventObj->getReturnValues();
-            if (isset($p['data']) && $p['data']['conversationID']) {
-                $pushPath = 'mobiquo/push/TapatalkPush.php';
-                require_once($pushPath);
-                $oTapatalkPush = new \TapatalkPush();   //!!!
-                $oTapatalkPush->callMethod('doPushReplyConversation', array(
-                    'convId' => $p['data']['conversationID'],
-                    'msgId' => $this->getLatestMsgId($p['data']['conversationID'])
-                ));
-            }
-        } elseif (isset($_GET['controller']) && $_GET['controller'] == 'ConversationMessageAdd' && $className == 'wcf\data\conversation\message\ConversationMessageAction' && $eventName == 'finalizeAction' && $eventObj->getActionName() == 'create') {
-            //more options reply conversation
-            $p = $eventObj->getParameters();
-            $ret = $eventObj->getReturnValues();
-            if (isset($ret['returnValues']) && $ret['returnValues']->messageID && $ret['returnValues']->conversationID) {
-                $pushPath = 'mobiquo/push/TapatalkPush.php';
-                require_once($pushPath);
-                $oTapatalkPush = new \TapatalkPush();   //!!!
-                $oTapatalkPush->callMethod('doPushReplyConversation', array(
-                    'convId' => $ret['returnValues']->conversationID,
-                    'msgId' => $ret['returnValues']->messageID
-                ));
-            }
-        }
-    }
-    
-    private function getLatestMsgId($convId) {
-		$conditionBuilder = new PreparedStatementConditionBuilder();
-		$conditionBuilder->add('msg.conversationID = ?', array($convId));
-		$sql = "SELECT MAX(msg.messageID) AS messageID FROM wcf".WCF_N."_conversation_message AS msg ".$conditionBuilder;
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute($conditionBuilder->getParameters());
-		while ($row = $statement->fetchArray()) {
-			return $row['messageID'];
+	/**
+	* @see \wcf\system\event\IEventListener::execute()
+	*/
+	public function execute($eventObj, $className, $eventName) {
+		$method = '';
+		$pushData = array();
+		
+		$controller = $_GET['controller'];
+		$parameters = $eventObj->getParameters();
+		$returnValues = $eventObj->getReturnValues();
+		$actionName = $eventObj->getActionName();
+		
+		if ($controller == 'ConversationAdd' && $actionName == 'create') {
+			// new conversation
+			if (!empty($parameters['conversation']) && $parameters['conversation']->conversationID && $parameters['conversation']->subject) {
+				$method = 'doPushNewConversation';
+				$pushData = array(
+					'convId' => $parameters['conversation']->conversationID,
+					'title' => $parameters['conversation']->subject
+				);
+			}
 		}
-    }
-
+		else if ($controller == 'ConversationMessageAdd' && $actionName == 'create') {
+			// extended reply
+			if (!empty($returnValues['returnValues']) && $returnValues['returnValues']->messageID && $returnValues['returnValues']->conversationID) {
+				$method = 'doPushReplyConversation';
+				$pushData = array(
+					'convId' => $returnValues['returnValues']->conversationID,
+					'msgId' => $returnValues['returnValues']->messageID
+				);
+			}
+		}
+		else if ($controller == 'AJAXProxy' && $actionName == 'quickReply') {
+			// quick reply
+			if (!empty($parameters['data']['conversationID']) && $parameters['data']['conversationID']) {
+				$latestMessageID = $this->getLatestMsgID($parameters['data']['conversationID']);
+				
+				if ($latestMessageID) {
+					$method = 'doPushReplyConversation';
+					$pushData = array(
+						'convId' => $parameters['data']['conversationID'],
+						'msgId' => $latestMessageID
+					);
+				}
+			}
+		}
+		
+		// push
+		if (!empty($method) && !empty($pushData)) {
+			if (file_exists(WBB_TAPATALK_DIR . '/push/TapatalkPush.php')) {
+				require_once(WBB_TAPATALK_DIR . '/push/TapatalkPush.php');
+				$tapatalkPush = new \TapatalkPush();
+				
+				$tapatalkPush->callMethod($method, $pushData);
+			}
+		}
+	}
+	
+	private function getLatestMsgID($conversationID) {
+		$conditionBuilder = new PreparedStatementConditionBuilder();
+		$conditionBuilder->add('msg.conversationID = ?', array($conversationID));
+		$sql = "SELECT	MAX(msg.messageID) AS messageID
+			FROM	wcf".WCF_N."_conversation_message AS msg
+			".$conditionBuilder;
+		$statement = WCF::getDB()->prepareStatement($sql, 1);
+		$statement->execute($conditionBuilder->getParameters());
+		$row = $statement->fetchArray();
+		
+		if (!empty($row)) {
+			return intval($row['messageID']);
+		}
+		
+		return 0;
+	}
 }
-
-?>
