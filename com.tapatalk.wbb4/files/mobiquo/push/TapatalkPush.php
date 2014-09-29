@@ -450,39 +450,86 @@ Class TapatalkPush extends TapatalkBasePush {
      */
     protected function doPushNewTopic($p) {
         $push_data = array();
-        $objsUser = array();
         if (defined('MBQ_IN_IT') && MBQ_IN_IT) {    //mobiquo
-            $objsUser = $this->getUsersByTag($p['oMbqEtForumTopic']->topicContent->oriValue);
+            $boardId = $p['oMbqEtForumTopic']->forumId->oriValue;
             $topicId = $p['oMbqEtForumTopic']->topicId->oriValue;
-            $oThread = $this->getTopicByTopicId($topicId);
             $postId = $oThread->firstPostID;
         } else {    //native plugin
             $postId = $p['postId'];
+            $boardId = $p['boardId'];
             $oPost = $this->getPostByPostId($postId);
             if ($oPost) {
-                $objsUser = $this->getUsersByTag($oPost->message);
                 $topicId = $oPost->threadID;
             } else {
                 return false;
             }
         }
-        $oThread = $this->getTopicByTopicId($topicId);
-		//send tag push
-		if ($objsUser && $oThread) {
+        /* not fully supported, yet
+		$query ="SELECT userID FROM wcf".WCF_N."_user_object_watch WHERE objectTypeID = ? and objectID = ?";
+		$statement = $this->oDb->prepareStatement($query);
+	    $statement->execute(array(
+		ObjectTypeCache::getInstance()->getObjectTypeIDByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.board'),
+		$boardId
+	    ));
+	    $userIds = array();
+		while ($r = $statement->fetchArray()) {
+		    $userIds[] = $r['userID'];
+		}
+		$objsUser = $this->getUsersByUserIdsExceptMe($userIds);
+		$oThread = $this->getTopicByTopicId($topicId);
+		$oPost = $this->getPostByPostId($postId);
+		//send sub push
+		if ($objsUser && $oThread && $oPost) {
 	        //can send push
 	        foreach ($objsUser as $oUser) {
                 $pushPack = array(
                     'userid'    => $oUser->userID,
-                    'type'      => 'tag',
+                    'type'      => 'sub',
                     'id'        => $topicId,
                     'subid'     => $postId,
-                    'title'     => $oThread->getTitle(),
+                    'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
                     'author'    => $this->oUser->username,
                     'dateline'  => time()
                 );
                 $push_data[] = $pushPack;
 	        }
             $this->push($push_data);
+		}*/
+		if ($oThread && $oPost) {
+		    $objsUser = $this->getUsersByTag($oPost->message);
+		    if ($objsUser) {    //send tag push
+		        //can send push
+    	        foreach ($objsUser as $oUser) {
+                    $pushPack = array(
+                        'userid'    => $oUser->userID,
+                        'type'      => 'tag',
+                        'id'        => $topicId,
+                        'subid'     => $postId,
+                        'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
+                        'author'    => $this->oUser->username,
+                        'dateline'  => time()
+                    );
+                    $push_data[] = $pushPack;
+    	        }
+                $this->push($push_data);
+		    }
+		    $objsUser = $this->getUsersByQuote($oPost->message);
+		    if ($objsUser) {    //send quote push
+		        //can send push
+    	        foreach ($objsUser as $oUser) {
+                    $pushPack = array(
+                        'userid'    => $oUser->userID,
+                        'type'      => 'quote',
+                        'id'        => $topicId,
+                        'subid'     => $postId,
+                        'title'     => $oPost->subject ? $oPost->subject : $oThread->getTitle(),
+                        'author'    => $this->oUser->username,
+                        'dateline'  => time()
+                    );
+                    $push_data[] = $pushPack;
+    	        }
+                $this->push($push_data);
+		    }
 		}
         return false;
     }
