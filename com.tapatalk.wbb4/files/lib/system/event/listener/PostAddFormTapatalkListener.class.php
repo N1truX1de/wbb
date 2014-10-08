@@ -1,46 +1,41 @@
 <?php
 namespace wbb\system\event\listener;
+use wbb\data\thread\ViewableThreadList;
 use wcf\system\event\IEventListener;
 use wcf\system\WCF;
-use wbb\data\thread\ViewableThreadList;
 
 /**
-* listen PostAddForum saved event
-* refer AbstractForm::saved()
-*/
+* Listen PostAddForum saved event
+ * 
+ * @author	Sascha Greuel, Tom Wu
+ * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+ * @package	com.tapatalk.wbb4
+ * @subpackage	system.event.listener
+ */
 class PostAddFormTapatalkListener implements IEventListener {
-    /**
-    * @see \wcf\system\event\IEventListener::execute()
-    */
-    public function execute($eventObj, $className, $eventName) {
-        //error_log(print_r($_GET, true));
-        //error_log(print_r($_POST, true));
-        //error_log("$className, $eventName");
-        //error_log(print_r($eventObj, true));
-        //error_log(print_r($eventObj->getActionName(), true));
-        //error_log(print_r($eventObj->getParameters(), true));
-        //error_log(print_r($eventObj->getReturnValues(), true));
-        if ($_GET['controller'] == 'PostAdd' && $className == 'wbb\form\PostAddForm' && $eventName == 'saved') {
-            //reply post in more options mode
-            if ($eventObj->threadID) {
-                $oViewableThreadList = new ViewableThreadList();
-        		$oViewableThreadList->setObjectIDs(array($eventObj->threadID));
-        		$oViewableThreadList->readObjects();
-        		$objsViewableThread = $oViewableThreadList->getObjects();
-        		if ($objsViewableThread) {
-        		    $oViewableThread = array_shift($objsViewableThread);
-        		    $oThread = $oViewableThread->getDecoratedObject();
-                    $pushPath = 'mobiquo/push/TapatalkPush.php';
-                    require_once($pushPath);
-                    $oTapatalkPush = new \TapatalkPush();   //!!!
-                    $oTapatalkPush->callMethod('doPushReply', array(
-                        'oThread' => $oThread
-                    ));
-        	    }
-            }
-        }
-    }
-
+	/**
+	* @see \wcf\system\event\IEventListener::execute()
+	*/
+	public function execute($eventObj, $className, $eventName) {
+		// reply post in more options mode
+		if ($eventObj->threadID) {
+			$threadList = new ViewableThreadList();
+			$threadList->setObjectIDs(array($eventObj->threadID));
+			$threadList->readObjects();
+			$threads = $threadList->getObjects();
+			
+			if (!empty($threads[0])) {
+				$thread = $threads[0];
+				
+				if (file_exists(WBB_TAPATALK_DIR . '/push/TapatalkPush.php')) {
+					require_once(WBB_TAPATALK_DIR . '/push/TapatalkPush.php');
+					$tapatalkPush = new \TapatalkPush();
+					
+					$tapatalkPush->callMethod('doPushReply', array(
+						'oThread' => $thread->getDecoratedObject()
+					));
+				}
+			}
+		}
+	}
 }
-
-?>

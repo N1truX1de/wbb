@@ -17,7 +17,7 @@
 		<item name="wcf.acp.option.wbb_tapatalk_app_kindle_url.description"><![CDATA[Geben Sie die BYO Kindle App URL aus dem Amazon App Store an, z.B. „http://www.amazon.com/gp/mas/dl/android?p=com.quoord.tapatalkpro.activity“]]></item>
 	</category>
 	
-	<category name="wcf.user.3rdparty.tapatalk">
+	<category name="wcf.user.3rdparty">
 		<item name="wcf.user.3rdparty.tapatalk.app_banner_message"><![CDATA[{literal}Folge {your_forum_name} <br /> mit {app_name} für [os_platform]{/literal}]]></item>
 	</category>
 </language>
