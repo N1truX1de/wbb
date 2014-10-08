@@ -27,11 +27,15 @@ Abstract Class MbqBaseActGetParticipatedTopic extends MbqBaseAct {
         $oMbqDataPage->initByStartAndLast($startNum, $lastNum);
         $filter = array(
             'searchuser' => MbqMain::$input[0],
-            'userid' => MbqMain::$input[4],
-            'searchid' => MbqMain::$input[3],
             'page' => $oMbqDataPage->curPage,
             'perpage' => $oMbqDataPage->numPerPage
         );
+        if (isset(MbqMain::$input[3])){
+            $filter['searchid'] = MbqMain::$input[3];
+        }
+        if (isset(MbqMain::$input[4])){
+            $filter['userid'] = MbqMain::$input[4];
+        }
         $filter['showposts'] = 0;
         $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
         if ($oMbqAclEtForumTopic->canAclGetParticipatedTopic()) {    //acl judge

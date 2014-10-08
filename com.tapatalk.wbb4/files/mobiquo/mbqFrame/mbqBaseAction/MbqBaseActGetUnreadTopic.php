@@ -26,10 +26,12 @@ Abstract Class MbqBaseActGetUnreadTopic extends MbqBaseAct {
         $oMbqDataPage = MbqMain::$oClk->newObj('MbqDataPage');
         $oMbqDataPage->initByStartAndLast($startNum, $lastNum);
         $filter = array(
-            'searchid' => MbqMain::$input[2],
             'page' => $oMbqDataPage->curPage,
             'perpage' => $oMbqDataPage->numPerPage
         );
+        if (array_key_exists(2, MbqMain::$input)){
+            $filter['searchid'] = MbqMain::$input[2];
+        }
         if (MbqMain::$input[3] && is_array(MbqMain::$input[3])) {
             $filter = array_merge($filter, MbqMain::$input[3]);
         }
