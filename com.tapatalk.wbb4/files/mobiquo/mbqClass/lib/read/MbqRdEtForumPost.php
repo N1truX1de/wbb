@@ -269,10 +269,28 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             //handle smilies
             //...
             // b/i/u
-    	    $post = preg_replace('/<span style="text-decoration: underline">(.*?)<\/span>/i', '<u>$1</u>', $post);
+            $post = preg_replace('/<span style="text-decoration: underline">(.*?)<\/span>/i', '<u>$1</u>', $post);
             // ol/li ul/li
-    	    $post = str_ireplace('<li>', "\t\t<li>", $post);
-    	    $post = str_ireplace('</li>', "</li><br />", $post);
+            if(preg_match_all('/<[ou]l[^>]*?list-style-type: (\S+)[\'"][^>]*?>(.*?)<\/[ou]l>/i', $post, $match, PREG_SET_ORDER)){
+                foreach ($match as $value){
+                    $listType = $value[1];
+                    $listContent = $value[2];
+                    preg_match_all('/<li>(.*?)<\/li>/i', $listContent, $match2, PREG_SET_ORDER);
+                    $content = "";
+                    if ($listType == 'decimal'){
+                        foreach ($match2 as $key => $value){
+                            $content .= "\t\t<li>".($key+1).'. '.$value[1]."</li><br />";
+                        }
+                        $content = '<ol>'.$content.'</ol>';
+                    }else{
+                        foreach ($match2 as $value){
+                            $content .= "\t\t<li>  * ".$value[1]."</li><br />";
+                        }
+                        $content = '<ul>'.$content.'</ul>';
+                    }
+                    $post = preg_replace('/<[ou]l[^>]*?list-style-type: (\S+)[\'"][^>]*?>(.*?)<\/[ou]l>/i', $content, $post, 1);
+                }
+            }
             //font color
     	    $post = preg_replace_callback('/<span style="color: (\#.*?)">(.*?)<\/span>/is', create_function('$matches','return MbqMain::$oMbqCm->mbColorConvert($matches[1], $matches[2]);'), $post);
     	    //link image email
