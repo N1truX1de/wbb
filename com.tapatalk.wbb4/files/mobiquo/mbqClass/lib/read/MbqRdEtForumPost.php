@@ -294,6 +294,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             //font color
     	    $post = preg_replace_callback('/<span style="color: (\#.*?)">(.*?)<\/span>/is', create_function('$matches','return MbqMain::$oMbqCm->mbColorConvert($matches[1], $matches[2]);'), $post);
     	    //link image email
+            $post = preg_replace('/<a [^>]*?href="([^>]*?)"[^>]*?><img [^>]*?src="([^>]*?)"[^>]*?\/><\/a>/i', '[img]$1[/img]', $post);
 	        $post = preg_replace('/<img [^>]*?src="([^>]*?)"[^>]*?\/>/i', '[img]$1[/img]', $post);
 	        $post = preg_replace('/<a [^>]*?href="mailto:([^>]*?)"[^>]*?>([^>]*?)<\/a>/i', '[url=$1]$2[/url]', $post);
 	        $post = preg_replace('/<a [^>]*?href="([^>]*?)"[^>]*?>([^>]*?)<\/a>/i', '[url=$1]$2[/url]', $post);
