@@ -267,7 +267,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             //handle quote
             $post = preg_replace('/<blockquote class="container containerPadding quoteBox"[^>]*?>.*?<header>.*?<h3>.*?<a href="[^>]*?">(.*?) wrote:<\/a>.*?<\/h3>.*?<\/header>.*?(.*?)<\/blockquote>/is', '$1 wrote:[quote]$2[/quote]', $post);
             //handle smilies
-            $post = preg_replace('/<img[^>]*?alt="(:\)|:\(|;\)|:P|\^\^|:D|;\(|X\(|:\*|:\||8o|=O|:\/|:S|X\/|8\)|?\(|:huh:|:rolleyes:|:love:|8\||:cursing:|:thumbdown:|:thumbsup:|:thumbup:|:sleeping:|:whistling:|:evil:|:saint:)" \/>/i', '$1', $post);
+            $post = preg_replace('/<img[^>]*?alt="(:\)|:\(|;\)|:P|\^\^|:D|;\(|X\(|:\*|:\||8o|=O|:\/|:S|X\/|8\)|\?\(|:huh:|:rolleyes:|:love:|8\||:cursing:|:thumbdown:|:thumbsup:|:thumbup:|:sleeping:|:whistling:|:evil:|:saint:)" \/>/i', '$1', $post);
             // b/i/u
             $post = preg_replace('/<span style="text-decoration: underline">(.*?)<\/span>/i', '<u>$1</u>', $post);
             // ol/li ul/li
