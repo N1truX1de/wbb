@@ -38,7 +38,7 @@
 		<instruction type="templateListener">templateListener.xml</instruction>
 		
 		<!-- languages -->
-		<instruction type="language">languages/*.xml</instruction>
+		<instruction type="language">language/*.xml</instruction>
 	</instructions>
 	
 	<instruction type="update" fromversion="*">
@@ -54,6 +54,6 @@
 		<instruction type="templateListener">templateListener.xml</instruction>
 		
 		<!-- languages -->
-		<instruction type="language">languages/*.xml</instruction>
+		<instruction type="language">language/*.xml</instruction>
 	</instruction>
 </package>
