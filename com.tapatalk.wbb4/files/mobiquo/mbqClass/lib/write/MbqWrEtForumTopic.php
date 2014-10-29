@@ -48,15 +48,15 @@ MbqMain::$oClk->includeClass('MbqBaseWrEtForumTopic');
 
 /**
  * forum topic write class
- * 
+ *
  * @since  2012-8-15
  * @author Wu ZeTao <578014287@qq.com>
  */
 Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
-    
+
     public function __construct() {
     }
-    
+
     /**
      * add forum topic view num
      *
@@ -74,7 +74,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             ));
         }
     }
-    
+
     /**
      * mark forum topic read
      *
@@ -83,7 +83,14 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
      * $mbqOpt['case'] = 'markAllAsRead' means mark all my unread topics as read
      */
     public function markForumTopicRead(&$var = null, $mbqOpt = array()) {
-        if (isset($mbqOpt['case']) && $mbqOpt['case'] == 'markAllAsRead') {
+        if (isset($mbqOpt['case']) && $mbqOpt['case'] == 'markAsRead') {
+            if (is_array($var)) {
+                MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+            }
+            $oBoardAction = new BoardAction(array($var), 'markAsRead', array());
+            $oBoardAction->validateAction();
+            $response = $oBoardAction->executeAction();
+        } else if (isset($mbqOpt['case']) && $mbqOpt['case'] == 'markAllAsRead') {
             $oBoardAction = new BoardAction(array(), 'markAllAsRead', array());
             $oBoardAction->validateAction();
             $response = $oBoardAction->executeAction();
@@ -92,7 +99,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
                 MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
             } else {
                 //ref wbb\page\ThreadPage::readData()
-                $oThreadPostList = new ThreadPostList($var->mbqBind['oViewableThread']->getDecoratedObject());  
+                $oThreadPostList = new ThreadPostList($var->mbqBind['oViewableThread']->getDecoratedObject());
                 $oThreadPostList->sqlOffset = 0;
                 $oThreadPostList->sqlLimit = 9;
                 $oThreadPostList->readObjects();    //only for making $oThreadPostList used in following code
@@ -107,7 +114,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             }
         }
     }
-    
+
     /**
      * reset forum topic subscription
      *
@@ -120,7 +127,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             //do nothing
         }
     }
-    
+
     /**
      * add forum topic
      *
@@ -162,7 +169,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             //validateSubject
             if (empty($var->topicTitle->oriValue)) MbqError::alert('', "Need topic title.", '', MBQ_ERR_APP);
             if (StringUtil::length($var->topicTitle->oriValue) > 255) MbqError::alert('', "Topic title is too long.", '', MBQ_ERR_APP);
-                // search for censored words
+            // search for censored words
             if (ENABLE_CENSORSHIP) {
                 $result = Censorship::getInstance()->test($var->topicTitle->oriValue);
                 if ($result) {
@@ -173,7 +180,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             if (empty($var->topicContent->oriValue)) {
                 MbqError::alert('', "Need topic content.", '', MBQ_ERR_APP);
             }
-                // check text length
+            // check text length
             if ($maxTextLength != 0 && StringUtil::length($var->topicContent->oriValue) > $maxTextLength) {
                 MbqError::alert('', "Topic content is too long.", '', MBQ_ERR_APP);
             }
@@ -183,7 +190,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
                     MbqError::alert('', "Topic content included disallowed bbcodes.", '', MBQ_ERR_APP);
                 }
             }
-                // search for censored words
+            // search for censored words
             if (ENABLE_CENSORSHIP) {
                 $result = Censorship::getInstance()->test($var->topicContent->oriValue);
                 if ($result) {
@@ -200,9 +207,9 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             //$languageID = LanguageFactory::getInstance()->getUserLanguage()->languageID;
             $languageID = NULL;
             //attachment
-    		if (MODULE_ATTACHMENT && $attachmentObjectType) {
-    			$attachmentHandler = new AttachmentHandler($attachmentObjectType, $attachmentObjectID, $tmpHash, $attachmentParentObjectID);
-    		}
+            if (MODULE_ATTACHMENT && $attachmentObjectType) {
+                $attachmentHandler = new AttachmentHandler($attachmentObjectType, $attachmentObjectID, $tmpHash, $attachmentParentObjectID);
+            }
             //save
             if ($preParse) {
                 // BBCodes are enabled
@@ -241,7 +248,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
                     'enableHtml' => $enableHtml,
                     'enableSmilies' => $enableSmilies,
                     'showSignature' => $showSignature
-                ),
+            ),
                 'tags' => array(),
                 'subscribeThread' => $subscribeThread
             );
@@ -256,7 +263,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             }
         }
     }
-    
+
     /**
      * subscribe topic
      *
@@ -267,21 +274,21 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
             //ref wcf\data\user\object\watch\UserObjectWatchAction::subscribe()
-    		$objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
-    		$userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
-    		if (!$userObjectWatch) {    //help confirm not subscribed
-        		UserObjectWatchEditor::create(array(
+            $objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
+            $userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
+            if (!$userObjectWatch) {    //help confirm not subscribed
+                UserObjectWatchEditor::create(array(
         			'userID' => WCF::getUser()->userID,
         			'objectID' => intval($var->topicId->oriValue),
         			'objectTypeID' => $objectType->objectTypeID,
         			'notification' => 0
-        		));
-        		// reset user storage
-        		$objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
-    		}
+                ));
+                // reset user storage
+                $objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
+            }
         }
     }
-    
+
     /**
      * unsubscribe topic
      *
@@ -292,17 +299,17 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
             //ref wcf\data\user\object\watch\UserObjectWatchAction::unsubscribe()
-    		$objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
-    		$userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
-    		if ($userObjectWatch->watchID) {
-        		$editor = new UserObjectWatchEditor($userObjectWatch);
-        		$editor->delete();
-        		// reset user storage
-        		$objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
-        	}
+            $objectType = ObjectTypeCache::getInstance()->getObjectTypeByName('com.woltlab.wcf.user.objectWatch', 'com.woltlab.wbb.thread');
+            $userObjectWatch = UserObjectWatch::getUserObjectWatch($objectType->objectTypeID, WCF::getUser()->userID, intval($var->topicId->oriValue));
+            if ($userObjectWatch->watchID) {
+                $editor = new UserObjectWatchEditor($userObjectWatch);
+                $editor->delete();
+                // reset user storage
+                $objectType->getProcessor()->resetUserStorage(array(WCF::getUser()->userID));
+            }
         }
     }
-  
+
 }
 
 ?>
