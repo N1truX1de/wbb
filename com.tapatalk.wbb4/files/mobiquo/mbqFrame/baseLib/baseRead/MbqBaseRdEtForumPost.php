@@ -157,6 +157,12 @@ Abstract Class MbqBaseRdEtForumPost extends MbqBaseRd {
         $data['thanks_info'] = (array) $oMbqRdEtThank->returnApiArrDataThank($oMbqEtForumPost->objsMbqEtThank);
         /* likes_info.TODO */
         $data['likes_info'] = (array) array();
+        foreach ($oMbqEtForumPost->objsMbqEtLike as $oMbqEtLike){
+            $data['likes_info'][] = array(
+                'userid' => $oMbqEtLike->oMbqEtUser->userId->oriValue,
+                'username' => $oMbqEtLike->oMbqEtUser->loginName->oriValue,
+            );
+        }
         return $data;
     }
     

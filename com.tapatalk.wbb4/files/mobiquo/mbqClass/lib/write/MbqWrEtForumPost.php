@@ -1,5 +1,7 @@
 <?php
 
+use wcf\data\like\Like;
+use wcf\system\like\LikeHandler;
 use wbb\data\board\BoardCache;
 use wbb\data\post\Post;
 use wbb\data\post\PostAction;
@@ -18,6 +20,7 @@ use wcf\system\poll\PollManager;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\notification\UserNotificationHandler;
 use wcf\system\WCF;
+use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\util\HeaderUtil;
 
 use wbb\data\board\RestrictedBoardNodeList;
@@ -352,7 +355,51 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
     		}
         }
     }
-  
+
+    public function updateLike(&$oMbqEtForumPost = null){
+        if (is_array($oMbqEtForumPost)){
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        }
+        $oPost = $oMbqEtForumPost->mbqBind['oViewablePost']->getDecoratedObject();
+        //ref wcf\data\like\LikeAction\Like
+        $objectType = LikeHandler::getInstance()->getObjectType('com.woltlab.wbb.likeablePost');
+        if ($objectType === null) {
+            MbqError::alert('', '', '', MBQ_ERR_APP);
+        }
+        $objectTypeProvider = $objectType->getProcessor();
+        $likeableObject = $objectTypeProvider->getObjectByID($oMbqEtForumPost->postId->oriValue);
+        $likeableObject->setObjectType($objectType);
+
+        $likeData = LikeHandler::getInstance()->like($likeableObject, WCF::getUser(), Like::LIKE);
+
+        // handle activity event
+        if (UserActivityEventHandler::getInstance()->getObjectTypeID($objectType->objectType.'.recentActivityEvent')) {
+            if ($likeData['data']['liked'] == 1) {
+                UserActivityEventHandler::getInstance()->fireEvent($objectType->objectType.'.recentActivityEvent', $oMbqEtForumPost->postId->oriValue);
+            }
+            else {
+                UserActivityEventHandler::getInstance()->removeEvents($objectType->objectType.'.recentActivityEvent', $oMbqEtForumPost->postId->oriValue);
+            }
+        }
+        // change post data
+        $user = WCF::getUser();
+        if($likeData['data']['liked'] == 1){
+            $oMbqEtForumPost->isLiked->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isLiked.range.yes'));
+            $oMbqEtLike = MbqMain::$oClk->newObj('MbqEtLike');
+            $oMbqEtLike->key->setOriValue($oMbqEtForumPost->postId->oriValue);
+            $oMbqEtLike->userId->setOriValue($user->__get('userID'));
+            $oMbqEtLike->type->setOriValue(MbqBaseFdt::getFdt('MbqFdtLike.MbqEtLike.type.range.likeForumPost'));
+            $oMbqEtLike->postTime->setOriValue($oPost->time);
+            $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+            $oMbqEtLike->oMbqEtUser = $oMbqRdEtUser->initOMbqEtUser($user->__get('userID'), array('case' => 'byUserId'));
+            $oMbqEtForumPost->objsMbqEtLike[$user->__get('userID')] = $oMbqEtLike;
+        }else{
+            $oMbqEtForumPost->isLiked->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isLiked.range.no'));
+            unset($oMbqEtForumPost->objsMbqEtLike[$user->__get('userID')]);
+        }
+
+    }
+
 }
 
 ?>

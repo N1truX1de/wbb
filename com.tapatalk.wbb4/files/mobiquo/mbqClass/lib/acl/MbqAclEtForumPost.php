@@ -1,5 +1,5 @@
 <?php
-
+use wcf\system\like\LikeHandler;
 defined('MBQ_IN_IT') or exit;
 
 MbqMain::$oClk->includeClass('MbqBaseAclEtForumPost');
@@ -97,7 +97,28 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
         }
         return false;
     }
-  
+
+    /**
+     * judge can like post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclLike($oMbqEtForumPost = null){
+        if (empty($oMbqEtForumPost) || !MbqMain::hasLogin()){
+            return false;
+        }
+
+        $objectType = LikeHandler::getInstance()->getObjectType('com.woltlab.wbb.likeablePost');
+        if ($objectType === null) {
+            return false;
+        }
+
+        $objectTypeProvider = $objectType->getProcessor();
+        $likeableObject = $objectTypeProvider->getObjectByID($oMbqEtForumPost->postId->oriValue);
+        $likeableObject->setObjectType($objectType);
+        return $objectTypeProvider->checkPermissions($likeableObject);
+    }
 }
 
 ?>

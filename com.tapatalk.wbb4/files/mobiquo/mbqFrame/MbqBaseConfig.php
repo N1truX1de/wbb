@@ -288,6 +288,8 @@ Abstract Class MbqBaseConfig {
         MbqMain::$oClk->reg('MbqBaseActUpdateEmail', MBQ_BASE_ACTION_PATH.'MbqBaseActUpdateEmail.php');
         MbqMain::$oClk->reg('MbqBaseActForgetPassword', MBQ_BASE_ACTION_PATH.'MbqBaseActForgetPassword.php');
         MbqMain::$oClk->reg('MbqBaseActRegister', MBQ_BASE_ACTION_PATH.'MbqBaseActRegister.php');
+        MbqMain::$oClk->reg('MbqBaseActLikePost', MBQ_BASE_ACTION_PATH.'MbqBaseActLikePost.php');
+        MbqMain::$oClk->reg('MbqBaseActUnlikePost', MBQ_BASE_ACTION_PATH.'MbqBaseActUnlikePost.php');
         /* action class */
         MbqMain::$oClk->reg('MbqActGetConfig', MBQ_ACTION_PATH.'MbqActGetConfig.php');
         MbqMain::$oClk->reg('MbqActGetForum', MBQ_ACTION_PATH.'MbqActGetForum.php');
@@ -356,6 +358,8 @@ Abstract Class MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActUpdateEmail', MBQ_ACTION_PATH.'MbqActUpdateEmail.php');
         MbqMain::$oClk->reg('MbqActForgetPassword', MBQ_ACTION_PATH.'MbqActForgetPassword.php');
         MbqMain::$oClk->reg('MbqActRegister', MBQ_ACTION_PATH.'MbqActRegister.php');
+        MbqMain::$oClk->reg('MbqActLikePost', MBQ_ACTION_PATH.'MbqActLikePost.php');
+        MbqMain::$oClk->reg('MbqActUnlikePost', MBQ_ACTION_PATH.'MbqActUnlikePost.php');
         /* base adv action class */
         MbqMain::$oClk->reg('MbqBaseActConfig', MBQ_BASE_ADV_ACTION_PATH.'MbqBaseActConfig.php');
         MbqMain::$oClk->reg('MbqBaseActForums', MBQ_BASE_ADV_ACTION_PATH.'MbqBaseActForums.php');
