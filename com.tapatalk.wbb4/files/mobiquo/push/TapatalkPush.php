@@ -681,7 +681,7 @@ Class TapatalkPush extends TapatalkBasePush {
      */
     protected function getUsersByQuote($content) {
         $objsUser = array();
-        $str =  preg_match_all('/\[quote=\'([^\]]*?)\'[^\]]*?\]/i', $content, $matches);
+        $str =  preg_match_all('/\[quote=\'([^\]]*?)\',[^\]]*?\]/i', $content, $matches);
         if ($matches && isset($matches[1]) && $matches[1]) {
             $objsUser = $this->getUsersByUserLoginNamesExceptMe($matches[1]);
         }
@@ -730,10 +730,17 @@ Class TapatalkPush extends TapatalkBasePush {
      * @param  Array  $loginNames
      * @return  Array
      */
-    protected function getUsersByUserLoginNamesExceptMe($loginNames) {
+    protected function getUsersByUserLoginNamesExceptMe(array $loginNames) {
+        foreach ($loginNames as $key => $loginName){
+            $loginNames[$key] = str_replace('\\\\', '\\', $loginNames[$key]);
+            $loginNames[$key] = str_replace("\\'", "'", $loginNames[$key]);
+        }
         $objsUserProfile = UserProfile::getUserProfilesByUsername($loginNames);
         $objsUser = array();
         foreach ($objsUserProfile as $oUserProfile) {
+            if (empty($oUserProfile)){
+                continue;
+            }
             $oUser = $oUserProfile->getDecoratedObject();
             if ($oUser->userID && $oUser->userID != $this->oUser->userID) {
                 $objsUser[] = $oUser;
