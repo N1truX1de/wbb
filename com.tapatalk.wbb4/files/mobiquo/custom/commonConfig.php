@@ -19,6 +19,6 @@ Class MbqCommonConfig {
 
 
 MbqCommonConfig::$cfg['push'] = 1;
-MbqCommonConfig::$cfg['push_type'] = 'sub,conv,tag,quote';
+MbqCommonConfig::$cfg['push_type'] = 'sub,conv,tag,quote,like';
 
 ?>
