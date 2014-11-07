@@ -82,7 +82,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             //if (WCF::getSession()->getPermission('user.message.canUseHtml')) $enableHtml = 1;
             if (WCF::getSession()->getPermission('user.message.canUseBBCodes')) $enableBBCodes = 1;
             $showSignature = 1;
-            $subscribeThread = 1;
+            $subscribeThread = WCF::getUser()->watchThreadOnReply;
             $type = Thread::TYPE_DEFAULT;
             // get max text length
             $maxTextLength = WCF::getSession()->getPermission('user.board.maxPostLength');
