@@ -2,7 +2,7 @@
 namespace wbb\system\event\listener;
 use wcf\system\event\IEventListener;
 
-class LikeablePostTapatalkListener implements IEventListener{
+class LikeActionTapatalkListener implements IEventListener{
     /**
     * @see \wcf\system\event\IEventListener::execute()
     */
@@ -34,6 +34,5 @@ class LikeablePostTapatalkListener implements IEventListener{
                 $tapatalkPush->callMethod($method, $pushData);
             }
         }
-    }
     }
 }
