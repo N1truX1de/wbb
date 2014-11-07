@@ -22,6 +22,7 @@ use wcf\system\user\notification\UserNotificationHandler;
 use wcf\system\WCF;
 use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\util\HeaderUtil;
+use wcf\util\ClassUtil;
 
 use wbb\data\board\RestrictedBoardNodeList;
 use wbb\system\label\object\ThreadLabelObjectHandler;
@@ -169,6 +170,15 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
     		));
     		$resultValues = $oPostAction->executeAction();
             if ($resultValues['returnValues']->postID) {
+                // update visit time (messages shouldn't occur as new upon next visit)
+                @$oThread = $var->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();
+                if (!empty($oThread)){
+                    $containerActionClassName = 'wbb\data\thread\ThreadAction';
+                    if (ClassUtil::isInstanceOf($containerActionClassName, 'wcf\data\IVisitableObjectAction')) {
+                        $containerAction = new $containerActionClassName(array(($oThread instanceof DatabaseObjectDecorator ? $oThread->getDecoratedObject() : $oThread)), 'markAsRead');
+                        $containerAction->executeAction();
+                    }
+                }
                 $var->postId->setOriValue($resultValues['returnValues']->postID);
             } else {
                 MbqError::alert('', "Can not reply post.", '', MBQ_ERR_APP);

@@ -33,6 +33,7 @@ use wcf\system\poll\PollManager;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\notification\UserNotificationHandler;
 use wcf\util\HeaderUtil;
+use wcf\util\ClassUtil;
 use wcf\form\MessageForm;
 use wbb\form\ThreadAddForm;
 
@@ -258,6 +259,16 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
                 $var->topicId->setOriValue($resultValues['returnValues']->threadID);
                 $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
                 $var = $oMbqRdEtForumTopic->initOMbqEtForumTopic($var->topicId->oriValue, array('case' => 'byTopicId'));    //for get state
+
+                // update visit time (messages shouldn't occur as new upon next visit)
+                @$oThread = $var->mbqBind['oViewableThread']->getDecoratedObject();
+                if (!empty($oThread)){
+                    $containerActionClassName = 'wbb\data\thread\ThreadAction';
+                    if (ClassUtil::isInstanceOf($containerActionClassName, 'wcf\data\IVisitableObjectAction')) {
+                        $containerAction = new $containerActionClassName(array(($oThread instanceof DatabaseObjectDecorator ? $oThread->getDecoratedObject() : $oThread)), 'markAsRead');
+                        $containerAction->executeAction();
+                    }
+                }
             } else {
                 MbqError::alert('', "Can not create topic.", '', MBQ_ERR_APP);
             }
