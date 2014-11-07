@@ -99,19 +99,10 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             if (is_array($var)) {
                 MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
             } else {
-                //ref wbb\page\ThreadPage::readData()
-                $oThreadPostList = new ThreadPostList($var->mbqBind['oViewableThread']->getDecoratedObject());
-                $oThreadPostList->sqlOffset = 0;
-                $oThreadPostList->sqlLimit = 9;
-                $oThreadPostList->readObjects();    //only for making $oThreadPostList used in following code
-                // update thread visit
-                if ($var->mbqBind['oViewableThread']->isNew() && $oThreadPostList->getMaxPostTime() > $var->mbqBind['oViewableThread']->getVisitTime()) {
-                    $threadAction = new ThreadAction(array($var->mbqBind['oViewableThread']->getDecoratedObject()), 'markAsRead', array(
-                        'visitTime' => $oThreadPostList->getMaxPostTime(),
+                $threadAction = new ThreadAction(array($var->mbqBind['oViewableThread']->getDecoratedObject()), 'markAsRead', array(
                         'viewableThread' => $var->mbqBind['oViewableThread']
-                    ));
-                    $threadAction->executeAction();
-                }
+                ));
+                $threadAction->executeAction();
             }
         }
     }
@@ -260,15 +251,8 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
                 $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
                 $var = $oMbqRdEtForumTopic->initOMbqEtForumTopic($var->topicId->oriValue, array('case' => 'byTopicId'));    //for get state
 
-                // update visit time (messages shouldn't occur as new upon next visit)
-                @$oThread = $var->mbqBind['oViewableThread']->getDecoratedObject();
-                if (!empty($oThread)){
-                    $containerActionClassName = 'wbb\data\thread\ThreadAction';
-                    if (ClassUtil::isInstanceOf($containerActionClassName, 'wcf\data\IVisitableObjectAction')) {
-                        $containerAction = new $containerActionClassName(array(($oThread instanceof DatabaseObjectDecorator ? $oThread->getDecoratedObject() : $oThread)), 'markAsRead');
-                        $containerAction->executeAction();
-                    }
-                }
+                /* mark forum topic read */
+                $this->markForumTopicRead($var);
             } else {
                 MbqError::alert('', "Can not create topic.", '', MBQ_ERR_APP);
             }

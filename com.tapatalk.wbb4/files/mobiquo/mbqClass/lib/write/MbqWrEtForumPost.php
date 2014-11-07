@@ -170,15 +170,9 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
     		));
     		$resultValues = $oPostAction->executeAction();
             if ($resultValues['returnValues']->postID) {
-                // update visit time (messages shouldn't occur as new upon next visit)
-                @$oThread = $var->oMbqEtForumTopic->mbqBind['oViewableThread']->getDecoratedObject();
-                if (!empty($oThread)){
-                    $containerActionClassName = 'wbb\data\thread\ThreadAction';
-                    if (ClassUtil::isInstanceOf($containerActionClassName, 'wcf\data\IVisitableObjectAction')) {
-                        $containerAction = new $containerActionClassName(array(($oThread instanceof DatabaseObjectDecorator ? $oThread->getDecoratedObject() : $oThread)), 'markAsRead');
-                        $containerAction->executeAction();
-                    }
-                }
+                /* mark forum topic read */
+                $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
+                $oMbqWrEtForumTopic->markForumTopicRead($var->oMbqEtForumTopic);
                 $var->postId->setOriValue($resultValues['returnValues']->postID);
             } else {
                 MbqError::alert('', "Can not reply post.", '', MBQ_ERR_APP);
