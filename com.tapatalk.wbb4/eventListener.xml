@@ -29,5 +29,12 @@
 			<inherit>1</inherit>
 			<listenerclassname><![CDATA[wbb\system\event\listener\ConversationMessageActionTapatalkListener]]></listenerclassname>
 		</eventlistener>
+        <eventlistener>
+            <eventclassname><![CDATA[wcf\data\like\LikeAction]]></eventclassname>
+            <eventname>finalizeAction</eventname>
+            <environment>user</environment>
+            <inherit>1</inherit>
+            <listenerclassname><![CDATA[wbb\system\event\listener\LikeActionTapatalkListener]]></listenerclassname>
+        </eventlistener>
 	</import>
 </data>

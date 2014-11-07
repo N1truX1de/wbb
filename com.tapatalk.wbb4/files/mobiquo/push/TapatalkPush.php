@@ -657,7 +657,39 @@ Class TapatalkPush extends TapatalkBasePush {
         }
         return false;
     }
-    
+
+    /**
+     * like post push
+     *
+     * @param  Array  $p
+     * @return Boolean
+     */
+    protected function doPushLikePost($p) {
+        if (!isset($p['postId']) || empty($p['postId'])){
+            return false;
+        }
+        $push_data = array();
+        $postId = $p['postId'];
+        $oPost = $this->getPostByPostId($postId);
+        if (empty($oPost)){
+            return false;
+        }
+        $topicId = $oPost->threadID;
+        $oThread = $this->getTopicByTopicId($topicId);
+        $pushPack = array(
+            'userid'    => $oPost->userID,
+            'type'      => 'like',
+            'id'        => $topicId,
+            'subid'     => $postId,
+            'title'     => $oThread->getTitle(),
+            'author'    => $oPost->username,
+            'dateline'  => time()
+        );
+        $push_data[] = $pushPack;
+        $this->push($push_data);
+        return true;
+    }
+
     /**
      * get users by tag
      *
