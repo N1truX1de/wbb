@@ -27,7 +27,7 @@ class LikeActionTapatalkListener implements IEventListener{
         }
 
         // push
-        if (isset($method) && !empty($method) && !empty($pushData)) {
+        if (isset($method) && !empty($method) && isset($pushData) && !empty($pushData)) {
             if (file_exists(WBB_TAPATALK_DIR . '/push/TapatalkPush.php')) {
                 require_once(WBB_TAPATALK_DIR . '/push/TapatalkPush.php');
                 $tapatalkPush = new \TapatalkPush();
