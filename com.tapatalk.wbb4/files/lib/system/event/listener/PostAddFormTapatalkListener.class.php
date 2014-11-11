@@ -17,13 +17,16 @@ class PostAddFormTapatalkListener implements IEventListener {
 	* @see \wcf\system\event\IEventListener::execute()
 	*/
 	public function execute($eventObj, $className, $eventName) {
+		$threadID = $eventObj->threadID;
+		
 		// reply post in more options mode
-		if ($eventObj->threadID) {
+		if ($threadID) {
 			$threadList = new ViewableThreadList();
-			$threadList->setObjectIDs(array($eventObj->threadID));
+			$threadList->setObjectIDs(array($threadID));
 			$threadList->readObjects();
 			$threads = $threadList->getObjects();
 			
+			// push
 			if (!empty($threads[0])) {
 				$thread = $threads[0];
 				
