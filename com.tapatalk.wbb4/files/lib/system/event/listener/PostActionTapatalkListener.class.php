@@ -20,7 +20,7 @@ class PostActionTapatalkListener implements IEventListener {
 		$method = '';
 		$pushData = array();
 		
-		$controller = $_GET['controller'];
+		$controller = (isset($_GET['controller'])) ? $_GET['controller'] : null;
 		$returnValues = $eventObj->getReturnValues();
 		$actionName = $eventObj->getActionName();
 		
